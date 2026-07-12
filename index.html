@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FFXIV 高難度副本攻略工具</title>
+<link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+<header><h1>FFXIV 高難度副本攻略工具</h1></header>
+<div id="raid-list">載入中…</div>
+<script src="data/raids.js"></script>
+<script>
+(() => {
+  const list = document.getElementById('raid-list');
+  if (!window.RAID_LIST) { list.textContent = '載入失敗:找不到 data/raids.js'; return; }
+  list.innerHTML = '';
+  for (const raid of window.RAID_LIST) {
+    const a = document.createElement('a');
+    a.className = 'raid-card';
+    a.href = `guide.html?raid=${raid.id}`;
+    a.innerHTML = `<h2>${raid.name}</h2><p>${raid.description || ''}</p>`;
+    list.appendChild(a);
+  }
+})();
+</script>
+</body>
+</html>

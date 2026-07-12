@@ -1,0 +1,238 @@
+/* FFXIV 攻略工具 — 深色主題 */
+:root {
+  --bg: #101418;
+  --bg-panel: #1a2028;
+  --bg-panel2: #212a35;
+  --border: #2e3a48;
+  --text: #dbe4ee;
+  --text-dim: #8b99a8;
+  --accent: #4fc3f7;
+  --tank: #4a90d9;
+  --healer: #4caf7d;
+  --dps: #e05d5d;
+  --fire: #ff7a45;
+  --ice: #ffd75e;
+  --thunder: #7fb6ff;
+  --void: #b06ce0;
+}
+
+* { box-sizing: border-box; }
+html, body {
+  margin: 0; padding: 0; height: 100%;
+  background: var(--bg); color: var(--text);
+  font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
+}
+
+a { color: var(--accent); text-decoration: none; }
+
+/* ── 頂欄 ─────────────────────────── */
+header {
+  display: flex; align-items: center; gap: 16px;
+  padding: 10px 18px; flex-wrap: wrap;
+  background: var(--bg-panel); border-bottom: 1px solid var(--border);
+}
+header h1 { font-size: 17px; margin: 0; font-weight: 600; }
+header .home-link { font-size: 13px; color: var(--text-dim); }
+
+#role-bar { display: flex; gap: 6px; margin-left: auto; flex-wrap: wrap; }
+.role-btn {
+  padding: 4px 10px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--bg-panel2);
+  color: var(--text-dim); font-size: 13px; font-weight: 700;
+}
+.role-btn.role-tank.active   { background: var(--tank);   color: #fff; border-color: var(--tank); }
+.role-btn.role-healer.active { background: var(--healer); color: #fff; border-color: var(--healer); }
+.role-btn.role-dps.active    { background: var(--dps);    color: #fff; border-color: var(--dps); }
+.role-btn:hover { border-color: var(--accent); }
+
+/* ── 版面 ─────────────────────────── */
+#layout {
+  display: grid;
+  grid-template-columns: 220px minmax(340px, 46%) 1fr;
+  height: calc(100vh - 53px);
+}
+
+/* 時間軸 */
+#timeline {
+  overflow-y: auto; border-right: 1px solid var(--border);
+  background: var(--bg-panel); padding: 8px;
+  display: flex; flex-direction: column; gap: 4px;
+}
+.timeline-item {
+  display: flex; align-items: center; gap: 8px; text-align: left;
+  padding: 8px 10px; border-radius: 8px; cursor: pointer;
+  background: none; border: 1px solid transparent;
+  color: var(--text-dim); font-size: 13.5px; line-height: 1.3;
+}
+.timeline-item:hover { background: var(--bg-panel2); color: var(--text); }
+.timeline-item.active {
+  background: var(--bg-panel2); color: var(--text);
+  border-color: var(--accent);
+}
+.timeline-num {
+  flex: none; width: 20px; height: 20px; border-radius: 50%;
+  background: var(--border); color: var(--text);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 11px; font-weight: 700;
+}
+.timeline-item.active .timeline-num { background: var(--accent); color: #08202c; }
+
+/* 沙盤區 */
+#stage {
+  display: flex; flex-direction: column; align-items: center;
+  padding: 14px; gap: 8px; overflow-y: auto;
+  border-right: 1px solid var(--border);
+}
+#arena { width: 100%; max-width: 560px; }
+.arena-svg { width: 100%; height: auto; display: block; }
+
+#player { width: 100%; max-width: 560px; }
+.player-caption {
+  min-height: 40px; padding: 8px 12px; border-radius: 8px;
+  background: var(--bg-panel2); border: 1px solid var(--border);
+  font-size: 14px; line-height: 1.5;
+}
+.player-controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 12px; margin-top: 8px;
+}
+.player-controls button.btn-prev, .player-controls button.btn-next {
+  width: 42px; height: 34px; border-radius: 8px; cursor: pointer;
+  background: var(--bg-panel2); border: 1px solid var(--border);
+  color: var(--text); font-size: 15px;
+}
+.player-controls button:disabled { opacity: 0.35; cursor: default; }
+.player-dots { display: flex; gap: 6px; }
+.player-dot {
+  width: 11px; height: 11px; border-radius: 50%; cursor: pointer;
+  border: 1px solid var(--text-dim); background: none; padding: 0;
+}
+.player-dot.active { background: var(--accent); border-color: var(--accent); }
+
+/* 內容區 */
+#content { overflow-y: auto; padding: 18px 22px; }
+#section-title { font-size: 19px; margin: 0 0 10px; }
+#section-body { font-size: 14.5px; line-height: 1.75; color: var(--text); }
+#section-body p { margin: 0.5em 0; }
+#section-body ul { margin: 0.4em 0; padding-left: 1.4em; }
+#section-body strong { color: #ffcf7d; }
+#section-body code {
+  background: var(--bg-panel2); padding: 1px 5px; border-radius: 4px; font-size: 0.92em;
+}
+
+#role-notes {
+  margin-top: 14px; display: flex; flex-direction: column; gap: 6px;
+}
+.role-note {
+  display: flex; gap: 10px; align-items: baseline;
+  padding: 8px 10px; border-radius: 8px; font-size: 13.5px; line-height: 1.55;
+  background: var(--bg-panel); border: 1px solid var(--border);
+}
+.role-note.mine {
+  border-color: var(--accent);
+  background: #14313f;
+  order: -1;
+}
+.role-note.mine::after { content: "← 你的職責"; color: var(--accent); font-size: 12px; margin-left: auto; flex: none; }
+.role-note-tag {
+  flex: none; font-weight: 700; font-size: 12px; padding: 1px 8px;
+  border-radius: 10px; color: #fff;
+}
+.role-note-tag.role-tank { background: var(--tank); }
+.role-note-tag.role-healer { background: var(--healer); }
+.role-note-tag.role-dps { background: var(--dps); }
+
+/* ── SVG 沙盤樣式 ──────────────────── */
+.arena-floor { fill: #3a3226; stroke: none; }
+.arena-rim { fill: none; stroke: #17130c; stroke-width: 3; }
+.arena-inner-line { fill: none; stroke: #4a4030; stroke-width: 0.8; stroke-dasharray: 3 4; }
+
+.waymark circle { fill: rgba(0,0,0,.35); stroke-width: 1.6; }
+.waymark-text { font-size: 10px; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+.waymark-A circle { stroke: #ff6b6b; } .waymark-A text { fill: #ff6b6b; }
+.waymark-B circle { stroke: #ffd75e; } .waymark-B text { fill: #ffd75e; }
+.waymark-C circle { stroke: #7fb6ff; } .waymark-C text { fill: #7fb6ff; }
+.waymark-D circle { stroke: #c98fff; } .waymark-D text { fill: #c98fff; }
+
+.actor .actor-body { stroke: #0c1116; stroke-width: 1.2; }
+.actor-tank .actor-body { fill: var(--tank); }
+.actor-healer .actor-body { fill: var(--healer); }
+.actor-dps .actor-body { fill: var(--dps); }
+.actor-label {
+  font-size: 5.6px; font-weight: 700; fill: #fff;
+  text-anchor: middle; dominant-baseline: central; pointer-events: none;
+}
+.actor.selected .actor-body {
+  stroke: #fff; stroke-width: 1.6;
+  filter: drop-shadow(0 0 4px #4fc3f7) drop-shadow(0 0 8px #4fc3f7);
+}
+
+.boss-body { fill: #5b4a78; stroke: #2b2140; stroke-width: 1.5; }
+.boss-facing { fill: rgba(255,255,255,.35); }
+.boss-label {
+  font-size: 6px; font-weight: 700; fill: #fff;
+  text-anchor: middle; dominant-baseline: central;
+}
+
+.aoe { opacity: 0.55; }
+.aoe-fire { fill: var(--fire); }
+.aoe-ice { fill: var(--ice); }
+.aoe-thunder { fill: var(--thunder); }
+.aoe-void { fill: var(--void); }
+.aoe-death { fill: #ff2a2a; }
+.aoe-generic { fill: #cccccc; }
+
+.blackhole-glow { fill: #1d2f7a; opacity: 0.5; }
+.blackhole-core { fill: #0a1030; stroke: #3550c8; stroke-width: 1; }
+.blackhole-eye { fill: #000; }
+
+.tentacle-body { fill: #7a5a38; stroke: #3d2c18; stroke-width: 1.2; }
+.tentacle-label { font-size: 6px; fill: #fff; font-weight: 700; text-anchor: middle; dominant-baseline: central; }
+
+.tether { stroke-width: 1.2; stroke-dasharray: 3 2; }
+.tether-purple { stroke: #d24ce0; }
+.tether-white { stroke: #ddd; }
+
+.ann-arrow, .ann-arc { fill: none; stroke-width: 2.4; }
+.ann-thin { stroke-width: 1.6; }
+.ann-white { stroke: #eee; color: #eee; }
+.ann-red { stroke: #ff5f5f; color: #ff5f5f; }
+.ann-blue { stroke: #6fa8ff; color: #6fa8ff; }
+.ann-yellow { stroke: #ffd75e; color: #ffd75e; }
+.ann-text { font-size: 7px; font-weight: 700; text-anchor: middle; stroke: none; }
+.ann-text.ann-white { fill: #eee; } .ann-text.ann-red { fill: #ff5f5f; }
+.ann-text.ann-blue { fill: #6fa8ff; } .ann-text.ann-yellow { fill: #ffd75e; }
+
+.marker-share .share-outer { fill: none; stroke: #ffb347; stroke-width: 1.4; stroke-dasharray: 4 2; }
+.marker-share .share-inner { fill: rgba(255,179,71,.3); stroke: #ffb347; stroke-width: 1; }
+.marker-triangle { fill: rgba(255,90,90,.85); stroke: #fff; stroke-width: 0.8; }
+.marker-target .target-corner { fill: none; stroke: #ff8080; stroke-width: 1.6; }
+
+/* ── 首頁 ─────────────────────────── */
+#raid-list {
+  max-width: 760px; margin: 40px auto; padding: 0 20px;
+  display: grid; gap: 14px;
+}
+.raid-card {
+  display: block; padding: 18px 20px; border-radius: 12px;
+  background: var(--bg-panel); border: 1px solid var(--border);
+  color: var(--text); transition: border-color .15s;
+}
+.raid-card:hover { border-color: var(--accent); }
+.raid-card h2 { margin: 0 0 6px; font-size: 17px; }
+.raid-card p { margin: 0; color: var(--text-dim); font-size: 13.5px; }
+
+/* ── 響應式 ────────────────────────── */
+@media (max-width: 1100px) {
+  #layout {
+    grid-template-columns: 1fr;
+    grid-template-rows: auto auto 1fr;
+    height: auto;
+  }
+  #timeline {
+    flex-direction: row; overflow-x: auto; border-right: none;
+    border-bottom: 1px solid var(--border);
+  }
+  .timeline-item { flex: none; }
+  #stage { border-right: none; border-bottom: 1px solid var(--border); }
+}
