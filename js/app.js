@@ -1,28 +1,34 @@
 /* app.js — 攻略頁主控(傳統 script,支援 file:// 雙擊開啟)
  * 注意:ROLE_TYPE 共用 arena.js 的全域宣告。 */
 
-/** 極簡 Markdown:**粗體**、`code`、換行、- 清單 */
+function escapeHtml(s) {
+  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+/** 行內格式:**粗體**、`code`、{{role:標籤}} 隊伍位置標示 */
+function inlineFormat(s) {
+  return escapeHtml(s)
+    .replace(/\{\{(tank|healer|dps):([^}]+)\}\}/g, '<span class="role-chip role-$1">$2</span>')
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`(.+?)`/g, '<code>$1</code>');
+}
+
+/** 極簡 Markdown:**粗體**、`code`、{{role:標籤}}、換行、- 清單 */
 function md(text) {
-  const esc = (s) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
-  const lines = esc(text.trim()).split('\n');
+  const lines = text.trim().split('\n');
   let html = '', inList = false;
   for (const line of lines) {
     const t = line.trim();
     if (t.startsWith('- ')) {
       if (!inList) { html += '<ul>'; inList = true; }
-      html += `<li>${inline(t.slice(2))}</li>`;
+      html += `<li>${inlineFormat(t.slice(2))}</li>`;
     } else {
       if (inList) { html += '</ul>'; inList = false; }
-      if (t) html += `<p>${inline(t)}</p>`;
+      if (t) html += `<p>${inlineFormat(t)}</p>`;
     }
   }
   if (inList) html += '</ul>';
   return html;
-  function inline(s) {
-    return s
-      .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
-      .replace(/`(.+?)`/g, '<code>$1</code>');
-  }
 }
 
 function loadRaidScript(raidId) {
@@ -67,14 +73,58 @@ async function main() {
   const arena = new Arena(document.getElementById('arena'), data.arena, data.roles);
   const player = new StepPlayer(document.getElementById('player'), arena);
 
+  // ── 頁籤(圖文攻略 / 速查表)───────────────
+  const pageTabsEl = document.getElementById('page-tabs');
+  const stageEl = document.getElementById('stage');
+  const contentEl = document.getElementById('content');
+  const timelineEl = document.getElementById('timeline');
+  const cheatsheetEl = document.getElementById('cheatsheet-view');
+  const pages = [
+    { id: 'guide', icon: '📖', label: '圖文攻略' },
+    ...(data.cheatsheet && data.cheatsheet.length ? [{ id: 'cheatsheet', icon: '⚡', label: '速查表' }] : []),
+  ];
+  let currentPage = 'guide';
+
+  for (const p of pages) {
+    const btn = document.createElement('button');
+    btn.className = 'page-tab';
+    btn.dataset.page = p.id;
+    btn.innerHTML = `<span class="page-tab-icon">${p.icon}</span><span>${p.label}</span>`;
+    btn.addEventListener('click', () => setPage(p.id));
+    pageTabsEl.appendChild(btn);
+  }
+
+  function setPage(id) {
+    currentPage = id;
+    [...pageTabsEl.children].forEach((b) => b.classList.toggle('active', b.dataset.page === id));
+    const isGuide = id === 'guide';
+    stageEl.style.display = isGuide ? '' : 'none';
+    contentEl.style.display = isGuide ? '' : 'none';
+    timelineEl.style.display = isGuide ? '' : 'none';
+    cheatsheetEl.hidden = isGuide;
+  }
+
+  // ── 速查表 ──────────────────────────────
+  if (data.cheatsheet && data.cheatsheet.length) {
+    const grid = document.getElementById('cheat-grid');
+    for (const card of data.cheatsheet) {
+      const el = document.createElement('div');
+      el.className = 'cheat-card';
+      el.style.setProperty('--tag-color', `var(--${card.color || 'accent'})`);
+      const items = (card.points || []).map((p) => `<li>${inlineFormat(p)}</li>`).join('');
+      el.innerHTML = `<h3><span class="cheat-tag">${card.tag || ''}</span>${card.title}</h3><ul>${items}</ul>`;
+      grid.appendChild(el);
+    }
+  }
+
   // ── 時間軸 ──────────────────────────────
-  const timeline = document.getElementById('timeline');
+  const timeline = timelineEl;
   let currentSection = null;
   data.sections.forEach((sec, i) => {
     const item = document.createElement('button');
     item.className = 'timeline-item';
     item.innerHTML = `<span class="timeline-num">${i + 1}</span><span>${sec.title}</span>`;
-    item.addEventListener('click', () => showSection(i));
+    item.addEventListener('click', () => { setPage('guide'); showSection(i); });
     timeline.appendChild(item);
   });
 
@@ -131,6 +181,7 @@ async function main() {
     if (player.steps.length) player.go(player.index, true);
   }
 
+  setPage('guide');
   showSection(0);
   syncRole();
 }

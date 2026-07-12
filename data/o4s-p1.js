@@ -12,6 +12,73 @@ window.RAID_DATA['o4s-p1'] = {
     ]
   },
   "roles": ["MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4"],
+  "cheatsheet": [
+    {
+      "id": "ice2", "title": "二連冰", "tag": "冰", "color": "ice",
+      "points": [
+        "隨機 5 名非 {{tank:MT}} 玩家腳下黃圈,共兩輪",
+        "{{tank:MT}} 身上不會有圈",
+        "其餘人在 BOSS 背後集合放第一輪,再一起橫移躲第二輪"
+      ]
+    },
+    {
+      "id": "iceEmp", "title": "強化冰封", "tag": "冰", "color": "ice",
+      "points": [
+        "全體攻擊,讀條結束瞬間靜止的人被凍結 3 秒",
+        "口訣:持續移動,絕不能停",
+        "與二連冰不同,這次是躲不掉的全體技,唯一應對是保持腳步"
+      ]
+    },
+    {
+      "id": "thunder2", "title": "二連雷(死刑)", "tag": "雷", "color": "thunder",
+      "points": [
+        "連續兩次對 {{tank:MT}} 小範圍雷傷 + 雷弱 debuff",
+        "吃第一下再吃第二下必死",
+        "{{tank:MT}} 開無敵硬吃,或 {{tank:ST}} 讀條時挑釁換 {{tank:T}}",
+        "兩位 {{tank:T}} 不可站一起,其他人遠離 5 米以上"
+      ]
+    },
+    {
+      "id": "thunderEmp", "title": "強化暴雷", "tag": "雷", "color": "thunder",
+      "points": [
+        "以 BOSS 為中心半徑 11 米大圓 AOE",
+        "非 {{tank:T}} 碰到即秒殺,倖存也麻痺 30 秒",
+        "口訣:立刻遠離 BOSS"
+      ]
+    },
+    {
+      "id": "fire2", "title": "二連火", "tag": "火", "color": "fire",
+      "points": [
+        "第一輪炸 4 名 {{dps:DPS}},第二輪炸 {{tank:T}} 與 {{healer:奶}}",
+        "依約定宏站位提前分散",
+        "炸完全員最快速度回中間集合"
+      ]
+    },
+    {
+      "id": "fireEmp", "title": "強化爆炎", "tag": "火", "color": "fire",
+      "points": [
+        "全體攻擊 + 2 秒熱病 debuff",
+        "熱病期間做任何動作 = 秒殺級傷害",
+        "口訣:火風停息前完全靜止"
+      ]
+    },
+    {
+      "id": "whitehole", "title": "白洞", "tag": "判血", "color": "accent",
+      "points": [
+        "100% 血:無傷;50~99%:懲罰 debuff;≤50%:200% 傷害等同秒殺",
+        "讀條時全隊務必回到 100% 血量",
+        "{{healer:H1}}、{{healer:H2}} 提前預讀奶量"
+      ]
+    },
+    {
+      "id": "vacuum", "title": "真空波", "tag": "擊退", "color": "void",
+      "points": [
+        "全體攻擊 + 超遠距離擊退,可能被吹下懸崖",
+        "強化技結束後全員立刻貼近 BOSS 再吃擊退",
+        "防擊退技能(沉穩詠唱等)此時開啟最有效,常接在強化冰火雷之後"
+      ]
+    }
+  ],
   "sections": [
     {
       "id": "intro",

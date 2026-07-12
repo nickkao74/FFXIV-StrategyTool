@@ -13,7 +13,10 @@
   <div id="role-bar" title="選擇你的職位,全程高亮"></div>
 </header>
 <div id="layout">
-  <nav id="timeline"></nav>
+  <aside id="sidebar">
+    <div id="page-tabs"></div>
+    <nav id="timeline"></nav>
+  </aside>
   <section id="stage">
     <div id="arena"></div>
     <div id="player"></div>
@@ -23,9 +26,14 @@
     <div id="role-notes"></div>
     <div id="section-body"></div>
   </main>
+  <section id="cheatsheet-view" hidden>
+    <h2>常見機制速查表</h2>
+    <p class="cheat-subtitle">戰前複習用,點選左上角頁籤切換回圖文攻略。</p>
+    <div id="cheat-grid"></div>
+  </section>
 </div>
 <script src="js/arena.js?v=3"></script>
 <script src="js/player.js?v=1"></script>
-<script src="js/app.js?v=1"></script>
+<script src="js/app.js?v=3"></script>
 </body>
 </html>
