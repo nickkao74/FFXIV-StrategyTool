@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FFXIV 戰術白板</title>
+<link rel="stylesheet" href="css/board.css">
+</head>
+<body>
+
+<div id="gate-overlay" class="gate-overlay">
+  <div class="gate-box">
+    <h1>FFXIV 戰術白板</h1>
+    <p>請輸入存取密碼</p>
+    <input id="gate-input" type="password" autocomplete="off" placeholder="密碼">
+    <button id="gate-submit">進入</button>
+    <p id="gate-error" class="gate-error"></p>
+  </div>
+</div>
+
+<div id="board-app" hidden>
+  <header class="board-header">
+    <a class="home-link" href="index.html">← 返回首頁</a>
+    <h1>戰術白板</h1>
+    <div class="board-toolbar">
+      <label class="toolbar-item">
+        場地
+        <select id="arena-select"></select>
+      </label>
+      <div id="phase-tabs" class="phase-tabs"></div>
+      <button id="reset-tokens-btn" class="toolbar-btn">↺ 重置站位</button>
+    </div>
+  </header>
+  <div class="board-body">
+    <aside id="tool-bar" class="tool-bar"></aside>
+    <main class="board-main">
+      <div id="board-canvas" class="board-canvas-wrap"></div>
+    </main>
+    <aside class="side-panel">
+      <div id="property-panel" class="property-panel"></div>
+      <div id="object-list" class="object-list"></div>
+    </aside>
+  </div>
+  <footer class="timeline-bar">
+    <div class="timeline-row">
+      <button id="timeline-play-btn" class="toolbar-btn timeline-play">▶ 播放</button>
+      <button id="timeline-prev-btn" class="toolbar-btn" title="上一格(← 鍵)">◀ 上一格</button>
+      <div id="timeline-frames" class="timeline-frames"></div>
+      <button id="timeline-next-btn" class="toolbar-btn" title="下一格(→ 鍵)">下一格 ▶</button>
+    </div>
+    <div class="timeline-row">
+      <span class="timeline-label">目前影格:</span>
+      <button id="timeline-dup-btn" class="toolbar-btn" title="複製目前影格">⧉ 複製</button>
+      <button id="timeline-del-btn" class="toolbar-btn danger" title="刪除目前影格">🗑 刪除</button>
+      <button id="timeline-moveleft-btn" class="toolbar-btn" title="往前移">⇤ 前移</button>
+      <button id="timeline-moveright-btn" class="toolbar-btn" title="往後移">⇥ 後移</button>
+      <span class="timeline-sep"></span>
+      <label class="toolbar-item">
+        影格間隔
+        <input id="timeline-holdsec" type="number" min="0.5" step="0.5" value="1.5">秒
+      </label>
+      <button id="timeline-add-btn" class="toolbar-btn">➕ 新增影格</button>
+    </div>
+  </footer>
+</div>
+
+<script src="js/board/gate.js"></script>
+<script src="js/board/state.js"></script>
+<script src="js/board/objects.js"></script>
+<script src="js/board/canvas.js"></script>
+<script src="data/arenas/index.js"></script>
+<script src="js/board/app.js"></script>
+<script>
+  boardGateInit(() => { boardMain().catch(e => { console.error(e); alert('載入失敗:' + e.message); }); });
+</script>
+</body>
+</html>
