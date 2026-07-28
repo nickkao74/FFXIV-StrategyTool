@@ -1,6 +1,9 @@
 /* canvas.js — 白板 SVG 畫布:場地繪製 + 兵棋/物件拖曳 + 放置工具 */
 const BOARD_SVG_NS = 'http://www.w3.org/2000/svg';
 const TOKEN_TRANSITION = 'transform .5s ease-in-out, opacity .3s';
+const BOARD_ZOOM_STEP = 1.15;   // 每一格滾輪的縮放倍率
+const BOARD_MIN_ZOOM = 0.5;     // 最多縮到場地的一半大
+const BOARD_MAX_ZOOM = 5;       // 最多放大 5 倍
 
 function bel(name, attrs = {}, parent = null) {
   const node = document.createElementNS(BOARD_SVG_NS, name);
@@ -18,6 +21,9 @@ class BoardCanvas {
     this.tool = 'select';
     this.pending = null;  // 兩段式工具(直線箭頭/連線)暫存的第一個點/id
     this.onToolComplete = null; // 放置完成後回呼(切回 select)
+    this.baseView = { x: -118, y: -118, w: 236, h: 236 }; // 場地的原始檢視範圍(setPhase 時算出)
+    this.view = { ...this.baseView };                     // 目前檢視範圍(縮放/平移後)
+    this.panning = null;
 
     this._buildStatic();
     this.state.onChange(() => this.render());
@@ -47,6 +53,9 @@ class BoardCanvas {
     svg.addEventListener('pointermove', (e) => this._onPointerMove(e));
     svg.addEventListener('pointerup', () => this._endDrag());
     svg.addEventListener('pointerleave', () => this._endDrag());
+    // passive:false 才能 preventDefault,否則滾輪會連帶捲動整個頁面
+    svg.addEventListener('wheel', (e) => this._onWheel(e), { passive: false });
+    svg.addEventListener('contextmenu', (e) => e.preventDefault());
   }
 
   setTool(toolId) {
@@ -59,15 +68,14 @@ class BoardCanvas {
     const shape = phaseDef.shape || 'circle';
     const size = phaseDef.size || { r: 100 };
     const pad = 18;
-    let vb;
     if (shape === 'rect') {
       const w = size.w || 200, h = size.h || 200;
-      vb = `${-w / 2 - pad} ${-h / 2 - pad} ${w + pad * 2} ${h + pad * 2}`;
+      this.baseView = { x: -w / 2 - pad, y: -h / 2 - pad, w: w + pad * 2, h: h + pad * 2 };
     } else {
       const r = size.r || 100;
-      vb = `${-r - pad} ${-r - pad} ${(r + pad) * 2} ${(r + pad) * 2}`;
+      this.baseView = { x: -r - pad, y: -r - pad, w: (r + pad) * 2, h: (r + pad) * 2 };
     }
-    this.svg.setAttribute('viewBox', vb);
+    this.resetView();
 
     this.floorLayer.innerHTML = '';
     if (shape === 'rect') {
@@ -160,6 +168,52 @@ class BoardCanvas {
     }
   }
 
+  // ── 檢視:縮放 / 平移 ──────────────────
+  _applyView() {
+    const v = this.view;
+    this.svg.setAttribute('viewBox', `${v.x} ${v.y} ${v.w} ${v.h}`);
+  }
+
+  /** 回到剛好框住整個場地的檢視 */
+  resetView() {
+    this.view = { ...this.baseView };
+    this._applyView();
+  }
+
+  isZoomed() {
+    return Math.abs(this.view.w - this.baseView.w) > 0.01
+      || Math.abs(this.view.x - this.baseView.x) > 0.01
+      || Math.abs(this.view.y - this.baseView.y) > 0.01;
+  }
+
+  /** 滾輪縮放:以游標所指的場地座標為固定點,放大縮小時該點不會跑掉 */
+  _onWheel(e) {
+    e.preventDefault();
+    const anchor = this._clientToBoard(e.clientX, e.clientY);
+    const minW = this.baseView.w / BOARD_MAX_ZOOM;
+    const maxW = this.baseView.w / BOARD_MIN_ZOOM;
+    const wanted = this.view.w * (e.deltaY < 0 ? 1 / BOARD_ZOOM_STEP : BOARD_ZOOM_STEP);
+    const nextW = Math.min(maxW, Math.max(minW, wanted));
+    const k = nextW / this.view.w;
+    if (k === 1) return;   // 已在縮放上下限
+    this.view = {
+      x: anchor.x - (anchor.x - this.view.x) * k,
+      y: anchor.y - (anchor.y - this.view.y) * k,
+      w: nextW,
+      h: this.view.h * k,
+    };
+    this._applyView();
+  }
+
+  /** 中鍵或右鍵拖曳平移(左鍵留給選取與放置工具) */
+  _startPan(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.panning = { clientX: e.clientX, clientY: e.clientY, x: this.view.x, y: this.view.y };
+    this.svg.setPointerCapture(e.pointerId);
+    this.svg.style.cursor = 'grabbing';
+  }
+
   // ── 座標轉換 ──────────────────────────
   _clientToBoard(clientX, clientY) {
     const pt = this.svg.createSVGPoint();
@@ -171,6 +225,8 @@ class BoardCanvas {
 
   // ── 事件:點在兵棋/物件上 ────────────────
   _onEntityPointerDown(e, kind, id) {
+    if (e.button === 1 || e.button === 2) { this._startPan(e); return; }
+    if (e.button !== 0) return;
     e.preventDefault();
     e.stopPropagation();
     if (this.tool === 'select') {
@@ -199,6 +255,8 @@ class BoardCanvas {
 
   // ── 事件:點在空白畫布 ──────────────────
   _onSvgPointerDown(e) {
+    if (e.button === 1 || e.button === 2) { this._startPan(e); return; }
+    if (e.button !== 0) return;
     if (e.target !== this.svg && e.target.closest('[data-entity]')) return; // 已由實體處理
     const p = this._clientToBoard(e.clientX, e.clientY);
 
@@ -276,6 +334,16 @@ class BoardCanvas {
 
   // ── 拖曳 ──────────────────────────────
   _onPointerMove(e) {
+    if (this.panning) {
+      // 螢幕像素位移換算成場地座標位移(取決於目前縮放倍率)
+      const width = this.svg.getBoundingClientRect().width;
+      if (!width) return;   // 畫布尚未佈局完成,別讓 viewBox 變成 NaN
+      const scale = this.view.w / width;
+      this.view.x = this.panning.x - (e.clientX - this.panning.clientX) * scale;
+      this.view.y = this.panning.y - (e.clientY - this.panning.clientY) * scale;
+      this._applyView();
+      return;
+    }
     if (!this.dragging) return;
     const p = this._clientToBoard(e.clientX, e.clientY);
     const x = p.x + this.dragging.offsetX, y = p.y + this.dragging.offsetY;
@@ -284,6 +352,10 @@ class BoardCanvas {
   }
 
   _endDrag() {
+    if (this.panning) {
+      this.panning = null;
+      this.svg.style.cursor = '';
+    }
     if (this.dragging && this.dragging.type === 'token') {
       const node = this.tokenNodes.get(this.dragging.id);
       if (node) node.style.transition = TOKEN_TRANSITION; // 拖曳結束恢復動畫過渡(供影格切換使用)

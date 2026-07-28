@@ -113,6 +113,20 @@ a { color: var(--accent); text-decoration: none; }
   text-transform: uppercase; letter-spacing: 0.04em;
 }
 .tool-group-title:first-child { margin-top: 0; }
+
+/* 復原 / 重做 / 重置檢視 */
+.tool-history-row {
+  display: flex; gap: 4px; margin-bottom: 10px;
+  padding-bottom: 10px; border-bottom: 1px solid var(--border);
+}
+.tool-icon-btn {
+  flex: 1; padding: 6px 0; border-radius: 8px; cursor: pointer;
+  background: var(--bg-panel2); border: 1px solid var(--border);
+  color: var(--text-dim); font-size: 15px; line-height: 1.1;
+}
+.tool-icon-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--text); }
+.tool-icon-btn:disabled { opacity: 0.3; cursor: default; }
+.tool-icon-btn.active { border-color: #e0895d; color: #ffcf9e; background: #3a2a2a; }
 .tool-group-row { display: flex; flex-direction: column; gap: 4px; }
 .tool-btn {
   display: flex; align-items: center; gap: 8px; text-align: left;

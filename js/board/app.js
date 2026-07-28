@@ -96,6 +96,7 @@ const OBJECT_GROUPS = [
 async function boardMain() {
   const state = new BoardState();
   const canvas = new BoardCanvas(document.getElementById('board-canvas'), state);
+  const history = new BoardHistory(state);
   canvas.onToolComplete = () => syncToolButtons();
 
   const arenaSelect = document.getElementById('arena-select');
@@ -140,6 +141,7 @@ async function boardMain() {
     state.loadPhase(currentArenaDef, phaseDef, { keepTokens });
     [...phaseTabs.children].forEach((b) => b.classList.toggle('active', b.dataset.phaseId === phaseId));
     followPhaseInSpecialTools(phaseDef);
+    history.reset();   // 復原歷史不跨階段
   }
 
   /** 套用一份序列化盤面(自動保存、具名存檔、匯入 JSON 三處共用) */
@@ -153,6 +155,7 @@ async function boardMain() {
     [...phaseTabs.children].forEach((b) => b.classList.toggle('active', b.dataset.phaseId === phase.id));
     followPhaseInSpecialTools(phase);
     state.loadFromJSON(data, def, phase);
+    history.reset();   // 載入整份盤面等於全新起點
   }
 
   /** 導入攻略前把白板切到該攻略對應的場地/階段;找不到對照就沿用目前場地 */
@@ -195,6 +198,36 @@ async function boardMain() {
     });
     return btn;
   }
+
+  // ── 復原 / 重做 / 重置檢視(工具列最上方)──
+  const historyRow = document.createElement('div');
+  historyRow.className = 'tool-history-row';
+  const undoBtn = document.createElement('button');
+  undoBtn.className = 'tool-icon-btn';
+  undoBtn.innerHTML = '↶';
+  undoBtn.title = '復原(Ctrl+Z)';
+  undoBtn.addEventListener('click', () => history.undo());
+  const redoBtn = document.createElement('button');
+  redoBtn.className = 'tool-icon-btn';
+  redoBtn.innerHTML = '↷';
+  redoBtn.title = '重做(Ctrl+Y / Ctrl+Shift+Z)';
+  redoBtn.addEventListener('click', () => history.redo());
+  const resetViewBtn = document.createElement('button');
+  resetViewBtn.className = 'tool-icon-btn';
+  resetViewBtn.innerHTML = '⤢';
+  resetViewBtn.title = '重置檢視(滾輪縮放、中鍵或右鍵拖曳平移)';
+  resetViewBtn.addEventListener('click', () => { canvas.resetView(); syncViewButton(); });
+  historyRow.append(undoBtn, redoBtn, resetViewBtn);
+  toolBar.appendChild(historyRow);
+
+  history.onUpdate = () => {
+    undoBtn.disabled = !history.canUndo();
+    redoBtn.disabled = !history.canRedo();
+  };
+  history.onUpdate();
+  function syncViewButton() { resetViewBtn.classList.toggle('active', canvas.isZoomed()); }
+  canvas.container.addEventListener('wheel', syncViewButton, { passive: true });
+  canvas.container.addEventListener('pointerup', syncViewButton);
 
   for (const group of TOOL_GROUPS) {
     if (group.title) {
@@ -547,11 +580,24 @@ async function boardMain() {
     return row;
   }
 
-  // ── 鍵盤:Delete 刪除選取物件 ─────────────
+  // ── 鍵盤 ──────────────────────────────
+  /** 焦點在輸入框時把按鍵讓給輸入框(文字自己的復原、退格等) */
+  function typingInField() {
+    const el = document.activeElement;
+    return !!el && ['INPUT', 'TEXTAREA', 'SELECT'].includes(el.tagName);
+  }
+
   document.addEventListener('keydown', (e) => {
     if (e.key !== 'Delete' && e.key !== 'Backspace') return;
-    if (document.activeElement && ['INPUT', 'TEXTAREA', 'SELECT'].includes(document.activeElement.tagName)) return;
+    if (typingInField()) return;
     if (state.selectedKind === 'object') state.removeObject(state.selectedId);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (!(e.ctrlKey || e.metaKey) || typingInField()) return;
+    const key = e.key.toLowerCase();
+    if (key === 'z' && !e.shiftKey) { e.preventDefault(); history.undo(); }
+    else if (key === 'y' || (key === 'z' && e.shiftKey)) { e.preventDefault(); history.redo(); }
   });
 
   // ── 時間軸 ────────────────────────────
