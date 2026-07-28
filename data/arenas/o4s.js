@@ -7,6 +7,7 @@ window.ARENA_DATA['o4s'] = {
     {
       id: 'p1',
       name: 'P1 艾克斯迪司',
+      guideRaidId: 'o4s-p1',   // 對應 data/raids.js 的攻略,供白板「導入攻略」自動切換場地
       shape: 'circle',
       size: { r: 100 },
       waymarks: [

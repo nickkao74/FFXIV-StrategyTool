@@ -6,17 +6,20 @@
   --border: #2e3a48;
   --text: #dbe4ee;
   --text-dim: #8b99a8;
-  --accent: #4fc3f7;
+  --accent: #4fc3f7;   /* 介面主色(非物件用色) */
   --tank: #4a90d9;
   --healer: #4caf7d;
   --dps: #e05d5d;
-  --fire: #ff7a45;
-  --ice: #ffd75e;
-  --thunder: #7fb6ff;
-  --void: #b06ce0;
+  /* 物件調色盤:一般顏色命名(舊的機制語意名 fire/ice/thunder/void/death/accent 已停用) */
+  --red: #ff3b3b;
+  --orange: #ff7a45;
+  --yellow: #ffd75e;
+  --green: #4caf7d;
+  --cyan: #4fc3f7;
+  --blue: #7fb6ff;
+  --purple: #b06ce0;
+  --magenta: #d24ce0;
   --white: #eeeeee;
-  --purple: #d24ce0;
-  --death: #ff3b3b;
 }
 
 * { box-sizing: border-box; }
@@ -27,6 +30,20 @@ html, body {
   font-family: "Microsoft JhengHei", "PingFang TC", "Noto Sans TC", sans-serif;
 }
 a { color: var(--accent); text-decoration: none; }
+
+/* ── 卷軸(配合深色主題)───────────────
+ * Firefox 用 scrollbar-*,Chromium/WebKit 用 ::-webkit-scrollbar。 */
+* { scrollbar-width: thin; scrollbar-color: #3d4d5f transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+/* 軌道透明,讓卷軸融進所在面板(側欄/工具列/彈窗背景色各不相同) */
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #3d4d5f; border-radius: 6px;
+  border: 2px solid transparent; background-clip: padding-box;  /* 內縮留白,滑塊看起來比軌道細 */
+}
+::-webkit-scrollbar-thumb:hover { background: #55697f; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:active { background: var(--accent); background-clip: padding-box; }
+::-webkit-scrollbar-corner { background: transparent; }
 
 /* ── 密碼門檻 ─────────────────────── */
 .gate-overlay {
@@ -213,32 +230,41 @@ a { color: var(--accent); text-decoration: none; }
 .bobj.selected { filter: drop-shadow(0 0 3px #fff) drop-shadow(0 0 6px var(--accent)); }
 
 .aoe { opacity: 0.55; stroke: rgba(0,0,0,.25); stroke-width: 1; }
-.aoe-fire { fill: var(--fire); }
-.aoe-ice { fill: var(--ice); }
-.aoe-thunder { fill: var(--thunder); }
-.aoe-void { fill: var(--void); }
-.aoe-white { fill: var(--white); }
+.aoe-red { fill: var(--red); }
+.aoe-orange { fill: var(--orange); }
+.aoe-yellow { fill: var(--yellow); }
+.aoe-green { fill: var(--green); }
+.aoe-cyan { fill: var(--cyan); }
+.aoe-blue { fill: var(--blue); }
 .aoe-purple { fill: var(--purple); }
-.aoe-accent { fill: var(--accent); }
-.aoe-death { fill: var(--death); }
+.aoe-magenta { fill: var(--magenta); }
+.aoe-white { fill: var(--white); }
 
 .ann-arrow, .ann-arc { fill: none; stroke-width: 2.6; }
 .ann-thin { stroke-width: 1.8; }
-.ann-ice { stroke: var(--ice); color: var(--ice); }
-.ann-fire { stroke: var(--fire); color: var(--fire); }
-.ann-thunder { stroke: var(--thunder); color: var(--thunder); }
-.ann-void { stroke: var(--void); color: var(--void); }
-.ann-white { stroke: var(--white); color: var(--white); }
+.ann-red { stroke: var(--red); color: var(--red); }
+.ann-orange { stroke: var(--orange); color: var(--orange); }
+.ann-yellow { stroke: var(--yellow); color: var(--yellow); }
+.ann-green { stroke: var(--green); color: var(--green); }
+.ann-cyan { stroke: var(--cyan); color: var(--cyan); }
+.ann-blue { stroke: var(--blue); color: var(--blue); }
 .ann-purple { stroke: var(--purple); color: var(--purple); }
-.ann-accent { stroke: var(--accent); color: var(--accent); }
-.ann-death { stroke: var(--death); color: var(--death); }
+.ann-magenta { stroke: var(--magenta); color: var(--magenta); }
+.ann-white { stroke: var(--white); color: var(--white); }
 
 .tether { stroke-width: 1.4; stroke-dasharray: 4 3; cursor: default; }
-.tether-purple { stroke: var(--purple); }
+.tether-red { stroke: var(--red); } .tether-orange { stroke: var(--orange); }
+.tether-yellow { stroke: var(--yellow); } .tether-green { stroke: var(--green); }
+.tether-cyan { stroke: var(--cyan); } .tether-blue { stroke: var(--blue); }
+.tether-purple { stroke: var(--purple); } .tether-magenta { stroke: var(--magenta); }
 .tether-white { stroke: var(--white); }
-.tether-ice { stroke: var(--ice); } .tether-fire { stroke: var(--fire); }
-.tether-thunder { stroke: var(--thunder); } .tether-void { stroke: var(--void); }
-.tether-accent { stroke: var(--accent); } .tether-death { stroke: var(--death); }
+
+/* 副本專屬物件 */
+.blackhole-glow { fill: rgba(160,90,220,.28); }
+.blackhole-core { fill: #140f1e; stroke: #a05adc; stroke-width: 1.4; }
+.blackhole-eye { fill: rgba(200,140,255,.55); }
+.tentacle-body { fill: #4a7c3f; stroke: #d8f0c8; stroke-width: 1.2; }
+.tentacle-label { font-size: 6px; font-weight: 700; fill: #fff; text-anchor: middle; dominant-baseline: central; }
 
 .marker-share-outer { fill: none; stroke: #ffb347; stroke-width: 1.6; stroke-dasharray: 4 2; }
 .marker-share-inner { fill: rgba(255,179,71,.3); stroke: #ffb347; stroke-width: 1.2; }
@@ -248,7 +274,8 @@ a { color: var(--accent); text-decoration: none; }
 .marker-forbid-circle { fill: rgba(255,59,59,.18); stroke: #ff3b3b; stroke-width: 2; }
 .marker-forbid-slash { stroke: #ff3b3b; stroke-width: 2; }
 .marker-text-bg { fill: rgba(16,20,24,.85); stroke: var(--border); stroke-width: 1; rx: 4; }
-.marker-text-label { font-size: 8px; font-weight: 700; fill: #fff; text-anchor: middle; dominant-baseline: central; }
+.marker-text-label { font-size: 8px; font-weight: 700; fill: currentColor; text-anchor: middle; dominant-baseline: central; }
+.marker-target-corner { fill: none; stroke: currentColor; stroke-width: 2; }
 
 /* ── 時間軸列 ─────────────────────── */
 .timeline-bar {
@@ -280,3 +307,65 @@ a { color: var(--accent); text-decoration: none; }
 
 /* 同步模式標示(物件清單) */
 .list-icon-btn.sync-on { color: var(--accent); opacity: 1; }
+
+/* ── 影格說明(右側欄最上方)──────────── */
+.frame-note-panel { padding: 14px 14px 12px; border-bottom: 1px solid var(--border); }
+.frame-note-panel h3 { margin: 0 0 8px; font-size: 12.5px; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.04em; font-weight: 700; }
+#frame-note-input {
+  width: 100%; min-height: 84px; resize: vertical; padding: 8px 9px; border-radius: 6px;
+  background: var(--bg-panel2); border: 1px solid var(--border); color: var(--text);
+  font-family: inherit; font-size: 12.5px; line-height: 1.55;
+}
+#frame-note-input:disabled { opacity: 0.4; }
+
+/* ── 副本專屬工具區段 ───────────────── */
+#special-raid-select {
+  width: 100%; margin-bottom: 6px; padding: 4px 6px; border-radius: 6px;
+  background: var(--bg-panel2); border: 1px solid var(--border); color: var(--text); font-size: 12px;
+}
+.tool-special-empty { font-size: 11.5px; color: var(--text-dim); padding: 2px 2px 0; line-height: 1.5; }
+
+/* ── 導入攻略彈窗 ──────────────────── */
+.modal-overlay {
+  position: fixed; inset: 0; z-index: 80; display: flex; align-items: center; justify-content: center;
+  background: rgba(6,9,12,.72); padding: 24px;
+}
+.modal-box {
+  background: var(--bg-panel); border: 1px solid var(--border); border-radius: 14px;
+  width: 100%; max-width: 560px; max-height: 100%; display: flex; flex-direction: column;
+}
+.modal-header {
+  display: flex; align-items: center; gap: 10px; padding: 14px 18px; border-bottom: 1px solid var(--border);
+}
+.modal-header h2 { margin: 0; font-size: 15px; flex: 1; }
+.modal-close {
+  background: none; border: none; color: var(--text-dim); font-size: 18px; cursor: pointer; line-height: 1;
+}
+.modal-close:hover { color: var(--text); }
+.modal-body { padding: 16px 18px; overflow-y: auto; flex: 1; }
+.modal-footer {
+  display: flex; align-items: center; gap: 8px; padding: 12px 18px; border-top: 1px solid var(--border);
+}
+.modal-footer .spacer { flex: 1; }
+.modal-row { display: flex; align-items: center; gap: 10px; margin-bottom: 12px; font-size: 13px; color: var(--text-dim); }
+.modal-row > span { flex: none; width: 44px; }
+.modal-row select {
+  flex: 1; padding: 6px 8px; border-radius: 6px;
+  background: var(--bg-panel2); border: 1px solid var(--border); color: var(--text); font-size: 13px;
+}
+.step-list { border: 1px solid var(--border); border-radius: 8px; padding: 6px; max-height: 300px; overflow-y: auto; }
+.step-group-title {
+  font-size: 11.5px; font-weight: 700; color: var(--text-dim); margin: 8px 4px 4px;
+  text-transform: uppercase; letter-spacing: 0.04em;
+}
+.step-group-title:first-child { margin-top: 2px; }
+.step-item {
+  display: flex; align-items: flex-start; gap: 8px; padding: 6px 7px; border-radius: 6px;
+  font-size: 12.5px; line-height: 1.5; cursor: pointer; color: var(--text);
+}
+.step-item:hover { background: var(--bg-panel2); }
+.step-item input { margin: 3px 0 0; flex: none; accent-color: var(--accent); }
+.modal-hint { font-size: 12px; color: var(--text-dim); margin: 10px 0 0; line-height: 1.6; }
+.toolbar-btn.primary { background: var(--accent); border-color: var(--accent); color: #08202c; }
+.toolbar-btn.primary:hover { color: #08202c; }

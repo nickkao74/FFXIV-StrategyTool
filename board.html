@@ -29,6 +29,7 @@
       </label>
       <div id="phase-tabs" class="phase-tabs"></div>
       <button id="reset-tokens-btn" class="toolbar-btn">↺ 重置站位</button>
+      <button id="import-guide-btn" class="toolbar-btn">📥 導入攻略</button>
     </div>
   </header>
   <div class="board-body">
@@ -37,6 +38,10 @@
       <div id="board-canvas" class="board-canvas-wrap"></div>
     </main>
     <aside class="side-panel">
+      <div class="frame-note-panel">
+        <h3>📝 影格說明</h3>
+        <textarea id="frame-note-input" placeholder="尚無影格" disabled></textarea>
+      </div>
       <div id="property-panel" class="property-panel"></div>
       <div id="object-list" class="object-list"></div>
     </aside>
@@ -64,11 +69,45 @@
   </footer>
 </div>
 
+<div id="import-modal" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>📥 從攻略導入盤面</h2>
+      <button id="import-close" class="modal-close" title="關閉">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <span>副本</span>
+        <select id="import-raid-select"></select>
+      </div>
+      <div class="modal-row">
+        <span>階段</span>
+        <select id="import-section-select"></select>
+      </div>
+      <label class="step-item" style="margin-bottom:6px">
+        <input type="checkbox" id="import-select-all">
+        <span><b>全選</b></span>
+      </label>
+      <div id="import-step-list" class="step-list"></div>
+      <p class="modal-hint">導入會把攻略步驟轉成白板影格(含兵棋站位、地毯、箭頭、連線、標註與說明文字),導入後皆可自由編輯。</p>
+    </div>
+    <div class="modal-footer">
+      <span id="import-count" class="modal-hint" style="margin:0"></span>
+      <span class="spacer"></span>
+      <button id="import-overwrite-btn" class="toolbar-btn primary">導入並覆蓋</button>
+      <button id="import-append-btn" class="toolbar-btn">導入並新增影格</button>
+    </div>
+  </div>
+</div>
+
 <script src="js/board/gate.js"></script>
 <script src="js/board/state.js"></script>
 <script src="js/board/objects.js"></script>
 <script src="js/board/canvas.js"></script>
 <script src="data/arenas/index.js"></script>
+<script src="data/raids.js"></script>
+<script src="data/board-special-objects.js"></script>
+<script src="js/board/import.js"></script>
 <script src="js/board/app.js"></script>
 <script>
   boardGateInit(() => { boardMain().catch(e => { console.error(e); alert('載入失敗:' + e.message); }); });

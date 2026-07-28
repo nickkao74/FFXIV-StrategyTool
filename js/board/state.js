@@ -25,7 +25,7 @@ class BoardState {
     this.waymarksLocked = false;
     this.selectedKind = null; // 'token' | 'object' | null
     this.selectedId = null;
-    this.timeline = { frames: [], currentIndex: -1, holdSec: 1.5 }; // frames: [{snapshot:{[id]:fields}}]; holdSec 為全域統一間隔
+    this.timeline = { frames: [], currentIndex: -1, holdSec: 1.5 }; // frames: [{snapshot:{[id]:fields}, note}]; holdSec 為全域統一間隔
     this.listeners = [];
   }
 
@@ -59,7 +59,8 @@ class BoardState {
       this.tokens.push({ id: role, kind: 'player', label: role, x: pos.x, y: pos.y, locked: false, visible: true, sync: false });
     }
     const bossPos = def.BOSS || { x: 0, y: 0 };
-    this.tokens.push({ id: 'BOSS', kind: 'boss', label: 'BOSS', x: bossPos.x, y: bossPos.y, locked: false, visible: true, sync: false });
+    // facing:角度(0=面向 A/正上方,順時針);null 表示不顯示朝向箭頭
+    this.tokens.push({ id: 'BOSS', kind: 'boss', label: 'BOSS', x: bossPos.x, y: bossPos.y, facing: 0, locked: false, visible: true, sync: false });
     this._addWaymarkTokens();
     if (!silent) this.emit();
   }
@@ -82,6 +83,15 @@ class BoardState {
     const t = this.getToken(id);
     if (!t || t.locked) return;
     t.x = x; t.y = y;
+    this._syncCurrentFrame(t);
+    this.emit();
+  }
+
+  /** 更新兵棋的非位置欄位(目前用於 BOSS 面向) */
+  updateToken(id, patch) {
+    const t = this.getToken(id);
+    if (!t) return;
+    Object.assign(t, patch);
     this._syncCurrentFrame(t);
     this.emit();
   }
@@ -237,7 +247,7 @@ class BoardState {
     const snapshot = {};
     for (const t of this.tokens) if (!t.sync) snapshot[t.id] = this._captureFields(t);
     for (const o of this.objects) if (!o.sync) snapshot[o.id] = this._captureFields(o);
-    const frame = { snapshot };
+    const frame = { snapshot, note: '' };
     const at = this.timeline.currentIndex + 1;
     this.timeline.frames.splice(at, 0, frame);
     this.timeline.currentIndex = at;
@@ -247,7 +257,7 @@ class BoardState {
   duplicateFrame(index) {
     const src = this.timeline.frames[index];
     if (!src) return;
-    const copy = { snapshot: JSON.parse(JSON.stringify(src.snapshot)) };
+    const copy = { snapshot: JSON.parse(JSON.stringify(src.snapshot)), note: src.note || '' };
     this.timeline.frames.splice(index + 1, 0, copy);
     this.timeline.currentIndex = index + 1;
     this.emit();
@@ -267,6 +277,14 @@ class BoardState {
     const [f] = frames.splice(fromIndex, 1);
     frames.splice(toIndex, 0, f);
     this.timeline.currentIndex = toIndex;
+    this.emit();
+  }
+
+  /** 目前影格的說明文字(導入攻略時會帶入該步驟的 caption) */
+  setFrameNote(text) {
+    const frame = this.timeline.frames[this.timeline.currentIndex];
+    if (!frame) return;
+    frame.note = text;
     this.emit();
   }
 

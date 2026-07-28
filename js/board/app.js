@@ -36,8 +36,8 @@ const TOOL_GROUPS = [
 ];
 
 const COLOR_OPTIONS = [
-  ['ice', '冰'], ['thunder', '雷'], ['fire', '火'], ['void', '暗'],
-  ['white', '白'], ['purple', '紫'], ['accent', '青'], ['death', '紅'],
+  ['red', '紅'], ['orange', '橘'], ['yellow', '黃'], ['green', '綠'], ['cyan', '青'],
+  ['blue', '藍'], ['purple', '紫'], ['magenta', '桃'], ['white', '白'],
 ];
 
 const PROPERTY_SCHEMAS = {
@@ -50,6 +50,8 @@ const PROPERTY_SCHEMAS = {
   'arrow-arc': [{ key: 'radius', label: '半徑', type: 'number', min: 2, max: 150 }, { key: 'start', label: '起始角', type: 'number', min: 0, max: 359 }, { key: 'end', label: '結束角', type: 'number', min: 0, max: 359 }, { key: 'dir', label: '方向', type: 'select', options: [['cw', '順時針'], ['ccw', '逆時針']] }, { key: 'color', label: '顏色', type: 'color' }],
   'tether': [{ key: 'color', label: '顏色', type: 'color' }],
   'marker': [], // 依 markerType 動態附加(見 renderPropertyPanel)
+  'blackhole': [{ key: 'r', label: '半徑', type: 'number', min: 2, max: 60 }],
+  'tentacle': [{ key: 'label', label: '編號', type: 'text' }],
 };
 
 function loadArenaScript(arenaId) {
@@ -73,10 +75,13 @@ const TOKEN_LABELS = { player: '玩家', boss: 'BOSS', waymark: '場地標記' }
 const OBJECT_LABELS = {
   'aoe-circle': '圓形地毯', 'aoe-donut': '環形地毯', 'aoe-rect': '長方地毯', 'aoe-cone': '扇形地毯',
   'knockback': '擊退', 'arrow-line': '直線箭頭', 'arrow-arc': '弧形箭頭', 'tether': '連線',
-  'marker': { share: '分攤標記', triangle: '三角標記', death: '死刑標記', forbid: '禁止標記', text: '文字標記' },
+  'blackhole': '黑洞', 'tentacle': '觸手',
+  'marker': { share: '分攤標記', triangle: '三角標記', target: '目標標記', death: '死刑標記', forbid: '禁止標記', text: '文字標記' },
 };
 function objectLabel(o) {
-  return o.kind === 'marker' ? OBJECT_LABELS.marker[o.markerType] || '標註' : OBJECT_LABELS[o.kind] || o.kind;
+  if (o.kind === 'marker') return OBJECT_LABELS.marker[o.markerType] || '標註';
+  if (o.kind === 'tentacle') return `觸手 ${o.label || ''}`.trim();
+  return OBJECT_LABELS[o.kind] || o.kind;
 }
 
 /** 物件子分組(依種類自動分類,各分組可整組收合/鎖定)*/
@@ -85,6 +90,7 @@ const OBJECT_GROUPS = [
   { id: 'arrow', title: '箭頭', match: (o) => ['arrow-line', 'arrow-arc'].includes(o.kind) },
   { id: 'tether', title: '連線', match: (o) => o.kind === 'tether' },
   { id: 'marker', title: '標註', match: (o) => o.kind === 'marker' },
+  { id: 'special', title: '副本專屬', match: (o) => ['blackhole', 'tentacle'].includes(o.kind) },
 ];
 
 async function boardMain() {
@@ -133,6 +139,22 @@ async function boardMain() {
     canvas.setPhase(currentArenaDef, phaseDef);
     state.loadPhase(currentArenaDef, phaseDef, { keepTokens });
     [...phaseTabs.children].forEach((b) => b.classList.toggle('active', b.dataset.phaseId === phaseId));
+    followPhaseInSpecialTools(phaseDef);
+  }
+
+  /** 導入攻略前把白板切到該攻略對應的場地/階段;找不到對照就沿用目前場地 */
+  async function ensureArenaForRaid(raidId) {
+    for (const a of index) {
+      const def = await loadArenaScript(a.id);
+      const phase = def.phases.find((p) => p.guideRaidId === raidId);
+      if (!phase) continue;
+      if (state.arenaId === def.id && state.phaseId === phase.id) return;
+      currentArenaDef = def;
+      arenaSelect.value = def.id;
+      renderPhaseTabs();
+      setPhase(phase.id, { keepTokens: false });
+      return;
+    }
   }
 
   arenaSelect.addEventListener('change', () => setArena(arenaSelect.value));
@@ -147,6 +169,20 @@ async function boardMain() {
       b.classList.toggle('active', b.dataset.tool === canvas.tool));
   }
 
+  function makeToolButton(t) {
+    const btn = document.createElement('button');
+    btn.className = 'tool-btn';
+    btn.dataset.tool = t.id;
+    btn.title = t.label;
+    btn.innerHTML = `<span class="tool-icon">${t.icon}</span><span class="tool-label">${t.label}</span>`;
+    btn.addEventListener('click', () => {
+      if (t.action) { runPresetAction(t.id); return; }
+      canvas.setTool(t.id === canvas.tool ? 'select' : t.id);
+      syncToolButtons();
+    });
+    return btn;
+  }
+
   for (const group of TOOL_GROUPS) {
     if (group.title) {
       const label = document.createElement('div');
@@ -156,27 +192,58 @@ async function boardMain() {
     }
     const row = document.createElement('div');
     row.className = 'tool-group-row';
-    for (const t of group.tools) {
-      const btn = document.createElement('button');
-      btn.className = 'tool-btn';
-      btn.dataset.tool = t.id;
-      btn.title = t.label;
-      btn.innerHTML = `<span class="tool-icon">${t.icon}</span><span class="tool-label">${t.label}</span>`;
-      btn.addEventListener('click', () => {
-        if (t.action) { runPresetAction(t.id); return; }
-        canvas.setTool(t.id === canvas.tool ? 'select' : t.id);
-        syncToolButtons();
-      });
-      row.appendChild(btn);
-    }
+    for (const t of group.tools) row.appendChild(makeToolButton(t));
     toolBar.appendChild(row);
   }
+
+  // ── 副本專屬工具(只在選定副本時列出,避免通用工具列被冷門物件塞滿)──
+  const specialTitle = document.createElement('div');
+  specialTitle.className = 'tool-group-title';
+  specialTitle.textContent = '副本專屬';
+  toolBar.appendChild(specialTitle);
+
+  const specialSelect = document.createElement('select');
+  specialSelect.id = 'special-raid-select';
+  for (const r of window.RAID_LIST || []) {
+    const opt = document.createElement('option');
+    opt.value = r.id; opt.textContent = r.name;
+    specialSelect.appendChild(opt);
+  }
+  toolBar.appendChild(specialSelect);
+
+  const specialRow = document.createElement('div');
+  specialRow.className = 'tool-group-row';
+  toolBar.appendChild(specialRow);
+
+  function renderSpecialTools() {
+    specialRow.innerHTML = '';
+    const items = (window.BOARD_SPECIAL_OBJECTS || []).filter((o) => o.raids.includes(specialSelect.value));
+    if (!items.length) {
+      const p = document.createElement('p');
+      p.className = 'tool-special-empty';
+      p.textContent = '此副本沒有專屬物件。';
+      specialRow.appendChild(p);
+      return;
+    }
+    for (const it of items) specialRow.appendChild(makeToolButton({ id: it.kind, label: it.label, icon: it.icon }));
+    syncToolButtons();
+  }
+  specialSelect.addEventListener('change', renderSpecialTools);
+
+  /** 切換階段時,副本專屬下拉預設跟著走(使用者仍可自行改選) */
+  function followPhaseInSpecialTools(phaseDef) {
+    const raidId = phaseDef && phaseDef.guideRaidId;
+    if (raidId && [...specialSelect.options].some((o) => o.value === raidId)) specialSelect.value = raidId;
+    renderSpecialTools();
+  }
+
+  renderSpecialTools();
   syncToolButtons();
 
   function runPresetAction(id) {
     if (id === 'preset-spread') {
       for (const role of PLAYER_ROLES) {
-        state.addObject({ kind: 'aoe-circle', attachTo: role, dx: 0, dy: 0, r: 15, color: 'accent' });
+        state.addObject({ kind: 'aoe-circle', attachTo: role, dx: 0, dy: 0, r: 15, color: 'cyan' });
       }
     }
   }
@@ -185,8 +252,42 @@ async function boardMain() {
   // 輸入框自身觸發的變更不重建面板(避免每打一個字就整個 DOM 重建、輸入框失焦)
   let suppressPropertyRerender = false;
 
+  /** BOSS 的面向角(其他兵棋沒有可調參數) */
+  function renderBossProperties() {
+    const t = state.getToken(state.selectedId);
+    if (!t || t.kind !== 'boss') { propertyPanel.style.display = 'none'; return; }
+    propertyPanel.style.display = '';
+
+    const title = document.createElement('h3');
+    title.textContent = 'BOSS';
+    propertyPanel.appendChild(title);
+
+    const row = document.createElement('label');
+    row.className = 'prop-row';
+    const cap = document.createElement('span');
+    cap.textContent = '面向角';
+    const input = document.createElement('input');
+    input.type = 'number';
+    input.min = 0; input.max = 359;
+    input.placeholder = '不顯示';
+    input.value = typeof t.facing === 'number' ? t.facing : '';
+    input.addEventListener('input', () => {
+      suppressPropertyRerender = true;
+      state.updateToken(t.id, { facing: input.value === '' ? null : Number(input.value) });
+      suppressPropertyRerender = false;
+    });
+    row.append(cap, input);
+    propertyPanel.appendChild(row);
+
+    const hint = document.createElement('p');
+    hint.className = 'list-empty';
+    hint.textContent = '0 = 面向 A(正上方),順時針增加;留空則不顯示朝向箭頭。';
+    propertyPanel.appendChild(hint);
+  }
+
   function renderPropertyPanel() {
     propertyPanel.innerHTML = '';
+    if (state.selectedKind === 'token') { renderBossProperties(); return; }
     if (state.selectedKind !== 'object') { propertyPanel.style.display = 'none'; return; }
     const obj = state.getObject(state.selectedId);
     if (!obj) { propertyPanel.style.display = 'none'; return; }
@@ -451,8 +552,20 @@ async function boardMain() {
   const moveLeftBtn = document.getElementById('timeline-moveleft-btn');
   const moveRightBtn = document.getElementById('timeline-moveright-btn');
   const holdSecInput = document.getElementById('timeline-holdsec');
+  const frameNoteInput = document.getElementById('frame-note-input');
   let playTimer = null;
   let isPlaying = false;
+
+  // ── 影格說明(右側欄最上方)───────────────
+  frameNoteInput.addEventListener('input', () => state.setFrameNote(frameNoteInput.value));
+
+  function renderFrameNote() {
+    const frame = state.timeline.frames[state.timeline.currentIndex];
+    frameNoteInput.disabled = !frame;
+    frameNoteInput.placeholder = frame ? '為這個影格加上說明…' : '尚無影格';
+    // 正在輸入時不覆寫,避免游標跳位
+    if (document.activeElement !== frameNoteInput) frameNoteInput.value = frame ? (frame.note || '') : '';
+  }
 
   addFrameBtn.addEventListener('click', () => { stopPlayback(); state.addFrame(); });
   dupFrameBtn.addEventListener('click', () => {
@@ -557,7 +670,7 @@ async function boardMain() {
       const chip = document.createElement('button');
       chip.className = 'frame-chip' + (i === state.timeline.currentIndex ? ' active' : '');
       chip.textContent = i + 1;
-      chip.title = `跳到影格 ${i + 1}`;
+      chip.title = frame.note ? `影格 ${i + 1}:${frame.note}` : `跳到影格 ${i + 1}`;
       chip.addEventListener('click', () => { stopPlayback(); state.goToFrame(i); });
       timelineFramesEl.appendChild(chip);
     });
@@ -568,6 +681,12 @@ async function boardMain() {
     if (!suppressPropertyRerender) renderPropertyPanel();
     renderObjectList();
     renderTimeline();
+    renderFrameNote();
+  });
+
+  initGuideImportUI(state, async (raidId) => {
+    stopPlayback();
+    await ensureArenaForRaid(raidId);
   });
 
   await setArena(index[0].id);

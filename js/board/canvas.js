@@ -103,6 +103,11 @@ class BoardCanvas {
       g.classList.toggle('selected', this.state.isSelected('token', t.id));
       g.style.display = t.visible === false ? 'none' : '';
       g.style.cursor = t.locked ? 'not-allowed' : 'grab';
+      if (g.facingNode) {
+        const hasFacing = typeof t.facing === 'number';
+        g.facingNode.style.display = hasFacing ? '' : 'none';
+        if (hasFacing) g.facingNode.setAttribute('transform', `rotate(${t.facing})`);
+      }
     }
     for (const [id, node] of [...this.tokenNodes]) {
       if (!seen.has(id) && node.dataset.kindGroup === kindGroup) {
@@ -122,7 +127,7 @@ class BoardCanvas {
       const txt = bel('text', { x: 0, y: 0.5, class: 'wm-text' }, g);
       txt.textContent = t.label;
     } else if (t.kind === 'boss') {
-      bel('path', { d: 'M0,-16 L7,-6 L-7,-6 Z', class: 'boss-facing' }, g);
+      g.facingNode = bel('path', { d: 'M0,-16 L7,-6 L-7,-6 Z', class: 'boss-facing' }, g);
       bel('circle', { cx: 0, cy: 0, r: 11, class: 'boss-circle' }, g);
       const txt = bel('text', { x: 0, y: 0.5, class: 'boss-text' }, g);
       txt.textContent = 'BOSS';
@@ -237,7 +242,7 @@ class BoardCanvas {
       return;
     }
     if (this.pending.kind === kind && this.pending.id === id) return; // 同一個物件,忽略
-    this.state.addObject({ kind: 'tether', from: this.pending.id, to: id, color: 'purple' });
+    this.state.addObject({ kind: 'tether', from: this.pending.id, to: id, color: 'magenta' });
     this._completeTool();
   }
 

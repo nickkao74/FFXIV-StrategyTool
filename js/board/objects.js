@@ -13,15 +13,18 @@ function boardPointToDeg(x, y) {
 }
 
 const OBJECT_DEFAULTS = {
-  'aoe-circle': { r: 15, color: 'ice' },
-  'aoe-donut': { rOuter: 40, rInner: 18, color: 'void' },
-  'aoe-rect': { w: 50, h: 18, rot: 0, color: 'fire' },
-  'aoe-cone': { angle: 0, spread: 90, r: 60, color: 'thunder' },
+  'aoe-circle': { r: 15, color: 'yellow' },
+  'aoe-donut': { rOuter: 40, rInner: 18, color: 'purple' },
+  'aoe-rect': { w: 50, h: 18, rot: 0, color: 'orange' },
+  'aoe-cone': { angle: 0, spread: 90, r: 60, color: 'blue' },
   'knockback': { count: 8, rInner: 20, rOuter: 40, color: 'white' },
   'arrow-line': { color: 'white' },
   'arrow-arc': { radius: 60, start: 0, end: 90, dir: 'cw', color: 'white' },
-  'tether': { color: 'purple' },
-  'marker': { markerType: 'share', color: 'accent' },
+  'tether': { color: 'magenta' },
+  'marker': { markerType: 'share', color: 'cyan' },
+  // 副本專屬(見 data/board-special-objects.js)
+  'blackhole': { r: 10 },
+  'tentacle': { label: '1' },
 };
 
 function bo(name, attrs = {}, parent = null) {
@@ -103,6 +106,20 @@ function renderBoardObject(obj, state) {
         class: `bobj tether tether-${obj.color}`,
       });
     }
+    case 'blackhole': {
+      const g = bo('g', { class: 'bobj blackhole' });
+      bo('circle', { cx: p.x, cy: p.y, r: obj.r + 3, class: 'blackhole-glow' }, g);
+      bo('circle', { cx: p.x, cy: p.y, r: obj.r, class: 'blackhole-core' }, g);
+      bo('circle', { cx: p.x, cy: p.y, r: obj.r * 0.45, class: 'blackhole-eye' }, g);
+      return g;
+    }
+    case 'tentacle': {
+      const g = bo('g', { class: 'bobj tentacle' });
+      bo('circle', { cx: p.x, cy: p.y, r: 6.5, class: 'tentacle-body' }, g);
+      const t = bo('text', { x: p.x, y: p.y + 0.5, class: 'tentacle-label' }, g);
+      t.textContent = obj.label != null ? obj.label : '';
+      return g;
+    }
     case 'marker':
       return renderBoardMarker(obj, p);
     default:
@@ -110,13 +127,15 @@ function renderBoardObject(obj, state) {
   }
 }
 
-function resolveEndpointPos(state, id) {
-  const entity = state.getEntity(id);
+/** 連線端點:可以是實體 id(跟隨移動),也可以是固定座標 {x,y}(攻略導入的場上定點) */
+function resolveEndpointPos(state, ref) {
+  if (ref && typeof ref === 'object') return { x: ref.x || 0, y: ref.y || 0 };
+  const entity = state.getEntity(ref);
   return entity ? state.effectivePosition(entity) : { x: 0, y: 0 };
 }
 
 function renderBoardMarker(obj, p) {
-  const g = bo('g', { class: 'bobj marker-group', transform: `translate(${p.x},${p.y})` });
+  const g = bo('g', { class: `bobj marker-group ann-${obj.color || 'white'}`, transform: `translate(${p.x},${p.y})` });
   switch (obj.markerType) {
     case 'share':
       bo('circle', { cx: 0, cy: 0, r: 13, class: 'marker-share-outer' }, g);
@@ -125,6 +144,13 @@ function renderBoardMarker(obj, p) {
     case 'triangle':
       bo('path', { d: 'M0,-14 L8,8 L-8,8 Z', class: 'marker-triangle' }, g);
       break;
+    case 'target': {
+      const s = 11;
+      for (const [dx, dy, rot] of [[-s, -s, 0], [s, -s, 90], [s, s, 180], [-s, s, 270]]) {
+        bo('path', { d: 'M-3,1 L-3,-3 L1,-3', transform: `translate(${dx},${dy}) rotate(${rot})`, class: 'marker-target-corner' }, g);
+      }
+      break;
+    }
     case 'death':
       bo('circle', { cx: 0, cy: 0, r: 11, class: 'marker-death-bg' }, g);
       bo('text', { x: 0, y: 0.5, class: 'marker-death-text' }, g).textContent = '☠';
