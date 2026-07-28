@@ -142,6 +142,19 @@ async function boardMain() {
     followPhaseInSpecialTools(phaseDef);
   }
 
+  /** 套用一份序列化盤面(自動保存、具名存檔、匯入 JSON 三處共用) */
+  async function applyBoardData(data) {
+    const def = await loadArenaScript(data.arenaId);
+    const phase = def.phases.find((p) => p.id === data.phaseId) || def.phases[0];
+    currentArenaDef = def;
+    arenaSelect.value = def.id;
+    renderPhaseTabs();
+    canvas.setPhase(def, phase);
+    [...phaseTabs.children].forEach((b) => b.classList.toggle('active', b.dataset.phaseId === phase.id));
+    followPhaseInSpecialTools(phase);
+    state.loadFromJSON(data, def, phase);
+  }
+
   /** 導入攻略前把白板切到該攻略對應的場地/階段;找不到對照就沿用目前場地 */
   async function ensureArenaForRaid(raidId) {
     for (const a of index) {
@@ -689,5 +702,24 @@ async function boardMain() {
     await ensureArenaForRaid(raidId);
   });
 
-  await setArena(index[0].id);
+  initBoardStorageUI(state, async (data) => {
+    stopPlayback();
+    await applyBoardData(data);
+  });
+
+  // 開場:接回上次的盤面,沒有(或資料壞掉)就開全新的預設場地
+  const autosaved = loadAutosave();
+  let restored = false;
+  if (autosaved) {
+    try {
+      await applyBoardData(validateBoardData(autosaved));
+      restored = true;
+    } catch (e) {
+      console.warn('自動保存的盤面無法還原,已改開新盤面', e);
+    }
+  }
+  if (!restored) await setArena(index[0].id);
+
+  // 自動保存放在最後才掛上,避免上面的初始化過程反覆寫入
+  state.onChange(makeAutosaver());
 }

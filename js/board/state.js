@@ -13,6 +13,14 @@ const FRAME_EXCLUDE_FIELDS = new Set(['id', 'kind', 'locked', 'sync', 'label']);
 let _boardIdSeq = 1;
 function nextObjectId() { return `obj-${_boardIdSeq++}`; }
 
+/** 載入盤面後把流水號推到既有 id 之後,避免新物件的 id 撞到載入進來的物件 */
+function adoptObjectIds(objects) {
+  for (const o of objects) {
+    const m = /^obj-(\d+)$/.exec(o.id || '');
+    if (m) _boardIdSeq = Math.max(_boardIdSeq, Number(m[1]) + 1);
+  }
+}
+
 class BoardState {
   constructor() {
     this.version = 1;
@@ -316,6 +324,29 @@ class BoardState {
     if (!silent) this.emit();
   }
   isSelected(kind, id) { return this.selectedKind === kind && this.selectedId === id; }
+
+  /** 從序列化的盤面還原。arenaDef/phaseDef 由呼叫端先解析好(場地定義不進存檔,只存 id) */
+  loadFromJSON(data, arenaDef, phaseDef) {
+    this.arenaId = arenaDef.id;
+    this.arenaDef = arenaDef;
+    this.phaseId = phaseDef.id;
+    this.phaseDef = phaseDef;
+    this.waymarksLocked = !!data.waymarksLocked;
+    this.tokens = (data.tokens || []).map((t) => ({ ...t }));
+    this.objects = (data.objects || []).map((o) => ({ ...o }));
+    const tl = data.timeline || {};
+    this.timeline = {
+      frames: JSON.parse(JSON.stringify(tl.frames || [])),
+      currentIndex: typeof tl.currentIndex === 'number' ? tl.currentIndex : -1,
+      holdSec: tl.holdSec || 1.5,
+    };
+    adoptObjectIds(this.objects);
+    this.clearSelection({ silent: true });
+
+    const idx = this.timeline.currentIndex;
+    if (this.timeline.frames[idx]) this.goToFrame(idx);  // goToFrame 內含 emit
+    else this.emit();
+  }
 
   toJSON() {
     return {

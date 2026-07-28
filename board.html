@@ -30,6 +30,7 @@
       <div id="phase-tabs" class="phase-tabs"></div>
       <button id="reset-tokens-btn" class="toolbar-btn">↺ 重置站位</button>
       <button id="import-guide-btn" class="toolbar-btn">📥 導入攻略</button>
+      <button id="storage-btn" class="toolbar-btn">💾 盤面</button>
     </div>
   </header>
   <div class="board-body">
@@ -100,6 +101,39 @@
   </div>
 </div>
 
+<div id="storage-modal" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>💾 盤面管理</h2>
+      <button id="storage-close" class="modal-close" title="關閉">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3 class="modal-section-title">具名盤面</h3>
+      <div id="storage-slot-list" class="slot-list"></div>
+      <div class="modal-row" style="margin-top:12px">
+        <input id="storage-name-input" type="text" placeholder="盤面名稱(例:黑洞①走位)" maxlength="40">
+        <button id="storage-save-btn" class="toolbar-btn primary">存為新盤面</button>
+      </div>
+
+      <h3 class="modal-section-title">檔案交換</h3>
+      <div class="modal-row">
+        <button id="storage-export-btn" class="toolbar-btn">⬇ 匯出 JSON 檔</button>
+        <button id="storage-import-btn" class="toolbar-btn">⬆ 匯入 JSON 檔</button>
+        <input id="storage-file-input" type="file" accept="application/json,.json" hidden>
+      </div>
+      <p class="modal-hint">目前盤面會自動保存在這台瀏覽器,重開頁面會接回上次的內容。要分享給隊友請用匯出 JSON。</p>
+
+      <h3 class="modal-section-title">重來</h3>
+      <div class="modal-row">
+        <button id="storage-clear-btn" class="toolbar-btn danger">🗑 清空目前盤面</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span id="storage-status" class="modal-hint" style="margin:0"></span>
+    </div>
+  </div>
+</div>
+
 <script src="js/board/gate.js"></script>
 <script src="js/board/state.js"></script>
 <script src="js/board/objects.js"></script>
@@ -108,6 +142,7 @@
 <script src="data/raids.js"></script>
 <script src="data/board-special-objects.js"></script>
 <script src="js/board/import.js"></script>
+<script src="js/board/storage.js"></script>
 <script src="js/board/app.js"></script>
 <script>
   boardGateInit(() => { boardMain().catch(e => { console.error(e); alert('載入失敗:' + e.message); }); });
