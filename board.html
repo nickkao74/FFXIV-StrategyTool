@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FFXIV 戰術白板</title>
+<link rel="stylesheet" href="css/board.css">
+</head>
+<body>
+
+<div id="gate-overlay" class="gate-overlay">
+  <div class="gate-box">
+    <h1>FFXIV 戰術白板</h1>
+    <p>請輸入存取密碼</p>
+    <input id="gate-input" type="password" autocomplete="off" placeholder="密碼">
+    <button id="gate-submit">進入</button>
+    <p id="gate-error" class="gate-error"></p>
+  </div>
+</div>
+
+<div id="board-app" hidden>
+  <header class="board-header">
+    <a class="home-link" href="index.html">← 返回首頁</a>
+    <h1>戰術白板</h1>
+    <div class="board-toolbar">
+      <label class="toolbar-item">
+        場地
+        <select id="arena-select"></select>
+      </label>
+      <div id="phase-tabs" class="phase-tabs"></div>
+      <button id="reset-tokens-btn" class="toolbar-btn">↺ 重置站位</button>
+      <button id="import-guide-btn" class="toolbar-btn">📥 導入攻略</button>
+      <button id="storage-btn" class="toolbar-btn">💾 盤面</button>
+    </div>
+  </header>
+  <div class="board-body">
+    <aside id="tool-bar" class="tool-bar"></aside>
+    <main class="board-main">
+      <div id="board-canvas" class="board-canvas-wrap"></div>
+    </main>
+    <aside class="side-panel">
+      <div class="frame-note-panel">
+        <h3>📝 影格說明</h3>
+        <textarea id="frame-note-input" placeholder="尚無影格" disabled></textarea>
+      </div>
+      <div id="property-panel" class="property-panel"></div>
+      <div id="object-list" class="object-list"></div>
+    </aside>
+  </div>
+  <footer class="timeline-bar">
+    <div class="timeline-row">
+      <button id="timeline-play-btn" class="toolbar-btn timeline-play">▶ 播放</button>
+      <button id="timeline-prev-btn" class="toolbar-btn" title="上一格(← 鍵)">◀ 上一格</button>
+      <div id="timeline-frames" class="timeline-frames"></div>
+      <button id="timeline-next-btn" class="toolbar-btn" title="下一格(→ 鍵)">下一格 ▶</button>
+    </div>
+    <div class="timeline-row">
+      <span class="timeline-label">目前影格:</span>
+      <button id="timeline-dup-btn" class="toolbar-btn" title="複製目前影格">⧉ 複製</button>
+      <button id="timeline-del-btn" class="toolbar-btn danger" title="刪除目前影格">🗑 刪除</button>
+      <button id="timeline-moveleft-btn" class="toolbar-btn" title="往前移">⇤ 前移</button>
+      <button id="timeline-moveright-btn" class="toolbar-btn" title="往後移">⇥ 後移</button>
+      <span class="timeline-sep"></span>
+      <label class="toolbar-item">
+        影格間隔
+        <input id="timeline-holdsec" type="number" min="0.5" step="0.5" value="1.5">秒
+      </label>
+      <button id="timeline-add-btn" class="toolbar-btn">➕ 新增影格</button>
+    </div>
+  </footer>
+</div>
+
+<div id="import-modal" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>📥 從攻略導入盤面</h2>
+      <button id="import-close" class="modal-close" title="關閉">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-row">
+        <span>副本</span>
+        <select id="import-raid-select"></select>
+      </div>
+      <div class="modal-row">
+        <span>階段</span>
+        <select id="import-section-select"></select>
+      </div>
+      <label class="step-item" style="margin-bottom:6px">
+        <input type="checkbox" id="import-select-all">
+        <span><b>全選</b></span>
+      </label>
+      <div id="import-step-list" class="step-list"></div>
+      <p class="modal-hint">導入會把攻略步驟轉成白板影格(含兵棋站位、地毯、箭頭、連線、標註與說明文字),導入後皆可自由編輯。</p>
+    </div>
+    <div class="modal-footer">
+      <span id="import-count" class="modal-hint" style="margin:0"></span>
+      <span class="spacer"></span>
+      <button id="import-overwrite-btn" class="toolbar-btn primary">導入並覆蓋</button>
+      <button id="import-append-btn" class="toolbar-btn">導入並新增影格</button>
+    </div>
+  </div>
+</div>
+
+<div id="storage-modal" class="modal-overlay" hidden>
+  <div class="modal-box">
+    <div class="modal-header">
+      <h2>💾 盤面管理</h2>
+      <button id="storage-close" class="modal-close" title="關閉">✕</button>
+    </div>
+    <div class="modal-body">
+      <h3 class="modal-section-title">具名盤面</h3>
+      <div id="storage-slot-list" class="slot-list"></div>
+      <div class="modal-row" style="margin-top:12px">
+        <input id="storage-name-input" type="text" placeholder="盤面名稱(例:黑洞①走位)" maxlength="40">
+        <button id="storage-save-btn" class="toolbar-btn primary">存為新盤面</button>
+      </div>
+
+      <h3 class="modal-section-title">檔案交換</h3>
+      <div class="modal-row">
+        <button id="storage-export-btn" class="toolbar-btn">⬇ 匯出 JSON 檔</button>
+        <button id="storage-import-btn" class="toolbar-btn">⬆ 匯入 JSON 檔</button>
+        <input id="storage-file-input" type="file" accept="application/json,.json" hidden>
+      </div>
+      <p class="modal-hint">目前盤面會自動保存在這台瀏覽器,重開頁面會接回上次的內容。要分享給隊友請用匯出 JSON。</p>
+
+      <h3 class="modal-section-title">重來</h3>
+      <div class="modal-row">
+        <button id="storage-clear-btn" class="toolbar-btn danger">🗑 清空目前盤面</button>
+      </div>
+    </div>
+    <div class="modal-footer">
+      <span id="storage-status" class="modal-hint" style="margin:0"></span>
+    </div>
+  </div>
+</div>
+
+<script src="js/board/gate.js"></script>
+<script src="js/board/state.js"></script>
+<script src="js/board/objects.js"></script>
+<script src="js/board/canvas.js"></script>
+<script src="js/board/history.js"></script>
+<script src="data/arenas/index.js"></script>
+<script src="data/raids.js"></script>
+<script src="data/board-special-objects.js"></script>
+<script src="js/board/import.js"></script>
+<script src="js/board/storage.js"></script>
+<script src="js/board/app.js"></script>
+<script>
+  boardGateInit(() => { boardMain().catch(e => { console.error(e); alert('載入失敗:' + e.message); }); });
+</script>
+</body>
+</html>

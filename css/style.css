@@ -25,6 +25,20 @@ html, body {
 
 a { color: var(--accent); text-decoration: none; }
 
+/* ── 卷軸(配合深色主題,與 board.css 同一套)──────
+ * Firefox 用 scrollbar-*,Chromium/WebKit 用 ::-webkit-scrollbar。 */
+* { scrollbar-width: thin; scrollbar-color: #3d4d5f transparent; }
+::-webkit-scrollbar { width: 10px; height: 10px; }
+/* 軌道透明,讓卷軸融進所在面板(側欄/內容區背景色各不相同) */
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb {
+  background: #3d4d5f; border-radius: 6px;
+  border: 2px solid transparent; background-clip: padding-box;  /* 內縮留白,滑塊看起來比軌道細 */
+}
+::-webkit-scrollbar-thumb:hover { background: #55697f; background-clip: padding-box; }
+::-webkit-scrollbar-thumb:active { background: var(--accent); background-clip: padding-box; }
+::-webkit-scrollbar-corner { background: transparent; }
+
 /* ── 頂欄 ─────────────────────────── */
 header {
   display: flex; align-items: center; gap: 16px;
@@ -263,10 +277,15 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
 .marker-target .target-corner { fill: none; stroke: #ff8080; stroke-width: 1.6; }
 
 /* ── 首頁 ─────────────────────────── */
-#raid-list {
-  max-width: 760px; margin: 40px auto; padding: 0 20px;
-  display: grid; gap: 14px;
+/* ── 首頁:攻略庫 / 工具 ───────────────── */
+#home { max-width: 760px; margin: 36px auto 56px; padding: 0 20px; }
+.home-section-title {
+  font-size: 12px; font-weight: 700; color: var(--text-dim);
+  text-transform: uppercase; letter-spacing: 0.06em;
+  margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
 }
+.home-section-title + .card-grid { margin-bottom: 34px; }
+.card-grid { display: grid; gap: 14px; }
 .raid-card {
   display: block; padding: 18px 20px; border-radius: 12px;
   background: var(--bg-panel); border: 1px solid var(--border);
@@ -274,7 +293,14 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
 }
 .raid-card:hover { border-color: var(--accent); }
 .raid-card h2 { margin: 0 0 6px; font-size: 17px; }
-.raid-card p { margin: 0; color: var(--text-dim); font-size: 13.5px; }
+.raid-card p { margin: 0; color: var(--text-dim); font-size: 13.5px; line-height: 1.6; }
+/* 工具卡與攻略卡是不同性質的東西,用左側色條區隔 */
+.tool-card { border-left: 3px solid var(--accent); }
+.tool-card-note {
+  display: inline-block; margin-left: 8px; padding: 1px 7px; border-radius: 20px;
+  background: var(--bg-panel2); border: 1px solid var(--border);
+  font-size: 11.5px; color: var(--text-dim); white-space: nowrap;
+}
 
 /* ── 響應式 ────────────────────────── */
 @media (max-width: 1100px) {
