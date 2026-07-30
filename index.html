@@ -8,7 +8,20 @@
 </head>
 <body>
 <header><h1>FFXIV 高難度副本攻略工具</h1></header>
-<div id="raid-list">載入中…</div>
+
+<main id="home">
+  <h2 class="home-section-title">攻略庫</h2>
+  <div id="raid-list" class="card-grid">載入中…</div>
+
+  <h2 class="home-section-title">工具</h2>
+  <div class="card-grid">
+    <a class="raid-card tool-card" href="board.html">
+      <h2>🗺 戰術白板</h2>
+      <p>在俯瞰場地圖上拖曳兵棋、畫地毯與箭頭,串成走位動畫,供團練即時討論解法。可直接導入攻略庫的內容當起點。<span class="tool-card-note">需要存取密碼</span></p>
+    </a>
+  </div>
+</main>
+
 <script src="data/raids.js"></script>
 <script>
 (() => {
