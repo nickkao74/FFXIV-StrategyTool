@@ -9,6 +9,29 @@ const ROLE_TYPE = {
   D1: 'dps', D2: 'dps', D3: 'dps', D4: 'dps',
 };
 
+/* 角度慣例:0 = 正上(北),順時針遞增。與場地標記 A上/B右/C下/D左 一致。 */
+function polar(deg, r) {
+  const rad = (deg - 90) * Math.PI / 180;
+  return { x: +(r * Math.cos(rad)).toFixed(2), y: +(r * Math.sin(rad)).toFixed(2) };
+}
+
+function sectorPath(cx, cy, r, a0, a1) {
+  const p0 = polar(a0, r), p1 = polar(a1, r);
+  const large = (a1 - a0) > 180 ? 1 : 0;
+  return `M${cx},${cy} L${cx + p0.x},${cy + p0.y} A${r},${r} 0 ${large},1 ${cx + p1.x},${cy + p1.y} Z`;
+}
+
+/* 極朱雀朱紅旋律:四塊地板的位置永遠固定 */
+const QUADRANTS = {
+  ne: { a0: 0, a1: 90, glyph: '水', floor: 'brown' },   // 東北 り 燐之詩 土褐
+  se: { a0: 90, a1: 180, glyph: '向', floor: 'yellow' }, // 東南 な 淚之詩 黃
+  sw: { a0: 180, a1: 270, glyph: '十', floor: 'green' }, // 西南 う 虛之詩 綠
+  nw: { a0: 270, a1: 360, glyph: '之', floor: 'purple' },// 西北 ろ 牢之詩 紫
+};
+
+/* 暱稱 → 地板配色,供場外文字列上色 */
+const FLOOR_OF = { 水: 'brown', 向: 'yellow', 十: 'green', 之: 'purple' };
+
 function el(name, attrs = {}, parent = null) {
   const node = document.createElementNS(SVG_NS, name);
   for (const [k, v] of Object.entries(attrs)) node.setAttribute(k, v);
@@ -45,6 +68,11 @@ class Arena {
     el('circle', { cx: 0, cy: 0, r: 100, class: 'arena-rim' }, floor);
     el('circle', { cx: 0, cy: 0, r: 55, class: 'arena-inner-line' }, floor);
 
+    // 圖層順序:AOE → 場地標記 → 連線 → 註記 → BOSS → 玩家
+    // 場地標記刻意疊在 AOE 之上:像極朱雀朱紅旋律那種鋪滿整塊地板的不透明範圍,
+    // 若標記在下面會被完全蓋掉,方位就沒得參照了。
+    const aoesLayer = el('g', { class: 'layer-aoes' }, svg);
+
     // 場地標記 A/B/C/D(A上 B右 C下 D左)
     const wmDefs = this.arenaDef.waymarks || [
       { id: 'A', x: 0, y: -95 }, { id: 'B', x: 95, y: 0 },
@@ -58,9 +86,8 @@ class Arena {
       t.textContent = wm.id;
     }
 
-    // 圖層順序:AOE → 連線 → 註記 → BOSS → 玩家
     this.layers = {
-      aoes: el('g', { class: 'layer-aoes' }, svg),
+      aoes: aoesLayer,
       tethers: el('g', { class: 'layer-tethers' }, svg),
       annotations: el('g', { class: 'layer-annotations' }, svg),
       boss: el('g', { class: 'layer-boss' }, svg),
@@ -193,6 +220,76 @@ class Arena {
         }
         break;
       }
+      // ── 極朱雀:朱紅旋律的四色假名地板 ──────────────
+      case 'quadrant': {
+        const q = QUADRANTS[aoe.quad];
+        if (!q) break;
+        const r = aoe.r || 100;
+        const g = el('g', {
+          class: `quad quad-${aoe.floor || q.floor}${aoe.state === 'boom' ? ' quad-boom' : ''}`,
+        }, layer);
+        el('path', { d: sectorPath(0, 0, r, q.a0, q.a1), class: 'quad-fill' }, g);
+        const c = polar(q.a0 + 45, aoe.labelR || 58);
+        const t = el('text', { x: c.x, y: c.y, class: 'quad-glyph' }, g);
+        t.textContent = aoe.glyph != null ? aoe.glyph : q.glyph;
+        if (aoe.order != null) {
+          const o = polar(q.a0 + 45, (aoe.labelR || 58) + 20);
+          const ot = el('text', { x: o.x, y: o.y, class: 'quad-order' }, g);
+          ot.textContent = aoe.order;
+        }
+        break;
+      }
+      // 場地中央天坑(P2 燃盡天火之後)
+      case 'hole': {
+        const g = el('g', { class: 'pit' }, layer);
+        el('circle', { cx: p.x, cy: p.y, r: aoe.r || 26, class: 'pit-body' }, g);
+        el('circle', { cx: p.x, cy: p.y, r: aoe.r || 26, class: 'pit-rim' }, g);
+        break;
+      }
+      // 灼熱旋律的塔
+      case 'tower': {
+        const g = el('g', { class: `tower${aoe.empty ? ' tower-empty' : ''}` }, layer);
+        el('circle', { cx: p.x, cy: p.y, r: aoe.r || 15, class: 'tower-ring' }, g);
+        el('circle', { cx: p.x, cy: p.y, r: (aoe.r || 15) * 0.42, class: 'tower-core' }, g);
+        break;
+      }
+      // 蘇生之羽:羽毛本體 + 它的黃圈
+      case 'feather': {
+        const big = aoe.size === 'big';
+        const g = el('g', { class: `feather feather-${big ? 'big' : 'small'}${aoe.cleared ? ' feather-cleared' : ''}` }, layer);
+        if (!aoe.cleared) {
+          el('circle', { cx: p.x, cy: p.y, r: aoe.r || 30, class: 'feather-aura' }, g);
+        }
+        const h = big ? 13 : 8;
+        el('path', {
+          d: `M${p.x},${p.y - h} Q${p.x + h * 0.42},${p.y} ${p.x},${p.y + h} Q${p.x - h * 0.42},${p.y} ${p.x},${p.y - h} Z`,
+          class: 'feather-quill',
+        }, g);
+        break;
+      }
+      // 火焰鳥(屍體 / 復活)
+      case 'bird': {
+        const alive = aoe.state === 'alive';
+        const g = el('g', { class: `bird bird-${alive ? 'alive' : 'dead'}` }, layer);
+        el('path', {
+          d: `M${p.x - 7},${p.y + 4} L${p.x},${p.y - 6} L${p.x + 7},${p.y + 4} L${p.x},${p.y + 1} Z`,
+          class: 'bird-body',
+        }, g);
+        if (aoe.label != null) {
+          const t = el('text', { x: p.x, y: p.y + 11, class: 'bird-label' }, g);
+          t.textContent = aoe.label;
+        }
+        break;
+      }
+      // 禁止站位標記
+      case 'xmark': {
+        const s = aoe.size || 7;
+        const g = el('g', { class: 'xmark' }, layer);
+        el('path', {
+          d: `M${p.x - s},${p.y - s} L${p.x + s},${p.y + s} M${p.x + s},${p.y - s} L${p.x - s},${p.y + s}`,
+        }, g);
+        break;
+      }
     }
   }
 
@@ -213,9 +310,30 @@ class Arena {
         const b = this._resolvePoint(ann.to, step);
         el('line', {
           x1: a.x, y1: a.y, x2: b.x, y2: b.y,
-          class: `ann-arrow ann-${ann.color || 'white'}`,
+          class: `ann-arrow ann-${ann.color || 'white'}${ann.dash ? ' ann-dash' : ''}${ann.thin ? ' ann-thin' : ''}`,
           'marker-end': 'url(#arrowhead)',
         }, layer);
+        break;
+      }
+      // 朱紅旋律:場地外側的「詩」文字列。side = east | west
+      case 'charStrip': {
+        const chars = ann.chars || [];
+        if (!chars.length) break;
+        const x = ann.side === 'west' ? -112 : 112;
+        const gap = chars.length > 4 ? 25 : 34;
+        const y0 = -((chars.length - 1) * gap) / 2;
+        const g = el('g', { class: 'charstrip' }, layer);
+        chars.forEach((ch, i) => {
+          const y = y0 + i * gap;
+          const done = ann.done != null && i < ann.done;
+          const now = ann.now != null && i === ann.now;
+          const cg = el('g', {
+            class: `cs-cell cs-${FLOOR_OF[ch] || 'generic'}${done ? ' cs-done' : ''}${now ? ' cs-now' : ''}`,
+          }, g);
+          el('circle', { cx: x, cy: y, r: gap * 0.42 }, cg);
+          const t = el('text', { x, y: y + 0.5, class: 'cs-glyph' }, cg);
+          t.textContent = ch;
+        });
         break;
       }
       case 'arcArrow': {
