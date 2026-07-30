@@ -85,6 +85,15 @@ class BoardCanvas {
       const r = size.r || 100;
       bel('circle', { cx: 0, cy: 0, r, class: 'board-floor-shape' }, this.floorLayer);
     }
+
+    // 場地中央的簍空區(例:極朱雀 P3 的天坑)。屬於場地特徵,整個階段都存在、不可拖動,
+    // 所以畫在 floorLayer 而不是做成物件。
+    const hole = phaseDef.hole;
+    if (hole) {
+      const hx = hole.x || 0, hy = hole.y || 0, hr = hole.r || 26;
+      bel('circle', { cx: hx, cy: hy, r: hr, class: 'board-floor-hole' }, this.floorLayer);
+      bel('circle', { cx: hx, cy: hy, r: hr, class: 'board-floor-hole-rim' }, this.floorLayer);
+    }
   }
 
   render() {

@@ -14,6 +14,11 @@ const GUIDE_COLOR_MAP = {
 };
 function guideColor(c) { return GUIDE_COLOR_MAP[c] || 'white'; }
 
+/* 極朱雀朱紅旋律:攻略端的 quadrant 可以只給 quad,假名與配色由位置推出來
+ * (四塊地板的位置永遠固定)。與 js/arena.js 的 QUADRANTS 保持一致。 */
+const GUIDE_QUAD_GLYPH = { ne: '水', se: '向', sw: '十', nw: '之' };
+const GUIDE_QUAD_FLOOR = { ne: 'brown', se: 'yellow', sw: 'green', nw: 'purple' };
+
 /** 三角點名畫在人頭上方,與白板手動放置標註的偏移一致 */
 const MARKER_HEAD_OFFSET = -16;
 
@@ -83,6 +88,37 @@ function convertGuideStep(step, running) {
         push({ kind: 'blackhole', ...pos, r: a.r || 10 }, at); break;
       case 'tentacle':
         push({ kind: 'tentacle', ...pos, label: a.label != null ? String(a.label) : '' }, at); break;
+
+      // ── 極朱雀 ────────────────────────────────
+      // 四色地板的位置由 quad 決定(場地固定),不吸附兵棋
+      case 'quadrant':
+        push({
+          kind: 'quadrant', x: 0, y: 0,
+          quad: a.quad || 'ne',
+          glyph: a.glyph != null ? String(a.glyph) : (GUIDE_QUAD_GLYPH[a.quad] || ''),
+          floor: a.floor || GUIDE_QUAD_FLOOR[a.quad] || 'brown',
+          boom: a.state === 'boom' ? 1 : 0,
+        });
+        break;
+      case 'tower':
+        push({ kind: 'tower', ...pos, r: a.r || 15 }, at); break;
+      case 'feather':
+        push({
+          kind: 'feather', ...pos,
+          size: a.size === 'big' ? 'big' : 'small',
+          r: a.r || 28, cleared: a.cleared ? 1 : 0,
+        }, at);
+        break;
+      case 'bird':
+        push({ kind: 'bird', ...pos, alive: a.state === 'alive' ? 1 : 0 }, at); break;
+      case 'xmark':
+        push({ kind: 'xmark', ...pos, size: a.size || 7 }, at); break;
+
+      // hole 是「場地特徵」而非可操作物件:P3 階段的場地定義已經畫了天坑
+      // (data/arenas/hells-kier.js 的 hole 欄位 + canvas.js setPhase)。
+      // 這裡刻意跳過,否則會在同一位置疊出第二層。
+      case 'hole':
+        break;
     }
   }
 
@@ -105,6 +141,13 @@ function convertGuideStep(step, running) {
       case 'arrow': {
         const a = point(an.from), b = point(an.to);
         push({ kind: 'arrow-line', x1: a.x, y1: a.y, x2: b.x, y2: b.y, color: guideColor(an.color || 'white') });
+        break;
+      }
+      // 場外的「詩」文字列。攻略是 chars 陣列,白板存成一個可編輯的字串。
+      case 'charStrip': {
+        const chars = an.chars || [];
+        if (!chars.length) break;
+        push({ kind: 'poem-strip', x: 0, y: 0, text: chars.join(''), side: an.side === 'west' ? 'west' : 'east' });
         break;
       }
       case 'arcArrow':
@@ -204,7 +247,8 @@ function applyGuideImport(state, steps, mode) {
 
 /* ── 彈窗介面 ───────────────────────────────────── */
 
-/** onRequestArena(raidId):由 app.js 提供,負責把白板切換到該攻略對應的場地/階段 */
+/** onRequestArena(raidId, guidePhase):由 app.js 提供,負責把白板切換到該攻略對應的場地/階段。
+ * guidePhase 為被選取章節的 phase(如 'P3'),跨階段混選時為 null。 */
 function initGuideImportUI(state, onRequestArena) {
   const modal = document.getElementById('import-modal');
   const openBtn = document.getElementById('import-guide-btn');
@@ -225,26 +269,65 @@ function initGuideImportUI(state, onRequestArena) {
     raidSelect.appendChild(opt);
   }
 
-  /** 目前列出的章節(全部章節時為所有有步驟的章節) */
+  /** 有步驟可導入的章節 */
+  function sectionsWithSteps() {
+    return (raidData ? (raidData.sections || []) : []).filter((s) => (s.steps || []).length);
+  }
+
+  /** 目前選項對應的章節。value 可為 '*'(全部)、'phase:<階段>'、或章節 id */
   function visibleSections() {
-    if (!raidData) return [];
-    const withSteps = (raidData.sections || []).filter((s) => (s.steps || []).length);
-    if (sectionSelect.value === '*') return withSteps;
-    return withSteps.filter((s) => s.id === sectionSelect.value);
+    const withSteps = sectionsWithSteps();
+    const v = sectionSelect.value;
+    if (v === '*') return withSteps;
+    if (v.startsWith('phase:')) {
+      const ph = v.slice('phase:'.length);
+      return withSteps.filter((s) => (s.phase || '') === ph);
+    }
+    return withSteps.filter((s) => s.id === v);
+  }
+
+  function sectionOption(s) {
+    const opt = document.createElement('option');
+    opt.value = s.id;
+    opt.textContent = `${s.title}(${s.steps.length} 格)`;
+    return opt;
   }
 
   function renderSections() {
     sectionSelect.innerHTML = '';
+    const withSteps = sectionsWithSteps();
+
     const all = document.createElement('option');
-    all.value = '*'; all.textContent = '★ 全部階段';
+    all.value = '*'; all.textContent = '★ 全部章節';
     sectionSelect.appendChild(all);
-    for (const s of (raidData.sections || [])) {
-      if (!(s.steps || []).length) continue;
-      const opt = document.createElement('option');
-      opt.value = s.id; opt.textContent = `${s.title}(${s.steps.length} 格)`;
-      sectionSelect.appendChild(opt);
+
+    // 攻略章節可選填 phase(P1/P2/P3)。有標的就依階段分組並提供「整個階段」選項;
+    // 沒標的攻略維持原本的單層列表。
+    const phases = [...new Set(withSteps.map((s) => s.phase || ''))];
+    const grouped = phases.some((p) => p);
+
+    if (!grouped) {
+      for (const s of withSteps) sectionSelect.appendChild(sectionOption(s));
+    } else {
+      for (const ph of phases) {
+        const inPhase = withSteps.filter((s) => (s.phase || '') === ph);
+        const label = ph || '其他';
+        const group = document.createElement('optgroup');
+        group.label = label;
+        const frames = inPhase.reduce((n, s) => n + s.steps.length, 0);
+        const phaseOpt = document.createElement('option');
+        phaseOpt.value = `phase:${ph}`;
+        phaseOpt.textContent = `◆ ${label} 全部(${frames} 格)`;
+        group.appendChild(phaseOpt);
+        for (const s of inPhase) group.appendChild(sectionOption(s));
+        sectionSelect.appendChild(group);
+      }
     }
-    sectionSelect.value = sectionSelect.options[1] ? sectionSelect.options[1].value : '*';
+
+    // 預設選第一個實際章節,而不是「全部」
+    const first = [...sectionSelect.querySelectorAll('option')]
+      .find((o) => o.value !== '*' && !o.value.startsWith('phase:'));
+    sectionSelect.value = first ? first.value : '*';
   }
 
   function renderSteps() {
@@ -255,7 +338,7 @@ function initGuideImportUI(state, onRequestArena) {
       if (multi) {
         const t = document.createElement('div');
         t.className = 'step-group-title';
-        t.textContent = sec.title;
+        t.textContent = (sec.phase ? `${sec.phase} · ` : '') + sec.title;
         stepList.appendChild(t);
       }
       sec.steps.forEach((step, i) => {
@@ -296,6 +379,16 @@ function initGuideImportUI(state, onRequestArena) {
     return checkedBoxes().map((cb) => byId.get(cb.dataset.sectionId).steps[Number(cb.dataset.stepIndex)]);
   }
 
+  /** 被選取章節的 phase。用來決定白板要切到哪一個場地階段(例如 P3 的中央天坑)。
+   * 跨階段混選時回傳 null,交給 app.js 沿用預設階段 —— 一次匯入只能套一種場地。 */
+  function selectedGuidePhase() {
+    const byId = new Map((raidData.sections || []).map((s) => [s.id, s]));
+    const phases = new Set(
+      checkedBoxes().map((cb) => (byId.get(cb.dataset.sectionId) || {}).phase || '')
+    );
+    return phases.size === 1 ? [...phases][0] : null;
+  }
+
   async function loadRaid(raidId) {
     raidData = await loadGuideRaid(raidId);
     renderSections();
@@ -305,8 +398,9 @@ function initGuideImportUI(state, onRequestArena) {
   async function runImport(mode) {
     const steps = selectedSteps();
     if (!steps.length) return;
+    const guidePhase = selectedGuidePhase();
     try {
-      await onRequestArena(raidSelect.value);
+      await onRequestArena(raidSelect.value, guidePhase);
       applyGuideImport(state, steps, mode);
       modal.hidden = true;
     } catch (e) {

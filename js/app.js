@@ -13,21 +13,71 @@ function inlineFormat(s) {
     .replace(/`(.+?)`/g, '<code>$1</code>');
 }
 
-/** 極簡 Markdown:**粗體**、`code`、{{role:標籤}}、換行、- 清單 */
+/** 表格分隔列,例如 |---|---|  或 | :--- | ---: | */
+function isTableRule(t) {
+  return /^\|(\s*:?-{2,}:?\s*\|)+$/.test(t);
+}
+
+/** 把 | a | b | 切成 ['a','b'];儲存格內可用 <br> 換行 */
+function splitRow(t) {
+  return t.replace(/^\|/, '').replace(/\|$/, '').split('|').map((c) => c.trim());
+}
+
+/** 極簡 Markdown:**粗體**、`code`、{{role:標籤}}、- 清單、| 表格 | */
 function md(text) {
   const lines = text.trim().split('\n');
   let html = '', inList = false;
-  for (const line of lines) {
-    const t = line.trim();
-    if (t.startsWith('- ')) {
+
+  const closeList = () => { if (inList) { html += '</ul>'; inList = false; } };
+
+  for (let i = 0; i < lines.length; i++) {
+    const t = lines[i].trim();
+
+    // ── 表格:連續的 | ... | 行,第二行為分隔列時視為有表頭 ──
+    if (t.startsWith('|') && t.endsWith('|') && !isTableRule(t)) {
+      const rows = [];
+      let hasHead = false;
+      while (i < lines.length) {
+        const r = lines[i].trim();
+        if (!r.startsWith('|') || !r.endsWith('|')) break;
+        if (isTableRule(r)) { hasHead = rows.length === 1; i++; continue; }
+        rows.push(splitRow(r));
+        i++;
+      }
+      i--; // 迴圈外層會再 ++
+      if (rows.length) {
+        closeList();
+        html += '<table class="md-table">';
+        rows.forEach((cells, ri) => {
+          const tag = (hasHead && ri === 0) ? 'th' : 'td';
+          const tds = cells
+            .map((c) => `<${tag}>${inlineFormat(c).replace(/&lt;br\s*\/?&gt;/g, '<br>')}</${tag}>`)
+            .join('');
+          html += `<tr>${tds}</tr>`;
+        });
+        html += '</table>';
+      }
+      continue;
+    }
+
+    if (t.startsWith('> ')) {
+      closeList();
+      html += `<blockquote>${inlineFormat(t.slice(2))}</blockquote>`;
+    } else if (t.startsWith('- ')) {
       if (!inList) { html += '<ul>'; inList = true; }
       html += `<li>${inlineFormat(t.slice(2))}</li>`;
+    } else if (t.startsWith('### ')) {
+      closeList();
+      html += `<h3 class="md-h3">${inlineFormat(t.slice(4))}</h3>`;
+    } else if (t === '---') {
+      closeList();
+      html += '<hr class="md-hr">';
     } else {
-      if (inList) { html += '</ul>'; inList = false; }
+      closeList();
       if (t) html += `<p>${inlineFormat(t)}</p>`;
     }
   }
-  if (inList) html += '</ul>';
+  closeList();
   return html;
 }
 
@@ -120,12 +170,24 @@ async function main() {
   // ── 時間軸 ──────────────────────────────
   const timeline = timelineEl;
   let currentSection = null;
+  // 章節按鈕另存一份:插入階段分隔後 timeline.children 的索引不再等於章節索引
+  const timelineItems = [];
+  let lastPhase = null;
   data.sections.forEach((sec, i) => {
+    // 章節可選填 phase(如 P1/P2/P3);沒填的攻略維持單層列表
+    if (sec.phase && sec.phase !== lastPhase) {
+      const head = document.createElement('div');
+      head.className = 'timeline-phase';
+      head.textContent = sec.phase;
+      timeline.appendChild(head);
+      lastPhase = sec.phase;
+    }
     const item = document.createElement('button');
-    item.className = 'timeline-item';
-    item.innerHTML = `<span class="timeline-num">${i + 1}</span><span>${sec.title}</span>`;
+    item.className = 'timeline-item' + (sec.phase ? ' timeline-item-nested' : '');
+    item.innerHTML = `<span class="timeline-num">${i + 1}</span><span>${escapeHtml(sec.title)}</span>`;
     item.addEventListener('click', () => { setPage('guide'); showSection(i); });
     timeline.appendChild(item);
+    timelineItems.push(item);
   });
 
   const secTitle = document.getElementById('section-title');
@@ -135,8 +197,9 @@ async function main() {
   function showSection(i) {
     currentSection = i;
     const sec = data.sections[i];
-    [...timeline.children].forEach((n, j) => n.classList.toggle('active', j === i));
-    secTitle.textContent = sec.title;
+    timelineItems.forEach((n, j) => n.classList.toggle('active', j === i));
+    secTitle.innerHTML = (sec.phase ? `<span class="section-phase">${escapeHtml(sec.phase)}</span>` : '')
+      + escapeHtml(sec.title);
     secBody.innerHTML = md(sec.body || '');
     player.load(sec.steps || []);
     renderRoleNotes(sec);
@@ -156,7 +219,7 @@ async function main() {
       const mine = selectedRole && rolesInKey.includes(selectedRole);
       const div = document.createElement('div');
       div.className = 'role-note' + (mine ? ' mine' : '');
-      div.innerHTML = `<span class="role-note-tag role-${roleTypeOfKey(rolesInKey)}">${role}</span><span>${note}</span>`;
+      div.innerHTML = `<span class="role-note-tag role-${roleTypeOfKey(rolesInKey)}">${role}</span><span>${inlineFormat(note)}</span>`;
       roleNotesEl.appendChild(div);
     }
   }

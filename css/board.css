@@ -208,6 +208,9 @@ a { color: var(--accent); text-decoration: none; }
 .list-icon-btn.danger:hover { background: #7a3030; }
 
 .board-floor-shape { fill: #3a3226; stroke: #17130c; stroke-width: 2.5; }
+/* 場地中央簍空區(如極朱雀 P3 天坑) */
+.board-floor-hole { fill: #08090c; stroke: none; }
+.board-floor-hole-rim { fill: none; stroke: #ff6b6b; stroke-width: 1.8; stroke-dasharray: 5 3; opacity: .75; }
 
 /* 場地標記 */
 .token.token-waymark .wm-circle { fill: rgba(0,0,0,.35); stroke-width: 1.6; }
@@ -280,6 +283,46 @@ a { color: var(--accent); text-decoration: none; }
 .tentacle-body { fill: #4a7c3f; stroke: #d8f0c8; stroke-width: 1.2; }
 .tentacle-label { font-size: 6px; font-weight: 700; fill: #fff; text-anchor: middle; dominant-baseline: central; }
 
+/* ── 極朱雀:朱紅旋律四色假名地板 ────────── */
+.quad .quad-fill { stroke: rgba(0,0,0,.45); stroke-width: 0.8; }
+.quad-purple .quad-fill { fill: #7b3f8f; }
+.quad-brown  .quad-fill { fill: #55432e; }
+.quad-green  .quad-fill { fill: #6f8a63; }
+.quad-yellow .quad-fill { fill: #c9a028; }
+.quad-boom .quad-fill { fill: #ff9126; }
+/* stroke:none:文字不要被外層 ann-* 的 stroke 描邊糊掉 */
+.quad-glyph {
+  font-size: 17px; font-weight: 700; fill: rgba(255,255,255,.85); stroke: none;
+  text-anchor: middle; dominant-baseline: central; pointer-events: none;
+}
+.quad-boom .quad-glyph { fill: rgba(60,20,0,.75); }
+
+/* 灼熱旋律的塔 */
+.tower-ring { fill: rgba(255,196,64,.16); stroke: #ffc440; stroke-width: 1.8; }
+.tower-core { fill: rgba(255,196,64,.55); }
+
+/* 蘇生之羽:羽毛與黃圈 */
+.feather-aura { fill: rgba(214,164,58,.28); stroke: rgba(230,186,80,.7); stroke-width: 0.9; }
+.feather-quill { fill: #f0b429; stroke: #7a4a10; stroke-width: 0.7; }
+.feather-big .feather-quill { fill: #ff9f1c; }
+.feather-cleared .feather-quill { fill: #4a4438; stroke: #2a261e; }
+
+/* 火焰鳥 */
+.bird-dead .bird-body { fill: #a3312c; stroke: #4d120f; stroke-width: 0.8; }
+.bird-alive .bird-body { fill: #ffb52e; stroke: #7a4a10; stroke-width: 0.8; }
+
+/* 禁止站位 */
+.xmark path { stroke: #ff3b30; stroke-width: 2.6; stroke-linecap: round; fill: none; }
+
+/* 場外「詩」文字列 */
+.ps-cell circle { fill: #2b2318; stroke: #6b5a3c; stroke-width: 0.8; }
+.ps-purple circle { fill: #5c2f6b; } .ps-brown circle { fill: #4a3a28; }
+.ps-green  circle { fill: #55694c; } .ps-yellow circle { fill: #9c7c1f; }
+.ps-glyph {
+  font-size: 10px; font-weight: 700; fill: #f2e8d5; stroke: none;
+  text-anchor: middle; dominant-baseline: central;
+}
+
 .marker-share-outer { fill: none; stroke: #ffb347; stroke-width: 1.6; stroke-dasharray: 4 2; }
 .marker-share-inner { fill: rgba(255,179,71,.3); stroke: #ffb347; stroke-width: 1.2; }
 .marker-triangle { fill: rgba(255,90,90,.9); stroke: #fff; stroke-width: 1; }
@@ -287,8 +330,16 @@ a { color: var(--accent); text-decoration: none; }
 .marker-death-text { font-size: 12px; text-anchor: middle; dominant-baseline: central; }
 .marker-forbid-circle { fill: rgba(255,59,59,.18); stroke: #ff3b3b; stroke-width: 2; }
 .marker-forbid-slash { stroke: #ff3b3b; stroke-width: 2; }
-.marker-text-bg { fill: rgba(16,20,24,.85); stroke: var(--border); stroke-width: 1; rx: 4; }
-.marker-text-label { font-size: 8px; font-weight: 700; fill: currentColor; text-anchor: middle; dominant-baseline: central; }
+.marker-text-bg { fill: rgba(16,20,24,.92); stroke: var(--border); stroke-width: 1; rx: 4; }
+/* stroke:none 是必要的 —— 外層 .ann-<color> 同時設了 stroke,會被 <text> 繼承,
+ * 中文字在 8px 下會被自己的顏色描邊把字腔填滿,糊成一團無法辨識。 */
+.marker-text-label {
+  font-size: 8px; font-weight: 600; fill: currentColor; stroke: none;
+  text-anchor: middle; dominant-baseline: central;
+  paint-order: stroke; letter-spacing: .02em;
+}
+/* 同一個繼承問題:☠ 也在 ann-* 群組內 */
+.marker-death-text { stroke: none; }
 .marker-target-corner { fill: none; stroke: currentColor; stroke-width: 2; }
 
 /* ── 時間軸列 ─────────────────────── */

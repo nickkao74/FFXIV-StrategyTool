@@ -25,7 +25,35 @@ const OBJECT_DEFAULTS = {
   // 副本專屬(見 data/board-special-objects.js)
   'blackhole': { r: 10 },
   'tentacle': { label: '1' },
+  // 極朱雀
+  'quadrant': { quad: 'ne', glyph: '水', floor: 'brown', boom: 0 },
+  'tower': { r: 15 },
+  'feather': { size: 'small', r: 28, cleared: 0 },
+  'bird': { alive: 0 },
+  'xmark': { size: 7 },
+  'poem-strip': { text: '十之水向十之水向', side: 'east' },
 };
+
+/* 極朱雀朱紅旋律:四塊地板位置固定,只有假名與配色不同 */
+const QUAD_SECTORS = {
+  ne: { a0: 0, a1: 90 }, se: { a0: 90, a1: 180 },
+  sw: { a0: 180, a1: 270 }, nw: { a0: 270, a1: 360 },
+};
+const POEM_FLOOR = { 水: 'brown', 向: 'yellow', 十: 'green', 之: 'purple' };
+
+function quadDeg(deg, r) {
+  const rad = (deg - 90) * Math.PI / 180;
+  return { x: +(r * Math.cos(rad)).toFixed(2), y: +(r * Math.sin(rad)).toFixed(2) };
+}
+
+/** 全角字元(CJK、全角標點、假名)約佔一個字寬,其餘半角約 0.55 倍。
+ * 用於背景板寬度估算 —— renderBoardObject 回傳的節點尚未進 DOM,無法量測。 */
+const FULLWIDTH_RE = /[ᄀ-ᅟ⺀-〾ぁ-㏿㐀-䶿一-鿿ꀀ-꓏가-힣豈-﫿︰-﹏＀-｠￠-￦]/;
+function estimateTextWidth(text, fontSize) {
+  let units = 0;
+  for (const ch of String(text)) units += FULLWIDTH_RE.test(ch) ? 1 : 0.55;
+  return units * fontSize;
+}
 
 function bo(name, attrs = {}, parent = null) {
   const node = document.createElementNS('http://www.w3.org/2000/svg', name);
@@ -120,6 +148,74 @@ function renderBoardObject(obj, state) {
       t.textContent = obj.label != null ? obj.label : '';
       return g;
     }
+    // ── 極朱雀專屬 ───────────────────────────────
+    // 四色假名地板。位置由 quad 決定(場地固定),所以不吃 p 的位移。
+    case 'quadrant': {
+      const sec = QUAD_SECTORS[obj.quad] || QUAD_SECTORS.ne;
+      const r = 100;
+      const p0 = quadDeg(sec.a0, r), p1 = quadDeg(sec.a1, r);
+      const g = bo('g', {
+        class: `bobj quad quad-${obj.floor || 'brown'}${+obj.boom ? ' quad-boom' : ''}`,
+      });
+      bo('path', {
+        class: 'quad-fill',
+        d: `M0,0 L${p0.x},${p0.y} A${r},${r} 0 0,1 ${p1.x},${p1.y} Z`,
+      }, g);
+      const c = quadDeg(sec.a0 + 45, 58);
+      bo('text', { x: c.x, y: c.y, class: 'quad-glyph' }, g).textContent = obj.glyph || '';
+      return g;
+    }
+    case 'tower': {
+      const g = bo('g', { class: 'bobj tower' });
+      bo('circle', { cx: p.x, cy: p.y, r: obj.r, class: 'tower-ring' }, g);
+      bo('circle', { cx: p.x, cy: p.y, r: obj.r * 0.42, class: 'tower-core' }, g);
+      return g;
+    }
+    case 'feather': {
+      const big = obj.size === 'big';
+      const g = bo('g', {
+        class: `bobj feather feather-${big ? 'big' : 'small'}${+obj.cleared ? ' feather-cleared' : ''}`,
+      });
+      if (!+obj.cleared) bo('circle', { cx: p.x, cy: p.y, r: obj.r, class: 'feather-aura' }, g);
+      const h = big ? 13 : 8;
+      bo('path', {
+        class: 'feather-quill',
+        d: `M${p.x},${p.y - h} Q${p.x + h * 0.42},${p.y} ${p.x},${p.y + h} Q${p.x - h * 0.42},${p.y} ${p.x},${p.y - h} Z`,
+      }, g);
+      return g;
+    }
+    case 'bird': {
+      const g = bo('g', { class: `bobj bird bird-${+obj.alive ? 'alive' : 'dead'}` });
+      bo('path', {
+        class: 'bird-body',
+        d: `M${p.x - 7},${p.y + 4} L${p.x},${p.y - 6} L${p.x + 7},${p.y + 4} L${p.x},${p.y + 1} Z`,
+      }, g);
+      return g;
+    }
+    case 'xmark': {
+      const s = obj.size || 7;
+      const g = bo('g', { class: 'bobj xmark' });
+      bo('path', {
+        d: `M${p.x - s},${p.y - s} L${p.x + s},${p.y + s} M${p.x + s},${p.y - s} L${p.x - s},${p.y + s}`,
+      }, g);
+      return g;
+    }
+    // 場外的「詩」文字列。文字順序就是地板爆炸順序,是這個機制的判讀依據。
+    case 'poem-strip': {
+      const chars = [...String(obj.text || '')];
+      const g = bo('g', { class: 'bobj poem-strip' });
+      if (!chars.length) return g;
+      const x = obj.side === 'west' ? -112 : 112;
+      const gap = chars.length > 4 ? 25 : 34;
+      const y0 = -((chars.length - 1) * gap) / 2;
+      chars.forEach((ch, i) => {
+        const y = y0 + i * gap;
+        const cg = bo('g', { class: `ps-cell ps-${POEM_FLOOR[ch] || 'generic'}` }, g);
+        bo('circle', { cx: x, cy: y, r: gap * 0.42 }, cg);
+        bo('text', { x, y: y + 0.5, class: 'ps-glyph' }, cg).textContent = ch;
+      });
+      return g;
+    }
     case 'marker':
       return renderBoardMarker(obj, p);
     default:
@@ -163,8 +259,9 @@ function renderBoardMarker(obj, p) {
       const bg = bo('rect', { x: -1, y: -9, width: 2, height: 18, class: 'marker-text-bg' }, g);
       const t = bo('text', { x: 0, y: 0.5, class: 'marker-text-label' }, g);
       t.textContent = obj.text || '';
-      // 依文字寬度粗估調整背景寬度
-      const w = Math.max(18, (obj.text || '').length * 8 + 8);
+      // 節點還沒進 DOM,量不到實際寬度,只能估。全角字約 1em、半角約 0.55em,
+      // 全部當 1em 算會讓英數字串的底板明顯過寬。
+      const w = Math.max(18, estimateTextWidth(obj.text || '', 8) + 10);
       bg.setAttribute('x', -w / 2); bg.setAttribute('width', w);
       break;
     }

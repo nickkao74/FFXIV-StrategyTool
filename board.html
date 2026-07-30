@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="zh-Hant">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FFXIV 戰術白板</title>
-<link rel="stylesheet" href="css/board.css">
+<link rel="stylesheet" href="css/board.css?v=3">
 </head>
 <body>
 
@@ -134,17 +134,17 @@
   </div>
 </div>
 
-<script src="js/board/gate.js"></script>
-<script src="js/board/state.js"></script>
-<script src="js/board/objects.js"></script>
-<script src="js/board/canvas.js"></script>
-<script src="js/board/history.js"></script>
-<script src="data/arenas/index.js"></script>
-<script src="data/raids.js"></script>
-<script src="data/board-special-objects.js"></script>
-<script src="js/board/import.js"></script>
-<script src="js/board/storage.js"></script>
-<script src="js/board/app.js"></script>
+<script src="js/board/gate.js?v=1"></script>
+<script src="js/board/state.js?v=1"></script>
+<script src="js/board/objects.js?v=1"></script>
+<script src="js/board/canvas.js?v=1"></script>
+<script src="js/board/history.js?v=1"></script>
+<script src="data/arenas/index.js?v=1"></script>
+<script src="data/raids.js?v=1"></script>
+<script src="data/board-special-objects.js?v=1"></script>
+<script src="js/board/import.js?v=1"></script>
+<script src="js/board/storage.js?v=1"></script>
+<script src="js/board/app.js?v=1"></script>
 <script>
   boardGateInit(() => { boardMain().catch(e => { console.error(e); alert('載入失敗:' + e.message); }); });
 </script>

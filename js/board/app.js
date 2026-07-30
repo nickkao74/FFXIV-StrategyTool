@@ -52,6 +52,25 @@ const PROPERTY_SCHEMAS = {
   'marker': [], // 依 markerType 動態附加(見 renderPropertyPanel)
   'blackhole': [{ key: 'r', label: '半徑', type: 'number', min: 2, max: 60 }],
   'tentacle': [{ key: 'label', label: '編號', type: 'text' }],
+  // 極朱雀。boom/cleared/alive 用 0/1 的 select 當開關,對應攻略的 state 欄位
+  'quadrant': [
+    { key: 'quad', label: '象限', type: 'select', options: [['nw', '西北'], ['ne', '東北'], ['sw', '西南'], ['se', '東南']] },
+    { key: 'glyph', label: '假名', type: 'text' },
+    { key: 'floor', label: '配色', type: 'select', options: [['purple', '紫(之)'], ['brown', '土褐(水)'], ['green', '綠(十)'], ['yellow', '黃(向)']] },
+    { key: 'boom', label: '爆炸中', type: 'select', options: [[0, '否'], [1, '是']] },
+  ],
+  'tower': [{ key: 'r', label: '半徑', type: 'number', min: 4, max: 40 }],
+  'feather': [
+    { key: 'size', label: '大小', type: 'select', options: [['small', '小羽毛'], ['big', '大羽毛(尾羽)']] },
+    { key: 'r', label: '黃圈半徑', type: 'number', min: 4, max: 60 },
+    { key: 'cleared', label: '已擊殺', type: 'select', options: [[0, '否'], [1, '是']] },
+  ],
+  'bird': [{ key: 'alive', label: '狀態', type: 'select', options: [[0, '屍體'], [1, '已復活']] }],
+  'xmark': [{ key: 'size', label: '大小', type: 'number', min: 3, max: 20 }],
+  'poem-strip': [
+    { key: 'text', label: '文字(依爆炸序)', type: 'text' },
+    { key: 'side', label: '位置', type: 'select', options: [['east', '東側'], ['west', '西側']] },
+  ],
 };
 
 function loadArenaScript(arenaId) {
@@ -76,6 +95,8 @@ const OBJECT_LABELS = {
   'aoe-circle': '圓形地毯', 'aoe-donut': '環形地毯', 'aoe-rect': '長方地毯', 'aoe-cone': '扇形地毯',
   'knockback': '擊退', 'arrow-line': '直線箭頭', 'arrow-arc': '弧形箭頭', 'tether': '連線',
   'blackhole': '黑洞', 'tentacle': '觸手',
+  'quadrant': '假名地板', 'tower': '塔', 'feather': '羽毛', 'bird': '火焰鳥',
+  'xmark': '禁止標記', 'poem-strip': '詩文字列',
   'marker': { share: '分攤標記', triangle: '三角標記', target: '目標標記', death: '死刑標記', forbid: '禁止標記', text: '文字標記' },
 };
 function objectLabel(o) {
@@ -90,7 +111,7 @@ const OBJECT_GROUPS = [
   { id: 'arrow', title: '箭頭', match: (o) => ['arrow-line', 'arrow-arc'].includes(o.kind) },
   { id: 'tether', title: '連線', match: (o) => o.kind === 'tether' },
   { id: 'marker', title: '標註', match: (o) => o.kind === 'marker' },
-  { id: 'special', title: '副本專屬', match: (o) => ['blackhole', 'tentacle'].includes(o.kind) },
+  { id: 'special', title: '副本專屬', match: (o) => ['blackhole', 'tentacle', 'quadrant', 'tower', 'feather', 'bird', 'xmark', 'poem-strip'].includes(o.kind) },
 ];
 
 async function boardMain() {
@@ -158,12 +179,17 @@ async function boardMain() {
     history.reset();   // 載入整份盤面等於全新起點
   }
 
-  /** 導入攻略前把白板切到該攻略對應的場地/階段;找不到對照就沿用目前場地 */
-  async function ensureArenaForRaid(raidId) {
+  /** 導入攻略前把白板切到該攻略對應的場地/階段;找不到對照就沿用目前場地。
+   * guidePhase 是被選取章節的 phase 欄位(如 'P3')。同一個 guideRaidId 可能對應多個
+   * 白板階段(P1 完整地板 / P3 中央天坑),必須靠它才選得對;沒有就退回第一個相符階段。 */
+  async function ensureArenaForRaid(raidId, guidePhase) {
     for (const a of index) {
       const def = await loadArenaScript(a.id);
-      const phase = def.phases.find((p) => p.guideRaidId === raidId);
-      if (!phase) continue;
+      const matching = def.phases.filter((p) => p.guideRaidId === raidId);
+      if (!matching.length) continue;
+      const phase =
+        (guidePhase && matching.find((p) => (p.guidePhases || []).includes(guidePhase)))
+        || matching[0];
       if (state.arenaId === def.id && state.phaseId === phase.id) return;
       currentArenaDef = def;
       arenaSelect.value = def.id;
@@ -743,9 +769,9 @@ async function boardMain() {
     renderFrameNote();
   });
 
-  initGuideImportUI(state, async (raidId) => {
+  initGuideImportUI(state, async (raidId, guidePhase) => {
     stopPlayback();
-    await ensureArenaForRaid(raidId);
+    await ensureArenaForRaid(raidId, guidePhase);
   });
 
   initBoardStorageUI(state, async (data) => {
