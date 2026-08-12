@@ -14,6 +14,7 @@
   --ice: #ffd75e;
   --thunder: #7fb6ff;
   --void: #b06ce0;
+  --wind: #6ee0a8;
 }
 
 * { box-sizing: border-box; }
@@ -232,10 +233,18 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
   font-size: 10px; font-weight: 700; text-anchor: middle; dominant-baseline: central;
   paint-order: stroke; stroke: rgba(6,8,11,.85); stroke-width: 2.4;
 }
-.waymark-A circle { stroke: #ff6b6b; } .waymark-A text { fill: #ff6b6b; }
-.waymark-B circle { stroke: #ffd75e; } .waymark-B text { fill: #ffd75e; }
-.waymark-C circle { stroke: #7fb6ff; } .waymark-C text { fill: #7fb6ff; }
-.waymark-D circle { stroke: #c98fff; } .waymark-D text { fill: #c98fff; }
+/* 未指定的標記先給一組保底配色,避免變成看不見的黑字黑圈 */
+.waymark circle { stroke: #dbe4ee; }
+.waymark text { fill: #dbe4ee; }
+
+.waymark-A circle, .waymark-1 circle { stroke: #ff6b6b; }
+.waymark-A text,   .waymark-1 text   { fill: #ff6b6b; }
+.waymark-B circle, .waymark-2 circle { stroke: #ffd75e; }
+.waymark-B text,   .waymark-2 text   { fill: #ffd75e; }
+.waymark-C circle, .waymark-3 circle { stroke: #7fb6ff; }
+.waymark-C text,   .waymark-3 text   { fill: #7fb6ff; }
+.waymark-D circle, .waymark-4 circle { stroke: #c98fff; }
+.waymark-D text,   .waymark-4 text   { fill: #c98fff; }
 
 .actor .actor-body { stroke: #0c1116; stroke-width: 1.2; }
 .actor-tank .actor-body { fill: var(--tank); }
@@ -263,6 +272,7 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
 .aoe-thunder { fill: var(--thunder); }
 .aoe-void { fill: var(--void); }
 .aoe-death { fill: #ff2a2a; }
+.aoe-wind { fill: var(--wind); }
 .aoe-generic { fill: #cccccc; }
 
 .blackhole-glow { fill: #1d2f7a; opacity: 0.5; }
@@ -275,6 +285,7 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
 .tether { stroke-width: 1.2; stroke-dasharray: 3 2; }
 .tether-purple { stroke: #d24ce0; }
 .tether-white { stroke: #ddd; }
+.tether-green { stroke: #5fe08a; }
 
 .ann-arrow, .ann-arc { fill: none; stroke-width: 2.4; }
 .ann-thin { stroke-width: 1.6; }
