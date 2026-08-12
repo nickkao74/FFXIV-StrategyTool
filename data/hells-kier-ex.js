@@ -1,6 +1,13 @@
-﻿/* 極朱雀徵魂戰(Hell's Kier Extreme)
- * 資料來源:菓子君_Okashi 講解圖 + 灰機機制文本 + 繁中整理 PDF
- * 詳見 _OriginalReferences/朱雀詩魂戰-整理.md
+/* 極朱雀徵魂戰(Hell's Kier Extreme)
+ *
+ * ⚠ 自動產生,請勿手改 —— 下次重跑會被覆蓋。
+ *   文字要改 → data/hells-kier-ex-legacy.js
+ *   幾何要改 → _Planning/BossMod逆向解析/tools/rebuild-hells-kier.js
+ *   重新產生 → node "_Planning/BossMod逆向解析/tools/rebuild-hells-kier.js"
+ *
+ * 文字內容沿用封存版,沙盤圖幾何改採 BossMod Reborn 的實測數值。
+ * 換算:場地名目半徑 20m = 圖上 100 單位 → 1m = 5 單位。
+ * 逆向依據見 _Planning/BossMod逆向解析/。
  */
 window.RAID_DATA = window.RAID_DATA || {};
 window.RAID_DATA['hells-kier-ex'] = {
@@ -9,17 +16,44 @@ window.RAID_DATA['hells-kier-ex'] = {
   "arena": {
     "shape": "circle",
     "waymarks": [
-      { "id": "A", "x": 0, "y": -95 },
-      { "id": "B", "x": 95, "y": 0 },
-      { "id": "C", "x": 0, "y": 95 },
-      { "id": "D", "x": -95, "y": 0 }
+      {
+        "id": "A",
+        "x": 0,
+        "y": -95
+      },
+      {
+        "id": "B",
+        "x": 95,
+        "y": 0
+      },
+      {
+        "id": "C",
+        "x": 0,
+        "y": 95
+      },
+      {
+        "id": "D",
+        "x": -95,
+        "y": 0
+      }
     ]
   },
-  "roles": ["MT", "ST", "H1", "H2", "D1", "D2", "D3", "D4"],
-
+  "roles": [
+    "MT",
+    "ST",
+    "H1",
+    "H2",
+    "D1",
+    "D2",
+    "D3",
+    "D4"
+  ],
   "cheatsheet": [
     {
-      "id": "bird", "title": "火焰鳥(小鳥)", "tag": "P1", "color": "fire",
+      "id": "bird",
+      "title": "火焰鳥(小鳥)",
+      "tag": "P1",
+      "color": "fire",
       "points": [
         "**機制**:中央四隻鳥屍體被圈碰到就復活,復活後沒快點打掉就升天團滅。",
         "**判讀**:看是誰的圈碰到鳥 —— **紅圈**(玩家)= +1 檔血、連線放圈者;**黃圈**(羽毛)= **+14 檔血且亂連線**。",
@@ -27,7 +61,10 @@ window.RAID_DATA['hells-kier-ex'] = {
       ]
     },
     {
-      "id": "feather", "title": "蘇生之羽", "tag": "P1", "color": "accent",
+      "id": "feather",
+      "title": "蘇生之羽",
+      "tag": "P1",
+      "color": "accent",
       "points": [
         "**機制**:9 根羽毛各帶一個黃圈鋪滿場地,**只打小羽毛**,打掉的位置就變成安全空檔。",
         "**判讀**:看小羽毛在**斜位 → X 字型**、在**正位 → 十字型**。",
@@ -35,7 +72,10 @@ window.RAID_DATA['hells-kier-ex'] = {
       ]
     },
     {
-      "id": "score", "title": "P2 音遊", "tag": "P2", "color": "ice",
+      "id": "score",
+      "title": "P2 音遊",
+      "tag": "P2",
+      "color": "ice",
       "points": [
         "**機制**:8 人各站一圈吃藍球(3 顆 + 7 顆),滿 **10 層傷害提高**;漏球累積 BOSS 能量,**滿 100 團滅**。",
         "**判讀**:看自己圈內地板的**箭頭指向**。",
@@ -43,7 +83,10 @@ window.RAID_DATA['hells-kier-ex'] = {
       ]
     },
     {
-      "id": "melody", "title": "引誘 / 拒絕的旋律", "tag": "P3", "color": "void",
+      "id": "melody",
+      "title": "引誘 / 拒絕的旋律",
+      "tag": "P3",
+      "color": "void",
       "points": [
         "**機制**:全體強制位移。中央是天坑,方向判錯就摔死。",
         "**判讀**:**聽到笛聲就看技能名** —— 引誘 = 往內拉、拒絕 = 往外推。P3 第一次固定是引誘。",
@@ -51,7 +94,10 @@ window.RAID_DATA['hells-kier-ex'] = {
       ]
     },
     {
-      "id": "gui", "title": "鬼宿腳(坦克死刑)", "tag": "P3", "color": "thunder",
+      "id": "gui",
+      "title": "鬼宿腳(坦克死刑)",
+      "tag": "P3",
+      "color": "thunder",
       "points": [
         "**機制**:兩段 —— **① 連擊**(累加易傷 debuff) → **② 正面 180° 扇形即死**。",
         "**判讀**:**面向在連擊開始後鎖定** —— 坦克站哪,危險半場就是哪。",
@@ -59,7 +105,10 @@ window.RAID_DATA['hells-kier-ex'] = {
       ]
     },
     {
-      "id": "floor", "title": "朱紅旋律(四色地板)", "tag": "P3", "color": "fire",
+      "id": "floor",
+      "title": "朱紅旋律(四色地板)",
+      "tag": "P3",
+      "color": "fire",
       "points": [
         "**機制**:四塊固定的假名地板依場外文字順序爆炸,中招 = 大傷害 + 3 秒眩暈。",
         "**判讀**:記 **① = 第一個爆的**、**③ = ①對面**、**②/④ = ①兩側**;**看第 4、5 字** —— 不同 = 時鐘型、相同 = 對稱型。",
@@ -67,7 +116,10 @@ window.RAID_DATA['hells-kier-ex'] = {
       ]
     },
     {
-      "id": "puppet", "title": "傀儡旋律(強制位移)", "tag": "P3", "color": "void",
+      "id": "puppet",
+      "title": "傀儡旋律(強制位移)",
+      "tag": "P3",
+      "color": "void",
       "points": [
         "**機制**:被場外的「炎」連線,倒數結束後朝固定方向強制位移一段距離。",
         "**判讀**:方向**只有東西南北四種** —— 看**箭頭圖示的指向**,不是看你到箭頭的連線方向。",
@@ -75,7 +127,10 @@ window.RAID_DATA['hells-kier-ex'] = {
       ]
     },
     {
-      "id": "tower", "title": "灼熱旋律(踩塔)", "tag": "P3", "color": "accent",
+      "id": "tower",
+      "title": "灼熱旋律(踩塔)",
+      "tag": "P3",
+      "color": "accent",
       "points": [
         "**機制**:A/B/C/D 最外緣出現四個塔,沒踩滿就全體**大燃燒** + 傷害降低。",
         "**判讀**:看自己**有沒有紅圈** —— 有紅圈的人**不能踩塔**。",
@@ -83,7 +138,6 @@ window.RAID_DATA['hells-kier-ex'] = {
       ]
     }
   ],
-
   "sections": [
     {
       "id": "intro",
@@ -103,27 +157,90 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "【X 字型分組】小羽毛在斜位時的站位:MT/D1→1(西北)、ST/D2→2(東北)、H1/D3→3(西南)、H2/D4→4(東南)",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "actors": {
-            "MT": { "x": -60, "y": -60 }, "D1": { "x": -40, "y": -40 },
-            "ST": { "x": 60, "y": -60 }, "D2": { "x": 40, "y": -40 },
-            "H1": { "x": -60, "y": 60 }, "D3": { "x": -40, "y": 40 },
-            "H2": { "x": 60, "y": 60 }, "D4": { "x": 40, "y": 40 }
+            "MT": {
+              "x": -60,
+              "y": -60
+            },
+            "D1": {
+              "x": -40,
+              "y": -40
+            },
+            "ST": {
+              "x": 60,
+              "y": -60
+            },
+            "D2": {
+              "x": 40,
+              "y": -40
+            },
+            "H1": {
+              "x": -60,
+              "y": 60
+            },
+            "D3": {
+              "x": -40,
+              "y": 40
+            },
+            "H2": {
+              "x": 60,
+              "y": 60
+            },
+            "D4": {
+              "x": 40,
+              "y": 40
+            }
           }
         },
         {
           "caption": "【十字型分組】小羽毛在正位時的站位:MT/D1→A、ST/D2→B、H1/D3→D、H2/D4→C。這也是 P3 踩塔的預備位",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "actors": {
-            "MT": { "x": 0, "y": -80 }, "D1": { "x": 0, "y": -56 },
-            "ST": { "x": 80, "y": 0 }, "D2": { "x": 56, "y": 0 },
-            "H1": { "x": -80, "y": 0 }, "D3": { "x": -56, "y": 0 },
-            "H2": { "x": 0, "y": 80 }, "D4": { "x": 0, "y": 56 }
+            "MT": {
+              "x": 0,
+              "y": -80
+            },
+            "D1": {
+              "x": 0,
+              "y": -56
+            },
+            "ST": {
+              "x": 80,
+              "y": 0
+            },
+            "D2": {
+              "x": 56,
+              "y": 0
+            },
+            "H1": {
+              "x": -80,
+              "y": 0
+            },
+            "D3": {
+              "x": -56,
+              "y": 0
+            },
+            "H2": {
+              "x": 0,
+              "y": 80
+            },
+            "D4": {
+              "x": 0,
+              "y": 56
+            }
           }
         }
       ]
     },
-
     {
       "id": "p1-bird",
       "phase": "P1",
@@ -137,23 +254,82 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "四隻火焰鳥屍體固定在中央區的四個斜向位置(紅色)。紅圈爆炸前不要靠近中間,以免提前復活",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "bird", "at": [-18, -18], "state": "dead" },
-            { "type": "bird", "at": [18, -18], "state": "dead" },
-            { "type": "bird", "at": [-18, 18], "state": "dead" },
-            { "type": "bird", "at": [18, 18], "state": "dead" }
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                18
+              ],
+              "state": "dead"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -78 }, "ST": { "x": 55, "y": -55 },
-            "H1": { "x": -78, "y": 0 }, "H2": { "x": 0, "y": 78 },
-            "D1": { "x": -55, "y": -55 }, "D2": { "x": 78, "y": 0 },
-            "D3": { "x": -55, "y": 55 }, "D4": { "x": 55, "y": 55 }
+            "MT": {
+              "x": 0,
+              "y": -78
+            },
+            "ST": {
+              "x": 55,
+              "y": -55
+            },
+            "H1": {
+              "x": -78,
+              "y": 0
+            },
+            "H2": {
+              "x": 0,
+              "y": 78
+            },
+            "D1": {
+              "x": -55,
+              "y": -55
+            },
+            "D2": {
+              "x": 78,
+              "y": 0
+            },
+            "D3": {
+              "x": -55,
+              "y": 55
+            },
+            "D4": {
+              "x": 55,
+              "y": 55
+            }
           }
         }
       ]
     },
-
     {
       "id": "p1-feather-x",
       "phase": "P1",
@@ -172,122 +348,733 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "① 羽毛生成:小羽毛(小)在四個斜位、大羽毛(大)在四個正位與正中央。每根羽毛都有黃圈,只打小羽毛",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, -84], "size": "big", "r": 30 },
-            { "type": "feather", "at": [84, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, 84], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-84, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-44, -44], "size": "small", "r": 28 },
-            { "type": "feather", "at": [44, -44], "size": "small", "r": 28 },
-            { "type": "feather", "at": [-44, 44], "size": "small", "r": 28 },
-            { "type": "feather", "at": [44, 44], "size": "small", "r": 28 },
-            { "type": "bird", "at": [-18, -18], "state": "dead" },
-            { "type": "bird", "at": [18, -18], "state": "dead" },
-            { "type": "bird", "at": [-18, 18], "state": "dead" },
-            { "type": "bird", "at": [18, 18], "state": "dead" }
+            {
+              "type": "feather",
+              "at": [
+                0,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                -84
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                84,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                84
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -84,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -44,
+                -44
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                44,
+                -44
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -44,
+                44
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                44,
+                44
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                18
+              ],
+              "state": "dead"
+            }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "小羽毛在斜位 → X 字型", "color": "yellow" }
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "小羽毛在斜位 → X 字型",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": -58, "y": -58 }, "D1": { "x": -38, "y": -38 },
-            "ST": { "x": 58, "y": -58 }, "D2": { "x": 38, "y": -38 },
-            "H1": { "x": -58, "y": 58 }, "D3": { "x": -38, "y": 38 },
-            "H2": { "x": 58, "y": 58 }, "D4": { "x": 38, "y": 38 }
+            "MT": {
+              "x": -58,
+              "y": -58
+            },
+            "D1": {
+              "x": -38,
+              "y": -38
+            },
+            "ST": {
+              "x": 58,
+              "y": -58
+            },
+            "D2": {
+              "x": 38,
+              "y": -38
+            },
+            "H1": {
+              "x": -58,
+              "y": 58
+            },
+            "D3": {
+              "x": -38,
+              "y": 38
+            },
+            "H2": {
+              "x": 58,
+              "y": 58
+            },
+            "D4": {
+              "x": 38,
+              "y": 38
+            }
           }
         },
         {
           "caption": "② 四名 DPS 被紅圈點名 → 各自往內罩住**一隻**鳥。絕不可一圈蓋到兩隻鳥,也不要兩圈疊在同一隻鳥上",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, -84], "size": "big", "r": 30 },
-            { "type": "feather", "at": [84, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, 84], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-84, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-44, -44], "size": "small", "r": 28 },
-            { "type": "feather", "at": [44, -44], "size": "small", "r": 28 },
-            { "type": "feather", "at": [-44, 44], "size": "small", "r": 28 },
-            { "type": "feather", "at": [44, 44], "size": "small", "r": 28 },
-            { "type": "circle", "at": [-20, -20], "r": 21, "color": "death" },
-            { "type": "circle", "at": [20, -20], "r": 21, "color": "death" },
-            { "type": "circle", "at": [-20, 20], "r": 21, "color": "death" },
-            { "type": "circle", "at": [20, 20], "r": 21, "color": "death" },
-            { "type": "bird", "at": [-18, -18], "state": "dead" },
-            { "type": "bird", "at": [18, -18], "state": "dead" },
-            { "type": "bird", "at": [-18, 18], "state": "dead" },
-            { "type": "bird", "at": [18, 18], "state": "dead" }
+            {
+              "type": "feather",
+              "at": [
+                0,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                -84
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                84,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                84
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -84,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -44,
+                -44
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                44,
+                -44
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -44,
+                44
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                44,
+                44
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "circle",
+              "at": [
+                -20,
+                -20
+              ],
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": [
+                20,
+                -20
+              ],
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": [
+                -20,
+                20
+              ],
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": [
+                20,
+                20
+              ],
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                18
+              ],
+              "state": "dead"
+            }
           ],
           "actors": {
-            "MT": { "x": -58, "y": -58 }, "D1": { "x": -20, "y": -20 },
-            "ST": { "x": 58, "y": -58 }, "D2": { "x": 20, "y": -20 },
-            "H1": { "x": -58, "y": 58 }, "D3": { "x": -20, "y": 20 },
-            "H2": { "x": 58, "y": 58 }, "D4": { "x": 20, "y": 20 }
+            "MT": {
+              "x": -58,
+              "y": -58
+            },
+            "D1": {
+              "x": -20,
+              "y": -20
+            },
+            "ST": {
+              "x": 58,
+              "y": -58
+            },
+            "D2": {
+              "x": 20,
+              "y": -20
+            },
+            "H1": {
+              "x": -58,
+              "y": 58
+            },
+            "D3": {
+              "x": -20,
+              "y": 20
+            },
+            "H2": {
+              "x": 58,
+              "y": 58
+            },
+            "D4": {
+              "x": 20,
+              "y": 20
+            }
           }
         },
         {
           "caption": "③ 小羽毛已清除 → **斜位變成無黃圈的空檔**。鳥復活(金色)並連線各自的 DPS,只剩大羽毛的黃圈",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, -84], "size": "big", "r": 30 },
-            { "type": "feather", "at": [84, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, 84], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-84, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-44, -44], "size": "small", "cleared": true },
-            { "type": "feather", "at": [44, -44], "size": "small", "cleared": true },
-            { "type": "feather", "at": [-44, 44], "size": "small", "cleared": true },
-            { "type": "feather", "at": [44, 44], "size": "small", "cleared": true },
-            { "type": "bird", "at": [-18, -18], "state": "alive" },
-            { "type": "bird", "at": [18, -18], "state": "alive" },
-            { "type": "bird", "at": [-18, 18], "state": "alive" },
-            { "type": "bird", "at": [18, 18], "state": "alive" }
+            {
+              "type": "feather",
+              "at": [
+                0,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                -84
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                84,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                84
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -84,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -44,
+                -44
+              ],
+              "size": "small",
+              "cleared": true
+            },
+            {
+              "type": "feather",
+              "at": [
+                44,
+                -44
+              ],
+              "size": "small",
+              "cleared": true
+            },
+            {
+              "type": "feather",
+              "at": [
+                -44,
+                44
+              ],
+              "size": "small",
+              "cleared": true
+            },
+            {
+              "type": "feather",
+              "at": [
+                44,
+                44
+              ],
+              "size": "small",
+              "cleared": true
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                -18
+              ],
+              "state": "alive"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                -18
+              ],
+              "state": "alive"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                18
+              ],
+              "state": "alive"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                18
+              ],
+              "state": "alive"
+            }
           ],
           "tethers": [
-            { "from": [-18, -18], "to": "D1", "color": "white" },
-            { "from": [18, -18], "to": "D2", "color": "white" },
-            { "from": [-18, 18], "to": "D3", "color": "white" },
-            { "from": [18, 18], "to": "D4", "color": "white" }
+            {
+              "from": [
+                -18,
+                -18
+              ],
+              "to": "D1",
+              "color": "white"
+            },
+            {
+              "from": [
+                18,
+                -18
+              ],
+              "to": "D2",
+              "color": "white"
+            },
+            {
+              "from": [
+                -18,
+                18
+              ],
+              "to": "D3",
+              "color": "white"
+            },
+            {
+              "from": [
+                18,
+                18
+              ],
+              "to": "D4",
+              "color": "white"
+            }
           ],
           "annotations": [
-            { "type": "arrow", "from": [-26, -26], "to": [-50, -50], "color": "white", "thin": true },
-            { "type": "arrow", "from": [26, -26], "to": [50, -50], "color": "white", "thin": true },
-            { "type": "arrow", "from": [-26, 26], "to": [-50, 50], "color": "white", "thin": true },
-            { "type": "arrow", "from": [26, 26], "to": [50, 50], "color": "white", "thin": true }
+            {
+              "type": "arrow",
+              "from": [
+                -26,
+                -26
+              ],
+              "to": [
+                -50,
+                -50
+              ],
+              "color": "white",
+              "thin": true
+            },
+            {
+              "type": "arrow",
+              "from": [
+                26,
+                -26
+              ],
+              "to": [
+                50,
+                -50
+              ],
+              "color": "white",
+              "thin": true
+            },
+            {
+              "type": "arrow",
+              "from": [
+                -26,
+                26
+              ],
+              "to": [
+                -50,
+                50
+              ],
+              "color": "white",
+              "thin": true
+            },
+            {
+              "type": "arrow",
+              "from": [
+                26,
+                26
+              ],
+              "to": [
+                50,
+                50
+              ],
+              "color": "white",
+              "thin": true
+            }
           ],
           "actors": {
-            "MT": { "x": -58, "y": -58 }, "D1": { "x": -34, "y": -34 },
-            "ST": { "x": 58, "y": -58 }, "D2": { "x": 34, "y": -34 },
-            "H1": { "x": -58, "y": 58 }, "D3": { "x": -34, "y": 34 },
-            "H2": { "x": 58, "y": 58 }, "D4": { "x": 34, "y": 34 }
+            "MT": {
+              "x": -58,
+              "y": -58
+            },
+            "D1": {
+              "x": -34,
+              "y": -34
+            },
+            "ST": {
+              "x": 58,
+              "y": -58
+            },
+            "D2": {
+              "x": 34,
+              "y": -34
+            },
+            "H1": {
+              "x": -58,
+              "y": 58
+            },
+            "D3": {
+              "x": -34,
+              "y": 34
+            },
+            "H2": {
+              "x": 58,
+              "y": 58
+            },
+            "D4": {
+              "x": 34,
+              "y": 34
+            }
           }
         },
         {
           "caption": "④ 四隻鳥被帶到斜位外側的空檔,彼此距離最遠(不會拿受傷減輕),兩人一組擊殺完畢",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, -84], "size": "big", "r": 30 },
-            { "type": "feather", "at": [84, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, 84], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-84, 0], "size": "big", "r": 30 },
-            { "type": "bird", "at": [-56, -56], "state": "alive" },
-            { "type": "bird", "at": [56, -56], "state": "alive" },
-            { "type": "bird", "at": [-56, 56], "state": "alive" },
-            { "type": "bird", "at": [56, 56], "state": "alive" }
+            {
+              "type": "feather",
+              "at": [
+                0,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                -84
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                84,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                84
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -84,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "bird",
+              "at": [
+                -56,
+                -56
+              ],
+              "state": "alive"
+            },
+            {
+              "type": "bird",
+              "at": [
+                56,
+                -56
+              ],
+              "state": "alive"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -56,
+                56
+              ],
+              "state": "alive"
+            },
+            {
+              "type": "bird",
+              "at": [
+                56,
+                56
+              ],
+              "state": "alive"
+            }
           ],
           "actors": {
-            "MT": { "x": -44, "y": -66 }, "D1": { "x": -66, "y": -44 },
-            "ST": { "x": 44, "y": -66 }, "D2": { "x": 66, "y": -44 },
-            "H1": { "x": -44, "y": 66 }, "D3": { "x": -66, "y": 44 },
-            "H2": { "x": 44, "y": 66 }, "D4": { "x": 66, "y": 44 }
+            "MT": {
+              "x": -44,
+              "y": -66
+            },
+            "D1": {
+              "x": -66,
+              "y": -44
+            },
+            "ST": {
+              "x": 44,
+              "y": -66
+            },
+            "D2": {
+              "x": 66,
+              "y": -44
+            },
+            "H1": {
+              "x": -44,
+              "y": 66
+            },
+            "D3": {
+              "x": -66,
+              "y": 44
+            },
+            "H2": {
+              "x": 44,
+              "y": 66
+            },
+            "D4": {
+              "x": 66,
+              "y": 44
+            }
           }
         }
       ]
     },
-
     {
       "id": "p1-feather-cross",
       "phase": "P1",
@@ -306,91 +1093,522 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "① 小羽毛在正位 → 十字型。大羽毛改在四個斜位與中央,空檔將會落在正位",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-60, -60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [60, -60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-60, 60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [60, 60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, -62], "size": "small", "r": 28 },
-            { "type": "feather", "at": [62, 0], "size": "small", "r": 28 },
-            { "type": "feather", "at": [0, 62], "size": "small", "r": 28 },
-            { "type": "feather", "at": [-62, 0], "size": "small", "r": 28 },
-            { "type": "bird", "at": [-18, -18], "state": "dead" },
-            { "type": "bird", "at": [18, -18], "state": "dead" },
-            { "type": "bird", "at": [-18, 18], "state": "dead" },
-            { "type": "bird", "at": [18, 18], "state": "dead" }
+            {
+              "type": "feather",
+              "at": [
+                0,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -60,
+                -60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                60,
+                -60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -60,
+                60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                60,
+                60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                -62
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                62,
+                0
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                62
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -62,
+                0
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                18
+              ],
+              "state": "dead"
+            }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "小羽毛在正位 → 十字型", "color": "yellow" }
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "小羽毛在正位 → 十字型",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -74 }, "ST": { "x": 74, "y": 0 },
-            "H1": { "x": -74, "y": 0 }, "H2": { "x": 0, "y": 74 },
-            "D1": { "x": -40, "y": -40 }, "D2": { "x": 40, "y": -40 },
-            "D3": { "x": -40, "y": 40 }, "D4": { "x": 40, "y": 40 }
+            "MT": {
+              "x": 0,
+              "y": -74
+            },
+            "ST": {
+              "x": 74,
+              "y": 0
+            },
+            "H1": {
+              "x": -74,
+              "y": 0
+            },
+            "H2": {
+              "x": 0,
+              "y": 74
+            },
+            "D1": {
+              "x": -40,
+              "y": -40
+            },
+            "D2": {
+              "x": 40,
+              "y": -40
+            },
+            "D3": {
+              "x": -40,
+              "y": 40
+            },
+            "D4": {
+              "x": 40,
+              "y": 40
+            }
           }
         },
         {
           "caption": "② 關鍵:T/H 留在正位打小羽毛,**四名 DPS 到斜位**用紅圈罩鳥(鳥屍體固定在斜向,正位罩不到)",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-60, -60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [60, -60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-60, 60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [60, 60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [0, -62], "size": "small", "r": 28 },
-            { "type": "feather", "at": [62, 0], "size": "small", "r": 28 },
-            { "type": "feather", "at": [0, 62], "size": "small", "r": 28 },
-            { "type": "feather", "at": [-62, 0], "size": "small", "r": 28 },
-            { "type": "circle", "at": [-20, -20], "r": 21, "color": "death" },
-            { "type": "circle", "at": [20, -20], "r": 21, "color": "death" },
-            { "type": "circle", "at": [-20, 20], "r": 21, "color": "death" },
-            { "type": "circle", "at": [20, 20], "r": 21, "color": "death" },
-            { "type": "bird", "at": [-18, -18], "state": "dead" },
-            { "type": "bird", "at": [18, -18], "state": "dead" },
-            { "type": "bird", "at": [-18, 18], "state": "dead" },
-            { "type": "bird", "at": [18, 18], "state": "dead" }
+            {
+              "type": "feather",
+              "at": [
+                0,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -60,
+                -60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                60,
+                -60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -60,
+                60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                60,
+                60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                -62
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                62,
+                0
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                0,
+                62
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -62,
+                0
+              ],
+              "size": "small",
+              "r": 45
+            },
+            {
+              "type": "circle",
+              "at": [
+                -20,
+                -20
+              ],
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": [
+                20,
+                -20
+              ],
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": [
+                -20,
+                20
+              ],
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": [
+                20,
+                20
+              ],
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                18
+              ],
+              "state": "dead"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -74 }, "ST": { "x": 74, "y": 0 },
-            "H1": { "x": -74, "y": 0 }, "H2": { "x": 0, "y": 74 },
-            "D1": { "x": -20, "y": -20 }, "D2": { "x": 20, "y": -20 },
-            "D3": { "x": -20, "y": 20 }, "D4": { "x": 20, "y": 20 }
+            "MT": {
+              "x": 0,
+              "y": -74
+            },
+            "ST": {
+              "x": 74,
+              "y": 0
+            },
+            "H1": {
+              "x": -74,
+              "y": 0
+            },
+            "H2": {
+              "x": 0,
+              "y": 74
+            },
+            "D1": {
+              "x": -20,
+              "y": -20
+            },
+            "D2": {
+              "x": 20,
+              "y": -20
+            },
+            "D3": {
+              "x": -20,
+              "y": 20
+            },
+            "D4": {
+              "x": 20,
+              "y": 20
+            }
           }
         },
         {
           "caption": "③ 小羽毛清除 → 正位變空檔。DPS 沿連線把鳥帶到自己組的正位(D1→A、D2→B、D3→D、D4→C)與 T/H 會合擊殺",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-60, -60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [60, -60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [-60, 60], "size": "big", "r": 30 },
-            { "type": "feather", "at": [60, 60], "size": "big", "r": 30 },
-            { "type": "bird", "at": [0, -66], "state": "alive" },
-            { "type": "bird", "at": [66, 0], "state": "alive" },
-            { "type": "bird", "at": [0, 66], "state": "alive" },
-            { "type": "bird", "at": [-66, 0], "state": "alive" }
+            {
+              "type": "feather",
+              "at": [
+                0,
+                0
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -60,
+                -60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                60,
+                -60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                -60,
+                60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "feather",
+              "at": [
+                60,
+                60
+              ],
+              "size": "big",
+              "r": 45
+            },
+            {
+              "type": "bird",
+              "at": [
+                0,
+                -66
+              ],
+              "state": "alive"
+            },
+            {
+              "type": "bird",
+              "at": [
+                66,
+                0
+              ],
+              "state": "alive"
+            },
+            {
+              "type": "bird",
+              "at": [
+                0,
+                66
+              ],
+              "state": "alive"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -66,
+                0
+              ],
+              "state": "alive"
+            }
           ],
           "tethers": [
-            { "from": [0, -66], "to": "D1", "color": "white" },
-            { "from": [66, 0], "to": "D2", "color": "white" },
-            { "from": [-66, 0], "to": "D3", "color": "white" },
-            { "from": [0, 66], "to": "D4", "color": "white" }
+            {
+              "from": [
+                0,
+                -66
+              ],
+              "to": "D1",
+              "color": "white"
+            },
+            {
+              "from": [
+                66,
+                0
+              ],
+              "to": "D2",
+              "color": "white"
+            },
+            {
+              "from": [
+                -66,
+                0
+              ],
+              "to": "D3",
+              "color": "white"
+            },
+            {
+              "from": [
+                0,
+                66
+              ],
+              "to": "D4",
+              "color": "white"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -84 }, "D1": { "x": -16, "y": -60 },
-            "ST": { "x": 84, "y": 0 }, "D2": { "x": 60, "y": -16 },
-            "H1": { "x": -84, "y": 0 }, "D3": { "x": -60, "y": 16 },
-            "H2": { "x": 0, "y": 84 }, "D4": { "x": 16, "y": 60 }
+            "MT": {
+              "x": 0,
+              "y": -84
+            },
+            "D1": {
+              "x": -16,
+              "y": -60
+            },
+            "ST": {
+              "x": 84,
+              "y": 0
+            },
+            "D2": {
+              "x": 60,
+              "y": -16
+            },
+            "H1": {
+              "x": -84,
+              "y": 0
+            },
+            "D3": {
+              "x": -60,
+              "y": 16
+            },
+            "H2": {
+              "x": 0,
+              "y": 84
+            },
+            "D4": {
+              "x": 16,
+              "y": 60
+            }
           }
         }
       ]
     },
-
     {
       "id": "p1-timeline",
       "phase": "P1",
@@ -405,45 +1623,196 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "【#02 猛進 + 全員紅圈】BOSS 從 B 側飛向 D 側,直線路徑勿站人;全員零星分散且**遠離中央的鳥**",
-          "boss": { "x": 92, "y": 0, "facing": 270 },
+          "boss": {
+            "x": 92,
+            "y": 0,
+            "facing": 270
+          },
           "aoes": [
-            { "type": "cone", "at": [92, 0], "angle": 270, "spread": 26, "r": 190, "color": "fire" },
-            { "type": "bird", "at": [-18, -18], "state": "dead" },
-            { "type": "bird", "at": [18, -18], "state": "dead" },
-            { "type": "bird", "at": [-18, 18], "state": "dead" },
-            { "type": "bird", "at": [18, 18], "state": "dead" },
-            { "type": "circle", "at": "MT", "r": 15, "color": "death" },
-            { "type": "circle", "at": "ST", "r": 15, "color": "death" },
-            { "type": "circle", "at": "H1", "r": 15, "color": "death" },
-            { "type": "circle", "at": "H2", "r": 15, "color": "death" },
-            { "type": "circle", "at": "D1", "r": 15, "color": "death" },
-            { "type": "circle", "at": "D2", "r": 15, "color": "death" },
-            { "type": "circle", "at": "D3", "r": 15, "color": "death" },
-            { "type": "circle", "at": "D4", "r": 15, "color": "death" }
+            {
+              "type": "rect",
+              "at": [
+                92,
+                0
+              ],
+              "angle": 270,
+              "lengthFront": 275,
+              "halfWidth": 15,
+              "color": "fire"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                -18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                -18,
+                18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "bird",
+              "at": [
+                18,
+                18
+              ],
+              "state": "dead"
+            },
+            {
+              "type": "circle",
+              "at": "MT",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "ST",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "H1",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "H2",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "D1",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "D2",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "D3",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "D4",
+              "r": 30,
+              "color": "death"
+            }
           ],
           "actors": {
-            "MT": { "x": -30, "y": -74 }, "D1": { "x": 30, "y": -74 },
-            "ST": { "x": -74, "y": -30 }, "D2": { "x": 74, "y": -30 },
-            "H1": { "x": -74, "y": 30 }, "D3": { "x": 74, "y": 30 },
-            "H2": { "x": -30, "y": 74 }, "D4": { "x": 30, "y": 74 }
+            "MT": {
+              "x": -30,
+              "y": -74
+            },
+            "D1": {
+              "x": 30,
+              "y": -74
+            },
+            "ST": {
+              "x": -74,
+              "y": -30
+            },
+            "D2": {
+              "x": 74,
+              "y": -30
+            },
+            "H1": {
+              "x": -74,
+              "y": 30
+            },
+            "D3": {
+              "x": 74,
+              "y": 30
+            },
+            "H2": {
+              "x": -30,
+              "y": 74
+            },
+            "D4": {
+              "x": 30,
+              "y": 74
+            }
           }
         },
         {
           "caption": "【#03 翼宿擊】面向隨機玩家的前方 90° 扇形,走到 BOSS 側後方即可",
-          "boss": { "x": 0, "y": 0, "facing": 90 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 90
+          },
           "aoes": [
-            { "type": "cone", "at": [0, 0], "angle": 90, "spread": 90, "r": 100, "color": "fire" }
+            {
+              "type": "cone",
+              "at": [
+                0,
+                0
+              ],
+              "angle": 90,
+              "spread": 90,
+              "r": 200,
+              "color": "fire"
+            }
           ],
           "actors": {
-            "MT": { "x": -34, "y": -20 }, "ST": { "x": -34, "y": 20 },
-            "H1": { "x": -60, "y": -14 }, "H2": { "x": -60, "y": 14 },
-            "D1": { "x": -14, "y": -44 }, "D2": { "x": -44, "y": -44 },
-            "D3": { "x": -14, "y": 44 }, "D4": { "x": -44, "y": 44 }
+            "MT": {
+              "x": -34,
+              "y": -20
+            },
+            "ST": {
+              "x": -34,
+              "y": 20
+            },
+            "H1": {
+              "x": -60,
+              "y": -14
+            },
+            "H2": {
+              "x": -60,
+              "y": 14
+            },
+            "D1": {
+              "x": -14,
+              "y": -44
+            },
+            "D2": {
+              "x": -44,
+              "y": -44
+            },
+            "D3": {
+              "x": -14,
+              "y": 44
+            },
+            "D4": {
+              "x": -44,
+              "y": 44
+            }
           }
         }
       ]
     },
-
     {
       "id": "p2",
       "phase": "P2",
@@ -457,46 +1826,196 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "八個光圈繞 BOSS 等距分布,一人站一個,面向對準圈內箭頭吃藍球。全部吃滿 = 10 層傷害提高",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "circle", "at": [0, -55], "r": 15, "color": "ice" },
-            { "type": "circle", "at": [39, -39], "r": 15, "color": "ice" },
-            { "type": "circle", "at": [55, 0], "r": 15, "color": "ice" },
-            { "type": "circle", "at": [39, 39], "r": 15, "color": "ice" },
-            { "type": "circle", "at": [0, 55], "r": 15, "color": "ice" },
-            { "type": "circle", "at": [-39, 39], "r": 15, "color": "ice" },
-            { "type": "circle", "at": [-55, 0], "r": 15, "color": "ice" },
-            { "type": "circle", "at": [-39, -39], "r": 15, "color": "ice" }
+            {
+              "type": "circle",
+              "at": [
+                0,
+                -55
+              ],
+              "r": 5,
+              "color": "ice"
+            },
+            {
+              "type": "circle",
+              "at": [
+                39,
+                -39
+              ],
+              "r": 5,
+              "color": "ice"
+            },
+            {
+              "type": "circle",
+              "at": [
+                55,
+                0
+              ],
+              "r": 5,
+              "color": "ice"
+            },
+            {
+              "type": "circle",
+              "at": [
+                39,
+                39
+              ],
+              "r": 5,
+              "color": "ice"
+            },
+            {
+              "type": "circle",
+              "at": [
+                0,
+                55
+              ],
+              "r": 5,
+              "color": "ice"
+            },
+            {
+              "type": "circle",
+              "at": [
+                -39,
+                39
+              ],
+              "r": 5,
+              "color": "ice"
+            },
+            {
+              "type": "circle",
+              "at": [
+                -55,
+                0
+              ],
+              "r": 5,
+              "color": "ice"
+            },
+            {
+              "type": "circle",
+              "at": [
+                -39,
+                -39
+              ],
+              "r": 5,
+              "color": "ice"
+            }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "面向 = 圈內箭頭方向", "color": "blue" }
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "面向 = 圈內箭頭方向",
+              "color": "blue"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -55 }, "D1": { "x": 39, "y": -39 },
-            "ST": { "x": 55, "y": 0 }, "D2": { "x": 39, "y": 39 },
-            "H1": { "x": 0, "y": 55 }, "D3": { "x": -39, "y": 39 },
-            "H2": { "x": -55, "y": 0 }, "D4": { "x": -39, "y": -39 }
+            "MT": {
+              "x": 0,
+              "y": -55
+            },
+            "D1": {
+              "x": 39,
+              "y": -39
+            },
+            "ST": {
+              "x": 55,
+              "y": 0
+            },
+            "D2": {
+              "x": 39,
+              "y": 39
+            },
+            "H1": {
+              "x": 0,
+              "y": 55
+            },
+            "D3": {
+              "x": -39,
+              "y": 39
+            },
+            "H2": {
+              "x": -55,
+              "y": 0
+            },
+            "D4": {
+              "x": -39,
+              "y": -39
+            }
           }
         },
         {
           "caption": "【轉場】燃盡天火:全員往 C 點(正南)靠攏,**絕對不要留在中央** —— 中央的圓形地板即將被破壞成天坑",
-          "boss": { "x": 0, "y": 0, "facing": 180 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 180
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "中央即將變成天坑", "color": "red" }
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "中央即將變成天坑",
+              "color": "red"
+            }
           ],
           "actors": {
-            "MT": { "x": -16, "y": 72 }, "ST": { "x": 16, "y": 72 },
-            "H1": { "x": -32, "y": 82 }, "H2": { "x": 32, "y": 82 },
-            "D1": { "x": -8, "y": 88 }, "D2": { "x": 8, "y": 88 },
-            "D3": { "x": -24, "y": 60 }, "D4": { "x": 24, "y": 60 }
+            "MT": {
+              "x": -16,
+              "y": 72
+            },
+            "ST": {
+              "x": 16,
+              "y": 72
+            },
+            "H1": {
+              "x": -32,
+              "y": 82
+            },
+            "H2": {
+              "x": 32,
+              "y": 82
+            },
+            "D1": {
+              "x": -8,
+              "y": 88
+            },
+            "D2": {
+              "x": 8,
+              "y": 88
+            },
+            "D3": {
+              "x": -24,
+              "y": 60
+            },
+            "D4": {
+              "x": 24,
+              "y": 60
+            }
           }
         }
       ]
     },
-
     {
       "id": "p3-melody",
       "phase": "P3",
@@ -509,41 +2028,233 @@ window.RAID_DATA['hells-kier-ex'] = {
       },
       "steps": [
         {
-          "caption": "【引誘旋律】往內拉 → 讀條期間全員靠**外場邊緣**,預留被拉拽的距離",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
-          "aoes": [{ "type": "hole", "at": [0, 0], "r": 26 }],
+          "caption": "【引誘旋律】牽引 11m 朝中心。安全帶是**離中心 14.5m 以外**(天坑 3.5 + 牽引 11),圖中亮環即為該範圍",
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
+          "aoes": [
+            {
+              "type": "donut",
+              "at": [
+                0,
+                0
+              ],
+              "rInner": 72.5,
+              "rOuter": 100,
+              "color": "accent"
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
+          ],
           "annotations": [
-            { "type": "arrow", "from": [0, -86], "to": [0, -40], "color": "blue", "thin": true },
-            { "type": "arrow", "from": [86, 0], "to": [40, 0], "color": "blue", "thin": true },
-            { "type": "arrow", "from": [0, 86], "to": [0, 40], "color": "blue", "thin": true },
-            { "type": "arrow", "from": [-86, 0], "to": [-40, 0], "color": "blue", "thin": true },
-            { "type": "text", "at": [0, -104], "text": "引誘 = 往內拉 → 站外圈", "color": "blue" }
+            {
+              "type": "arrow",
+              "from": [
+                0,
+                -86
+              ],
+              "to": [
+                0,
+                -40
+              ],
+              "color": "blue",
+              "thin": true
+            },
+            {
+              "type": "arrow",
+              "from": [
+                86,
+                0
+              ],
+              "to": [
+                40,
+                0
+              ],
+              "color": "blue",
+              "thin": true
+            },
+            {
+              "type": "arrow",
+              "from": [
+                0,
+                86
+              ],
+              "to": [
+                0,
+                40
+              ],
+              "color": "blue",
+              "thin": true
+            },
+            {
+              "type": "arrow",
+              "from": [
+                -86,
+                0
+              ],
+              "to": [
+                -40,
+                0
+              ],
+              "color": "blue",
+              "thin": true
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "引誘 = 往內拉 → 站外圈",
+              "color": "blue"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                104
+              ],
+              "text": "安全帶 = 離中心 14.5m 以外(3.5 天坑 + 11 牽引)",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -90 }, "D1": { "x": 64, "y": -64 },
-            "ST": { "x": 90, "y": 0 }, "D2": { "x": 64, "y": 64 },
-            "H1": { "x": 0, "y": 90 }, "D3": { "x": -64, "y": 64 },
-            "H2": { "x": -90, "y": 0 }, "D4": { "x": -64, "y": -64 }
+            "MT": {
+              "x": 0,
+              "y": -90
+            },
+            "D1": {
+              "x": 64,
+              "y": -64
+            },
+            "ST": {
+              "x": 90,
+              "y": 0
+            },
+            "D2": {
+              "x": 64,
+              "y": 64
+            },
+            "H1": {
+              "x": 0,
+              "y": 90
+            },
+            "D3": {
+              "x": -64,
+              "y": 64
+            },
+            "H2": {
+              "x": -90,
+              "y": 0
+            },
+            "D4": {
+              "x": -64,
+              "y": -64
+            }
           }
         },
         {
-          "caption": "【拒絕旋律】往外推 → 讀條期間全員靠**中央天坑外緣**,預留被擊退的距離",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
-          "aoes": [{ "type": "hole", "at": [0, 0], "r": 26 }],
+          "caption": "【拒絕旋律】擊退 11m 遠離中心。安全帶是**離中心 9m 以內**(場地外緣 20 − 擊退 11),圖中亮圈即為該範圍",
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
+          "aoes": [
+            {
+              "type": "circle",
+              "at": [
+                0,
+                0
+              ],
+              "r": 45,
+              "color": "accent"
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
+          ],
           "annotations": [
-            { "type": "knockback", "at": [0, 0], "count": 8, "rInner": 32, "rOuter": 60, "color": "red" },
-            { "type": "text", "at": [0, -104], "text": "拒絕 = 往外推 → 貼中央", "color": "red" }
+            {
+              "type": "knockback",
+              "at": [
+                0,
+                0
+              ],
+              "count": 8,
+              "rInner": 20,
+              "rOuter": 75,
+              "color": "red"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "拒絕 = 往外推 → 貼中央",
+              "color": "red"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                104
+              ],
+              "text": "安全帶 = 離中心 9m 以內(20 外緣 − 11 擊退)",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -34 }, "D1": { "x": 24, "y": -24 },
-            "ST": { "x": 34, "y": 0 }, "D2": { "x": 24, "y": 24 },
-            "H1": { "x": 0, "y": 34 }, "D3": { "x": -24, "y": 24 },
-            "H2": { "x": -34, "y": 0 }, "D4": { "x": -24, "y": -24 }
+            "MT": {
+              "x": 0,
+              "y": -34
+            },
+            "D1": {
+              "x": 24,
+              "y": -24
+            },
+            "ST": {
+              "x": 34,
+              "y": 0
+            },
+            "D2": {
+              "x": 24,
+              "y": 24
+            },
+            "H1": {
+              "x": 0,
+              "y": 34
+            },
+            "D3": {
+              "x": -24,
+              "y": 24
+            },
+            "H2": {
+              "x": -34,
+              "y": 0
+            },
+            "D4": {
+              "x": -24,
+              "y": -24
+            }
           }
         }
       ]
     },
-
     {
       "id": "p3-jing",
       "phase": "P3",
@@ -557,47 +2268,186 @@ window.RAID_DATA['hells-kier-ex'] = {
       },
       "steps": [
         {
-          "caption": "① 直線 AOE + 四人紅圈:避開 BOSS 正面直線,有紅圈的人彼此拉開分散",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "caption": "① 井宿焰(矩形 41 × 寬 20)+ 四人紅圈:**寬度不隨距離變窄**,必須橫向離開中線 10m 以上。原本畫成扇形時看起來安全的內側站位其實會中招",
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 },
-            { "type": "cone", "at": [0, 0], "angle": 0, "spread": 22, "r": 100, "color": "fire" },
-            { "type": "circle", "at": "D1", "r": 17, "color": "death" },
-            { "type": "circle", "at": "D2", "r": 17, "color": "death" },
-            { "type": "circle", "at": "D3", "r": 17, "color": "death" },
-            { "type": "circle", "at": "D4", "r": 17, "color": "death" }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            },
+            {
+              "type": "rect",
+              "at": [
+                0,
+                0
+              ],
+              "angle": 0,
+              "lengthFront": 205,
+              "halfWidth": 50,
+              "color": "fire"
+            },
+            {
+              "type": "circle",
+              "at": "D1",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "D2",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "D3",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "D4",
+              "r": 30,
+              "color": "death"
+            }
           ],
           "actors": {
-            "MT": { "x": -30, "y": -66 }, "ST": { "x": 40, "y": 40 },
-            "H1": { "x": -40, "y": 40 }, "H2": { "x": 0, "y": 84 },
-            "D1": { "x": 72, "y": -30 }, "D2": { "x": 84, "y": 30 },
-            "D3": { "x": -72, "y": -30 }, "D4": { "x": -84, "y": 30 }
-          }
+            "MT": {
+              "x": -68,
+              "y": -40
+            },
+            "ST": {
+              "x": 40,
+              "y": 40
+            },
+            "H1": {
+              "x": -40,
+              "y": 40
+            },
+            "H2": {
+              "x": 0,
+              "y": 84
+            },
+            "D1": {
+              "x": 72,
+              "y": -30
+            },
+            "D2": {
+              "x": 84,
+              "y": 30
+            },
+            "D3": {
+              "x": -72,
+              "y": -30
+            },
+            "D4": {
+              "x": -84,
+              "y": 30
+            }
+          },
+          "annotations": [
+            {
+              "type": "text",
+              "at": [
+                0,
+                104
+              ],
+              "text": "⚠ 矩形半寬 10m(圖上 50),|x| 小於 50 一律中招",
+              "color": "red"
+            }
+          ]
         },
         {
           "caption": "② 張宿業火分攤:除 MT 以外全員在 C 點(正南)集合。MT 已提前回 A 方位準備鬼宿腳 —— C 也正是鬼宿腳的安全側",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 },
-            { "type": "circle", "at": [0, 62], "r": 26, "color": "fire" }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            },
+            {
+              "type": "circle",
+              "at": [
+                0,
+                62
+              ],
+              "r": 30,
+              "color": "fire"
+            }
           ],
           "markers": [
-            { "type": "share", "at": [0, 62] }
+            {
+              "type": "share",
+              "at": [
+                0,
+                62
+              ]
+            }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "MT 不參與分攤,提前回 A", "color": "yellow" }
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "MT 不參與分攤,提前回 A",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -62 },
-            "ST": { "x": -14, "y": 54 }, "H1": { "x": 14, "y": 54 },
-            "H2": { "x": 0, "y": 62 }, "D1": { "x": -22, "y": 68 },
-            "D2": { "x": 22, "y": 68 }, "D3": { "x": -10, "y": 76 },
-            "D4": { "x": 10, "y": 76 }
+            "MT": {
+              "x": 0,
+              "y": -62
+            },
+            "ST": {
+              "x": -14,
+              "y": 54
+            },
+            "H1": {
+              "x": 14,
+              "y": 54
+            },
+            "H2": {
+              "x": 0,
+              "y": 62
+            },
+            "D1": {
+              "x": -22,
+              "y": 68
+            },
+            "D2": {
+              "x": 22,
+              "y": 68
+            },
+            "D3": {
+              "x": -10,
+              "y": 76
+            },
+            "D4": {
+              "x": 10,
+              "y": 76
+            }
           }
         }
       ]
     },
-
     {
       "id": "p3-gui",
       "phase": "P3",
@@ -612,64 +2462,255 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "① 讀條期間:有仇恨的坦克(MT)走到 **A 方位**誘使 BOSS 面向 A,並開好大減傷。其他七人待在對向的 **C 方位**",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "arrow", "from": [0, -30], "to": [0, -76], "color": "yellow", "thin": true },
-            { "type": "text", "at": [0, -104], "text": "MT 站 A → 面向定在 A", "color": "yellow" },
-            { "type": "text", "at": [0, 104], "text": "其他人待 C 方位", "color": "blue" }
+            {
+              "type": "arrow",
+              "from": [
+                0,
+                -30
+              ],
+              "to": [
+                0,
+                -76
+              ],
+              "color": "yellow",
+              "thin": true
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "MT 站 A → 面向定在 A",
+              "color": "yellow"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                104
+              ],
+              "text": "其他人待 C 方位",
+              "color": "blue"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -60 },
-            "ST": { "x": -14, "y": 56 }, "H1": { "x": 14, "y": 56 },
-            "H2": { "x": -30, "y": 68 }, "D1": { "x": 30, "y": 68 },
-            "D2": { "x": -14, "y": 80 }, "D3": { "x": 14, "y": 80 },
-            "D4": { "x": 0, "y": 68 }
+            "MT": {
+              "x": 0,
+              "y": -60
+            },
+            "ST": {
+              "x": -14,
+              "y": 56
+            },
+            "H1": {
+              "x": 14,
+              "y": 56
+            },
+            "H2": {
+              "x": -30,
+              "y": 68
+            },
+            "D1": {
+              "x": 30,
+              "y": 68
+            },
+            "D2": {
+              "x": -14,
+              "y": 80
+            },
+            "D3": {
+              "x": 14,
+              "y": 80
+            },
+            "D4": {
+              "x": 0,
+              "y": 68
+            }
           }
         },
         {
           "caption": "② 連擊開始 → **面向就此鎖定在 A**。坦克此時立刻從側面繞出北半場(避開天坑,不可穿過 BOSS)。連擊每段累加易傷 debuff",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 },
-            { "type": "cone", "at": [0, 0], "angle": 0, "spread": 180, "r": 100, "color": "death" }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            },
+            {
+              "type": "cone",
+              "at": [
+                0,
+                0
+              ],
+              "angle": 0,
+              "spread": 180,
+              "r": 205,
+              "color": "death"
+            }
           ],
           "annotations": [
-            { "type": "arcArrow", "radius": 62, "startAngle": 4, "endAngle": 132, "color": "white" },
-            { "type": "text", "at": [0, -104], "text": "面向鎖定,坦克繞出北半場", "color": "white" }
+            {
+              "type": "arcArrow",
+              "radius": 62,
+              "startAngle": 4,
+              "endAngle": 132,
+              "color": "white"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "面向鎖定,坦克繞出北半場",
+              "color": "white"
+            }
           ],
           "actors": {
-            "MT": { "x": 46, "y": 42 },
-            "ST": { "x": -14, "y": 56 }, "H1": { "x": 14, "y": 56 },
-            "H2": { "x": -30, "y": 68 }, "D1": { "x": 30, "y": 68 },
-            "D2": { "x": -14, "y": 80 }, "D3": { "x": 14, "y": 80 },
-            "D4": { "x": 0, "y": 68 }
+            "MT": {
+              "x": 46,
+              "y": 42
+            },
+            "ST": {
+              "x": -14,
+              "y": 56
+            },
+            "H1": {
+              "x": 14,
+              "y": 56
+            },
+            "H2": {
+              "x": -30,
+              "y": 68
+            },
+            "D1": {
+              "x": 30,
+              "y": 68
+            },
+            "D2": {
+              "x": -14,
+              "y": 80
+            },
+            "D3": {
+              "x": 14,
+              "y": 80
+            },
+            "D4": {
+              "x": 0,
+              "y": 68
+            }
           }
         },
         {
           "caption": "③ 180° 扇形即死:整個北半場是即死範圍,全員都在南側。連擊**結束後**由 ST 挑釁接手常規仇恨(帶易傷的坦克撐不住)",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 },
-            { "type": "cone", "at": [0, 0], "angle": 0, "spread": 180, "r": 100, "color": "death" }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            },
+            {
+              "type": "cone",
+              "at": [
+                0,
+                0
+              ],
+              "angle": 0,
+              "spread": 180,
+              "r": 205,
+              "color": "death"
+            }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "北半場 = 即死", "color": "red" },
-            { "type": "text", "at": [0, 104], "text": "連擊後才換坦", "color": "yellow" }
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "北半場 = 即死",
+              "color": "red"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                104
+              ],
+              "text": "連擊後才換坦",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": 46, "y": 42 },
-            "ST": { "x": -14, "y": 56 }, "H1": { "x": 14, "y": 56 },
-            "H2": { "x": -30, "y": 68 }, "D1": { "x": 30, "y": 68 },
-            "D2": { "x": -14, "y": 80 }, "D3": { "x": 14, "y": 80 },
-            "D4": { "x": 0, "y": 68 }
+            "MT": {
+              "x": 46,
+              "y": 42
+            },
+            "ST": {
+              "x": -14,
+              "y": 56
+            },
+            "H1": {
+              "x": 14,
+              "y": 56
+            },
+            "H2": {
+              "x": -30,
+              "y": 68
+            },
+            "D1": {
+              "x": 30,
+              "y": 68
+            },
+            "D2": {
+              "x": -14,
+              "y": 80
+            },
+            "D3": {
+              "x": 14,
+              "y": 80
+            },
+            "D4": {
+              "x": 0,
+              "y": 68
+            }
           }
         }
       ]
     },
-
     {
       "id": "p3-floor-id",
       "phase": "P3",
@@ -683,47 +2724,283 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "四塊地板的位置永遠固定:西北=之(紫)、東北=水(土褐)、西南=十(綠)、東南=向(黃)。中央是天坑",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "nw" },
-            { "type": "quadrant", "quad": "ne" },
-            { "type": "quadrant", "quad": "sw" },
-            { "type": "quadrant", "quad": "se" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ]
         },
         {
           "caption": "【時鐘型】字列 `十 之 水 向 ｜ 十 之 水 向`,第 4、5 字 = 向、十 → **不同**。爆炸序 ①②③④①②③④ 連續繞圈",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "sw", "order": "①" },
-            { "type": "quadrant", "quad": "nw", "order": "②" },
-            { "type": "quadrant", "quad": "ne", "order": "③" },
-            { "type": "quadrant", "quad": "se", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["十", "之", "水", "向", "十", "之", "水", "向"] },
-            { "type": "arcArrow", "radius": 88, "startAngle": 200, "endAngle": 340, "color": "yellow" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "十",
+                "之",
+                "水",
+                "向",
+                "十",
+                "之",
+                "水",
+                "向"
+              ]
+            },
+            {
+              "type": "arcArrow",
+              "radius": 88,
+              "startAngle": 200,
+              "endAngle": 340,
+              "color": "yellow"
+            }
           ]
         },
         {
           "caption": "【對稱型】字列 `十 水 向 之 ｜ 之 向 水 十`,第 4、5 字 = 之、之 → **相同**。爆炸序 ①③②④④②③① 是回文",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "sw", "order": "①" },
-            { "type": "quadrant", "quad": "se", "order": "②" },
-            { "type": "quadrant", "quad": "ne", "order": "③" },
-            { "type": "quadrant", "quad": "nw", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["十", "水", "向", "之", "之", "向", "水", "十"] }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "十",
+                "水",
+                "向",
+                "之",
+                "之",
+                "向",
+                "水",
+                "十"
+              ]
+            }
           ]
+        },
+        {
+          "caption": "【插件 AI 的解法】每發只隔 1.25 秒,BossMod 的自動走位是把人壓在**四塊地板交界的十字帶(±1m)**上,靠最短距離左右閃。可當作背不出字時的保底",
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
+          "aoes": [
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "r": 105
+            },
+            {
+              "type": "rect",
+              "at": [
+                0,
+                0
+              ],
+              "angle": 0,
+              "lengthFront": 100,
+              "lengthBack": 100,
+              "halfWidth": 5,
+              "color": "accent"
+            },
+            {
+              "type": "rect",
+              "at": [
+                0,
+                0
+              ],
+              "angle": 90,
+              "lengthFront": 100,
+              "lengthBack": 100,
+              "halfWidth": 5,
+              "color": "accent"
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
+          ],
+          "annotations": [
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "交界十字帶 ±1m = SDInvertedCross(center, 20, 1)",
+              "color": "yellow"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                104
+              ],
+              "text": "每發間隔固定 1.25 秒 —— 這就是「秒穿」的來源",
+              "color": "white"
+            }
+          ],
+          "actors": {
+            "MT": {
+              "x": 0,
+              "y": -70
+            },
+            "ST": {
+              "x": 70,
+              "y": 0
+            },
+            "H1": {
+              "x": -70,
+              "y": 0
+            },
+            "H2": {
+              "x": 0,
+              "y": 70
+            },
+            "D1": {
+              "x": 0,
+              "y": -48
+            },
+            "D2": {
+              "x": 48,
+              "y": 0
+            },
+            "D3": {
+              "x": -48,
+              "y": 0
+            },
+            "D4": {
+              "x": 0,
+              "y": 48
+            }
+          }
         }
       ]
     },
-
     {
       "id": "p3-floor-clock",
       "phase": "P3",
@@ -737,132 +3014,624 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "預備:字列 `向 十 之 水 ｜ 向 十 之 水`。① = 向(東南)。全員先站到 **④ = 水(東北)** 上",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "se", "order": "①" },
-            { "type": "quadrant", "quad": "sw", "order": "②" },
-            { "type": "quadrant", "quad": "nw", "order": "③" },
-            { "type": "quadrant", "quad": "ne", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["向", "十", "之", "水", "向", "十", "之", "水"], "now": 0 },
-            { "type": "text", "at": [0, -104], "text": "站 ④(水/東北)", "color": "white" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "向",
+                "十",
+                "之",
+                "水",
+                "向",
+                "十",
+                "之",
+                "水"
+              ],
+              "now": 0
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "站 ④(水/東北)",
+              "color": "white"
+            }
           ],
           "actors": {
-            "MT": { "x": 44, "y": -58 }, "ST": { "x": 58, "y": -44 },
-            "H1": { "x": 34, "y": -70 }, "H2": { "x": 70, "y": -34 },
-            "D1": { "x": 30, "y": -50 }, "D2": { "x": 50, "y": -30 },
-            "D3": { "x": 40, "y": -40 }, "D4": { "x": 60, "y": -60 }
+            "MT": {
+              "x": 44,
+              "y": -58
+            },
+            "ST": {
+              "x": 58,
+              "y": -44
+            },
+            "H1": {
+              "x": 34,
+              "y": -70
+            },
+            "H2": {
+              "x": 70,
+              "y": -34
+            },
+            "D1": {
+              "x": 30,
+              "y": -50
+            },
+            "D2": {
+              "x": 50,
+              "y": -30
+            },
+            "D3": {
+              "x": 40,
+              "y": -40
+            },
+            "D4": {
+              "x": 60,
+              "y": -60
+            }
           }
         },
         {
           "caption": "第 1 次爆炸:① 向(東南)爆 → 立刻踩進 **①**",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "se", "order": "①", "state": "boom" },
-            { "type": "quadrant", "quad": "sw", "order": "②" },
-            { "type": "quadrant", "quad": "nw", "order": "③" },
-            { "type": "quadrant", "quad": "ne", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "①",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["向", "十", "之", "水", "向", "十", "之", "水"], "done": 1 },
-            { "type": "arrow", "from": [56, -46], "to": [46, 46], "color": "white", "dash": true }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "向",
+                "十",
+                "之",
+                "水",
+                "向",
+                "十",
+                "之",
+                "水"
+              ],
+              "done": 1
+            },
+            {
+              "type": "arrow",
+              "from": [
+                56,
+                -46
+              ],
+              "to": [
+                46,
+                46
+              ],
+              "color": "white",
+              "dash": true
+            }
           ],
           "actors": {
-            "MT": { "x": 44, "y": -58 }, "ST": { "x": 58, "y": -44 },
-            "H1": { "x": 34, "y": -70 }, "H2": { "x": 70, "y": -34 },
-            "D1": { "x": 30, "y": -50 }, "D2": { "x": 50, "y": -30 },
-            "D3": { "x": 40, "y": -40 }, "D4": { "x": 60, "y": -60 }
+            "MT": {
+              "x": 44,
+              "y": -58
+            },
+            "ST": {
+              "x": 58,
+              "y": -44
+            },
+            "H1": {
+              "x": 34,
+              "y": -70
+            },
+            "H2": {
+              "x": 70,
+              "y": -34
+            },
+            "D1": {
+              "x": 30,
+              "y": -50
+            },
+            "D2": {
+              "x": 50,
+              "y": -30
+            },
+            "D3": {
+              "x": 40,
+              "y": -40
+            },
+            "D4": {
+              "x": 60,
+              "y": -60
+            }
           }
         },
         {
           "caption": "第 2、3 次爆炸:② 十(西南)、③ 之(西北)相繼爆炸,你待在 ① 不動即可",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "se", "order": "①" },
-            { "type": "quadrant", "quad": "sw", "order": "②", "state": "boom" },
-            { "type": "quadrant", "quad": "nw", "order": "③", "state": "boom" },
-            { "type": "quadrant", "quad": "ne", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "②",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "③",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["向", "十", "之", "水", "向", "十", "之", "水"], "done": 3 }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "向",
+                "十",
+                "之",
+                "水",
+                "向",
+                "十",
+                "之",
+                "水"
+              ],
+              "done": 3
+            }
           ],
           "actors": {
-            "MT": { "x": 44, "y": 58 }, "ST": { "x": 58, "y": 44 },
-            "H1": { "x": 34, "y": 70 }, "H2": { "x": 70, "y": 34 },
-            "D1": { "x": 30, "y": 50 }, "D2": { "x": 50, "y": 30 },
-            "D3": { "x": 40, "y": 40 }, "D4": { "x": 60, "y": 60 }
+            "MT": {
+              "x": 44,
+              "y": 58
+            },
+            "ST": {
+              "x": 58,
+              "y": 44
+            },
+            "H1": {
+              "x": 34,
+              "y": 70
+            },
+            "H2": {
+              "x": 70,
+              "y": 34
+            },
+            "D1": {
+              "x": 30,
+              "y": 50
+            },
+            "D2": {
+              "x": 50,
+              "y": 30
+            },
+            "D3": {
+              "x": 40,
+              "y": 40
+            },
+            "D4": {
+              "x": 60,
+              "y": 60
+            }
           }
         },
         {
           "caption": "⚠ 第 4 次爆炸:④ 水(東北)爆的**瞬間秒穿回 ④** —— 下一個就是 ① 再爆,慢了就被炸。這是唯一需要秒穿的一步",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "se", "order": "①" },
-            { "type": "quadrant", "quad": "sw", "order": "②" },
-            { "type": "quadrant", "quad": "nw", "order": "③" },
-            { "type": "quadrant", "quad": "ne", "order": "④", "state": "boom" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "④",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["向", "十", "之", "水", "向", "十", "之", "水"], "done": 4 },
-            { "type": "arrow", "from": [46, 46], "to": [56, -46], "color": "red" },
-            { "type": "text", "at": [0, -104], "text": "秒穿!① 馬上要爆", "color": "red" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "向",
+                "十",
+                "之",
+                "水",
+                "向",
+                "十",
+                "之",
+                "水"
+              ],
+              "done": 4
+            },
+            {
+              "type": "arrow",
+              "from": [
+                46,
+                46
+              ],
+              "to": [
+                56,
+                -46
+              ],
+              "color": "red"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "秒穿!① 馬上要爆",
+              "color": "red"
+            }
           ],
           "actors": {
-            "MT": { "x": 44, "y": 58 }, "ST": { "x": 58, "y": 44 },
-            "H1": { "x": 34, "y": 70 }, "H2": { "x": 70, "y": 34 },
-            "D1": { "x": 30, "y": 50 }, "D2": { "x": 50, "y": 30 },
-            "D3": { "x": 40, "y": 40 }, "D4": { "x": 60, "y": 60 }
+            "MT": {
+              "x": 44,
+              "y": 58
+            },
+            "ST": {
+              "x": 58,
+              "y": 44
+            },
+            "H1": {
+              "x": 34,
+              "y": 70
+            },
+            "H2": {
+              "x": 70,
+              "y": 34
+            },
+            "D1": {
+              "x": 30,
+              "y": 50
+            },
+            "D2": {
+              "x": 50,
+              "y": 30
+            },
+            "D3": {
+              "x": 40,
+              "y": 40
+            },
+            "D4": {
+              "x": 60,
+              "y": 60
+            }
           }
         },
         {
           "caption": "第 5~7 次爆炸:① ② ③ 第二輪爆炸,你已回到 ④ 安全區待著",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "se", "order": "①", "state": "boom" },
-            { "type": "quadrant", "quad": "sw", "order": "②", "state": "boom" },
-            { "type": "quadrant", "quad": "nw", "order": "③", "state": "boom" },
-            { "type": "quadrant", "quad": "ne", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "①",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "②",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "③",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["向", "十", "之", "水", "向", "十", "之", "水"], "done": 7 }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "向",
+                "十",
+                "之",
+                "水",
+                "向",
+                "十",
+                "之",
+                "水"
+              ],
+              "done": 7
+            }
           ],
           "actors": {
-            "MT": { "x": 44, "y": -58 }, "ST": { "x": 58, "y": -44 },
-            "H1": { "x": 34, "y": -70 }, "H2": { "x": 70, "y": -34 },
-            "D1": { "x": 30, "y": -50 }, "D2": { "x": 50, "y": -30 },
-            "D3": { "x": 40, "y": -40 }, "D4": { "x": 60, "y": -60 }
+            "MT": {
+              "x": 44,
+              "y": -58
+            },
+            "ST": {
+              "x": 58,
+              "y": -44
+            },
+            "H1": {
+              "x": 34,
+              "y": -70
+            },
+            "H2": {
+              "x": 70,
+              "y": -34
+            },
+            "D1": {
+              "x": 30,
+              "y": -50
+            },
+            "D2": {
+              "x": 50,
+              "y": -30
+            },
+            "D3": {
+              "x": 40,
+              "y": -40
+            },
+            "D4": {
+              "x": 60,
+              "y": -60
+            }
           }
         },
         {
           "caption": "第 8 次爆炸:④ 再爆之前回到 **①**,機制結束(共 3 次移動)",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "se", "order": "①" },
-            { "type": "quadrant", "quad": "sw", "order": "②" },
-            { "type": "quadrant", "quad": "nw", "order": "③" },
-            { "type": "quadrant", "quad": "ne", "order": "④", "state": "boom" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "④",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["向", "十", "之", "水", "向", "十", "之", "水"], "done": 8 },
-            { "type": "text", "at": [0, -104], "text": "完成", "color": "yellow" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "向",
+                "十",
+                "之",
+                "水",
+                "向",
+                "十",
+                "之",
+                "水"
+              ],
+              "done": 8
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "完成",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": 44, "y": 58 }, "ST": { "x": 58, "y": 44 },
-            "H1": { "x": 34, "y": 70 }, "H2": { "x": 70, "y": 34 },
-            "D1": { "x": 30, "y": 50 }, "D2": { "x": 50, "y": 30 },
-            "D3": { "x": 40, "y": 40 }, "D4": { "x": 60, "y": 60 }
+            "MT": {
+              "x": 44,
+              "y": 58
+            },
+            "ST": {
+              "x": 58,
+              "y": 44
+            },
+            "H1": {
+              "x": 34,
+              "y": 70
+            },
+            "H2": {
+              "x": 70,
+              "y": 34
+            },
+            "D1": {
+              "x": 30,
+              "y": 50
+            },
+            "D2": {
+              "x": 50,
+              "y": 30
+            },
+            "D3": {
+              "x": 40,
+              "y": 40
+            },
+            "D4": {
+              "x": 60,
+              "y": 60
+            }
           }
         }
       ]
     },
-
     {
       "id": "p3-floor-sym",
       "phase": "P3",
@@ -876,91 +3645,423 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "預備:字列 `十 水 向 之 ｜ 之 向 水 十`。① = 十(西南)。站到它**旁邊**的 ②(向/東南)或 ④(之/西北),此處示範站 ②",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "sw", "order": "①" },
-            { "type": "quadrant", "quad": "se", "order": "②" },
-            { "type": "quadrant", "quad": "ne", "order": "③" },
-            { "type": "quadrant", "quad": "nw", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["十", "水", "向", "之", "之", "向", "水", "十"], "now": 0 },
-            { "type": "text", "at": [0, -104], "text": "站 ① 的旁邊,不要站對面 ③", "color": "white" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "十",
+                "水",
+                "向",
+                "之",
+                "之",
+                "向",
+                "水",
+                "十"
+              ],
+              "now": 0
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "站 ① 的旁邊,不要站對面 ③",
+              "color": "white"
+            }
           ],
           "actors": {
-            "MT": { "x": 44, "y": 58 }, "ST": { "x": 58, "y": 44 },
-            "H1": { "x": 34, "y": 70 }, "H2": { "x": 70, "y": 34 },
-            "D1": { "x": 30, "y": 50 }, "D2": { "x": 50, "y": 30 },
-            "D3": { "x": 40, "y": 40 }, "D4": { "x": 60, "y": 60 }
+            "MT": {
+              "x": 44,
+              "y": 58
+            },
+            "ST": {
+              "x": 58,
+              "y": 44
+            },
+            "H1": {
+              "x": 34,
+              "y": 70
+            },
+            "H2": {
+              "x": 70,
+              "y": 34
+            },
+            "D1": {
+              "x": 30,
+              "y": 50
+            },
+            "D2": {
+              "x": 50,
+              "y": 30
+            },
+            "D3": {
+              "x": 40,
+              "y": 40
+            },
+            "D4": {
+              "x": 60,
+              "y": 60
+            }
           }
         },
         {
           "caption": "第 1 次爆炸:① 十(西南)爆 → 踩進 **①**。之後就待在這裡不動",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "sw", "order": "①", "state": "boom" },
-            { "type": "quadrant", "quad": "se", "order": "②" },
-            { "type": "quadrant", "quad": "ne", "order": "③" },
-            { "type": "quadrant", "quad": "nw", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "①",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["十", "水", "向", "之", "之", "向", "水", "十"], "done": 1 },
-            { "type": "arrow", "from": [46, 46], "to": [-46, 46], "color": "white", "dash": true }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "十",
+                "水",
+                "向",
+                "之",
+                "之",
+                "向",
+                "水",
+                "十"
+              ],
+              "done": 1
+            },
+            {
+              "type": "arrow",
+              "from": [
+                46,
+                46
+              ],
+              "to": [
+                -46,
+                46
+              ],
+              "color": "white",
+              "dash": true
+            }
           ],
           "actors": {
-            "MT": { "x": 44, "y": 58 }, "ST": { "x": 58, "y": 44 },
-            "H1": { "x": 34, "y": 70 }, "H2": { "x": 70, "y": 34 },
-            "D1": { "x": 30, "y": 50 }, "D2": { "x": 50, "y": 30 },
-            "D3": { "x": 40, "y": 40 }, "D4": { "x": 60, "y": 60 }
+            "MT": {
+              "x": 44,
+              "y": 58
+            },
+            "ST": {
+              "x": 58,
+              "y": 44
+            },
+            "H1": {
+              "x": 34,
+              "y": 70
+            },
+            "H2": {
+              "x": 70,
+              "y": 34
+            },
+            "D1": {
+              "x": 30,
+              "y": 50
+            },
+            "D2": {
+              "x": 50,
+              "y": 30
+            },
+            "D3": {
+              "x": 40,
+              "y": 40
+            },
+            "D4": {
+              "x": 60,
+              "y": 60
+            }
           }
         },
         {
           "caption": "第 2~7 次爆炸:③ ② ④ ④ ② ③ 依序爆炸。你的 ② 在第 3 次與第 6 次各爆一次 —— **炸完兩次**就可以準備回去了",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "sw", "order": "①" },
-            { "type": "quadrant", "quad": "se", "order": "②", "state": "boom" },
-            { "type": "quadrant", "quad": "ne", "order": "③", "state": "boom" },
-            { "type": "quadrant", "quad": "nw", "order": "④", "state": "boom" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "②",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "③",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "④",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["十", "水", "向", "之", "之", "向", "水", "十"], "done": 7 },
-            { "type": "text", "at": [0, -104], "text": "② 已炸完兩次", "color": "yellow" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "十",
+                "水",
+                "向",
+                "之",
+                "之",
+                "向",
+                "水",
+                "十"
+              ],
+              "done": 7
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "② 已炸完兩次",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": -44, "y": 58 }, "ST": { "x": -58, "y": 44 },
-            "H1": { "x": -34, "y": 70 }, "H2": { "x": -70, "y": 34 },
-            "D1": { "x": -30, "y": 50 }, "D2": { "x": -50, "y": 30 },
-            "D3": { "x": -40, "y": 40 }, "D4": { "x": -60, "y": 60 }
+            "MT": {
+              "x": -44,
+              "y": 58
+            },
+            "ST": {
+              "x": -58,
+              "y": 44
+            },
+            "H1": {
+              "x": -34,
+              "y": 70
+            },
+            "H2": {
+              "x": -70,
+              "y": 34
+            },
+            "D1": {
+              "x": -30,
+              "y": 50
+            },
+            "D2": {
+              "x": -50,
+              "y": 30
+            },
+            "D3": {
+              "x": -40,
+              "y": 40
+            },
+            "D4": {
+              "x": -60,
+              "y": 60
+            }
           }
         },
         {
           "caption": "第 8 次爆炸:① 再爆之前回到 **②**,機制結束(共 2 次移動,全程不需秒穿)",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "sw", "order": "①", "state": "boom" },
-            { "type": "quadrant", "quad": "se", "order": "②" },
-            { "type": "quadrant", "quad": "ne", "order": "③" },
-            { "type": "quadrant", "quad": "nw", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "①",
+              "state": "boom",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["十", "水", "向", "之", "之", "向", "水", "十"], "done": 8 },
-            { "type": "text", "at": [0, -104], "text": "完成", "color": "yellow" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "十",
+                "水",
+                "向",
+                "之",
+                "之",
+                "向",
+                "水",
+                "十"
+              ],
+              "done": 8
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "完成",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": 44, "y": 58 }, "ST": { "x": 58, "y": 44 },
-            "H1": { "x": 34, "y": 70 }, "H2": { "x": 70, "y": 34 },
-            "D1": { "x": 30, "y": 50 }, "D2": { "x": 50, "y": 30 },
-            "D3": { "x": 40, "y": 40 }, "D4": { "x": 60, "y": 60 }
+            "MT": {
+              "x": 44,
+              "y": 58
+            },
+            "ST": {
+              "x": 58,
+              "y": 44
+            },
+            "H1": {
+              "x": 34,
+              "y": 70
+            },
+            "H2": {
+              "x": 70,
+              "y": 34
+            },
+            "D1": {
+              "x": 30,
+              "y": 50
+            },
+            "D2": {
+              "x": 50,
+              "y": 30
+            },
+            "D3": {
+              "x": 40,
+              "y": 40
+            },
+            "D4": {
+              "x": 60,
+              "y": 60
+            }
           }
         }
       ]
     },
-
     {
       "id": "p3-floor-rounds",
       "phase": "P3",
@@ -974,58 +4075,234 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "第 ① 次固定句之一(時鐘型)`向 十 之 水 ｜ 向 十 之 水`:① = 向(東南),第 4、5 字 = 向、十 → 不同 → 時鐘型",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "se", "order": "①" },
-            { "type": "quadrant", "quad": "sw", "order": "②" },
-            { "type": "quadrant", "quad": "nw", "order": "③" },
-            { "type": "quadrant", "quad": "ne", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["向", "十", "之", "水", "向", "十", "之", "水"] },
-            { "type": "text", "at": [0, -104], "text": "第 ① 次固定句：時鐘型", "color": "yellow" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "向",
+                "十",
+                "之",
+                "水",
+                "向",
+                "十",
+                "之",
+                "水"
+              ]
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "第 ① 次固定句：時鐘型",
+              "color": "yellow"
+            }
           ]
         },
         {
           "caption": "第 ① 次固定句之二(對稱型)`十 水 向 之 ｜ 之 向 水 十`:① = 十(西南),第 4、5 字都是之 → 相同 → 對稱型。兩句先後隨機",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "sw", "order": "①" },
-            { "type": "quadrant", "quad": "se", "order": "②" },
-            { "type": "quadrant", "quad": "ne", "order": "③" },
-            { "type": "quadrant", "quad": "nw", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["十", "水", "向", "之", "之", "向", "水", "十"] },
-            { "type": "text", "at": [0, -104], "text": "第 ① 次固定句：對稱型", "color": "yellow" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "十",
+                "水",
+                "向",
+                "之",
+                "之",
+                "向",
+                "水",
+                "十"
+              ]
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "第 ① 次固定句：對稱型",
+              "color": "yellow"
+            }
           ]
         },
         {
           "caption": "⚠ 第 ② / ④ 次:BOSS 一上來先讀隨機旋律(此例為拒絕 → 貼中央)。**先處理旋律,字等一下再看**",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "nw" },
-            { "type": "quadrant", "quad": "ne" },
-            { "type": "quadrant", "quad": "sw" },
-            { "type": "quadrant", "quad": "se" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "knockback", "at": [0, 0], "count": 8, "rInner": 32, "rOuter": 60, "color": "red" },
-            { "type": "text", "at": [0, -104], "text": "旋律優先，字第二", "color": "red" }
+            {
+              "type": "knockback",
+              "at": [
+                0,
+                0
+              ],
+              "count": 8,
+              "rInner": 20,
+              "rOuter": 75,
+              "color": "red"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "旋律優先，字第二",
+              "color": "red"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -34 }, "D1": { "x": 24, "y": -24 },
-            "ST": { "x": 34, "y": 0 }, "D2": { "x": 24, "y": 24 },
-            "H1": { "x": 0, "y": 34 }, "D3": { "x": -24, "y": 24 },
-            "H2": { "x": -34, "y": 0 }, "D4": { "x": -24, "y": -24 }
+            "MT": {
+              "x": 0,
+              "y": -34
+            },
+            "D1": {
+              "x": 24,
+              "y": -24
+            },
+            "ST": {
+              "x": 34,
+              "y": 0
+            },
+            "D2": {
+              "x": 24,
+              "y": 24
+            },
+            "H1": {
+              "x": 0,
+              "y": 34
+            },
+            "D3": {
+              "x": -24,
+              "y": 24
+            },
+            "H2": {
+              "x": -34,
+              "y": 0
+            },
+            "D4": {
+              "x": -24,
+              "y": -24
+            }
           }
         }
       ]
     },
-
     {
       "id": "p3-puppet",
       "phase": "P3",
@@ -1039,59 +4316,267 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "❌ 常見誤判:連線是斜的,就以為自己會朝西北方(斜向)移動 —— 那樣算出來的路線會直接穿過中央天坑",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "tethers": [
-            { "from": [40, 40], "to": [-74, -74], "color": "purple" }
+            {
+              "from": [
+                40,
+                40
+              ],
+              "to": [
+                -74,
+                -74
+              ],
+              "color": "purple"
+            }
           ],
           "annotations": [
-            { "type": "arrow", "from": [-62, -74], "to": [-92, -74], "color": "white" },
-            { "type": "arrow", "from": [40, 40], "to": [-40, -40], "color": "red", "dash": true },
-            { "type": "text", "at": [0, -104], "text": "❌ 不是沿連線方向", "color": "red" }
+            {
+              "type": "arrow",
+              "from": [
+                -62,
+                -74
+              ],
+              "to": [
+                -92,
+                -74
+              ],
+              "color": "white"
+            },
+            {
+              "type": "arrow",
+              "from": [
+                40,
+                40
+              ],
+              "to": [
+                -40,
+                -40
+              ],
+              "color": "red",
+              "dash": true
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "❌ 不是沿連線方向",
+              "color": "red"
+            }
           ],
-          "actors": { "D1": { "x": 40, "y": 40 } }
+          "actors": {
+            "D1": {
+              "x": 40,
+              "y": 40
+            }
+          }
         },
         {
           "caption": "✅ 正解:箭頭圖示指的是**正西**,所以沿正西畫一條通過自己的平行線 —— 路線在南半場水平向西,不會經過天坑",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "tethers": [
-            { "from": [40, 40], "to": [-74, -74], "color": "purple" }
+            {
+              "from": [
+                40,
+                40
+              ],
+              "to": [
+                -74,
+                -74
+              ],
+              "color": "purple"
+            }
           ],
           "annotations": [
-            { "type": "arrow", "from": [-62, -74], "to": [-92, -74], "color": "white" },
-            { "type": "arrow", "from": [40, 40], "to": [-56, 40], "color": "yellow", "dash": true },
-            { "type": "text", "at": [0, -104], "text": "✅ 沿箭頭指向做平行線", "color": "yellow" }
+            {
+              "type": "arrow",
+              "from": [
+                -62,
+                -74
+              ],
+              "to": [
+                -92,
+                -74
+              ],
+              "color": "white"
+            },
+            {
+              "type": "arrow",
+              "from": [
+                40,
+                40
+              ],
+              "to": [
+                -56,
+                40
+              ],
+              "color": "yellow",
+              "dash": true
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "✅ 沿箭頭指向做平行線",
+              "color": "yellow"
+            }
           ],
-          "actors": { "D1": { "x": 40, "y": 40 } }
+          "actors": {
+            "D1": {
+              "x": 40,
+              "y": 40
+            }
+          }
         },
         {
           "caption": "全隊示意:每人依自己箭頭的正方向做平行線,並事先往反方向拉開。⚠ 別靠近自己的箭頭,並記得取消疾跑",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "arrow", "from": [42, -62], "to": [88, -62], "color": "yellow", "dash": true },
-            { "type": "arrow", "from": [62, 42], "to": [62, 88], "color": "yellow", "dash": true },
-            { "type": "arrow", "from": [-42, 62], "to": [-88, 62], "color": "yellow", "dash": true },
-            { "type": "arrow", "from": [-62, -42], "to": [-62, -88], "color": "yellow", "dash": true },
-            { "type": "text", "at": [0, -104], "text": "路線避開天坑與場外", "color": "yellow" }
+            {
+              "type": "arrow",
+              "from": [
+                42,
+                -62
+              ],
+              "to": [
+                88,
+                -62
+              ],
+              "color": "yellow",
+              "dash": true
+            },
+            {
+              "type": "arrow",
+              "from": [
+                62,
+                42
+              ],
+              "to": [
+                62,
+                88
+              ],
+              "color": "yellow",
+              "dash": true
+            },
+            {
+              "type": "arrow",
+              "from": [
+                -42,
+                62
+              ],
+              "to": [
+                -88,
+                62
+              ],
+              "color": "yellow",
+              "dash": true
+            },
+            {
+              "type": "arrow",
+              "from": [
+                -62,
+                -42
+              ],
+              "to": [
+                -62,
+                -88
+              ],
+              "color": "yellow",
+              "dash": true
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "路線避開天坑與場外",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": 42, "y": -62 }, "D1": { "x": 62, "y": -42 },
-            "ST": { "x": 62, "y": 42 }, "D2": { "x": 42, "y": 62 },
-            "H1": { "x": -42, "y": 62 }, "D3": { "x": -62, "y": 42 },
-            "H2": { "x": -62, "y": -42 }, "D4": { "x": -42, "y": -62 }
+            "MT": {
+              "x": 42,
+              "y": -62
+            },
+            "D1": {
+              "x": 62,
+              "y": -42
+            },
+            "ST": {
+              "x": 62,
+              "y": 42
+            },
+            "D2": {
+              "x": 42,
+              "y": 62
+            },
+            "H1": {
+              "x": -42,
+              "y": 62
+            },
+            "D3": {
+              "x": -62,
+              "y": 42
+            },
+            "H2": {
+              "x": -62,
+              "y": -42
+            },
+            "D4": {
+              "x": -42,
+              "y": -62
+            }
           }
         }
       ]
     },
-
     {
       "id": "p3-tower",
       "phase": "P3",
@@ -1109,81 +4594,388 @@ window.RAID_DATA['hells-kier-ex'] = {
       },
       "steps": [
         {
-          "caption": "① 就位:四個塔在 A/B/C/D 最外緣。八人依十字型分組,**兩人一組緊貼中央天坑外圈**(靠近中央是關鍵)",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "caption": "① 就位:塔在 A/B/C/D 最外緣(半徑 4m)。**站位由「塔的位置 − 擊退 11m」反推**,八人兩兩貼在該圈上",
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "tower", "at": [0, -84], "r": 16 },
-            { "type": "tower", "at": [84, 0], "r": 16 },
-            { "type": "tower", "at": [0, 84], "r": 16 },
-            { "type": "tower", "at": [-84, 0], "r": 16 },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "tower",
+              "at": [
+                0,
+                -84
+              ],
+              "r": 20
+            },
+            {
+              "type": "tower",
+              "at": [
+                84,
+                0
+              ],
+              "r": 20
+            },
+            {
+              "type": "tower",
+              "at": [
+                0,
+                84
+              ],
+              "r": 20
+            },
+            {
+              "type": "tower",
+              "at": [
+                -84,
+                0
+              ],
+              "r": 20
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "貼緊中央,靠擊退推進塔", "color": "yellow" }
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "貼緊中央,靠擊退推進塔",
+              "color": "yellow"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                104
+              ],
+              "text": "站位 = 塔(16.8m) − 擊退(11m) → 離中心約 5.8m",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "MT": { "x": -9, "y": -36 }, "D1": { "x": 9, "y": -36 },
-            "ST": { "x": 36, "y": -9 }, "D2": { "x": 36, "y": 9 },
-            "H2": { "x": -9, "y": 36 }, "D4": { "x": 9, "y": 36 },
-            "H1": { "x": -36, "y": -9 }, "D3": { "x": -36, "y": 9 }
+            "MT": {
+              "x": -6,
+              "y": -29
+            },
+            "D1": {
+              "x": 6,
+              "y": -29
+            },
+            "ST": {
+              "x": 29,
+              "y": -6
+            },
+            "D2": {
+              "x": 29,
+              "y": 6
+            },
+            "H2": {
+              "x": -6,
+              "y": 29
+            },
+            "D4": {
+              "x": 6,
+              "y": 29
+            },
+            "H1": {
+              "x": -29,
+              "y": -6
+            },
+            "D3": {
+              "x": -29,
+              "y": 6
+            }
           }
         },
         {
           "caption": "② 點名:此例為**雙坦雙補**被紅圈點名。被點名的四人**順時針移到相鄰斜位**,四名 DPS 原地不動",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "tower", "at": [0, -84], "r": 16 },
-            { "type": "tower", "at": [84, 0], "r": 16 },
-            { "type": "tower", "at": [0, 84], "r": 16 },
-            { "type": "tower", "at": [-84, 0], "r": 16 },
-            { "type": "circle", "at": "MT", "r": 19, "color": "death" },
-            { "type": "circle", "at": "ST", "r": 19, "color": "death" },
-            { "type": "circle", "at": "H1", "r": 19, "color": "death" },
-            { "type": "circle", "at": "H2", "r": 19, "color": "death" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "tower",
+              "at": [
+                0,
+                -84
+              ],
+              "r": 20
+            },
+            {
+              "type": "tower",
+              "at": [
+                84,
+                0
+              ],
+              "r": 20
+            },
+            {
+              "type": "tower",
+              "at": [
+                0,
+                84
+              ],
+              "r": 20
+            },
+            {
+              "type": "tower",
+              "at": [
+                -84,
+                0
+              ],
+              "r": 20
+            },
+            {
+              "type": "circle",
+              "at": "MT",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "ST",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "H1",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "H2",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "arcArrow", "radius": 44, "startAngle": 355, "endAngle": 45, "color": "white" },
-            { "type": "arcArrow", "radius": 44, "startAngle": 85, "endAngle": 135, "color": "white" },
-            { "type": "arcArrow", "radius": 44, "startAngle": 175, "endAngle": 225, "color": "white" },
-            { "type": "arcArrow", "radius": 44, "startAngle": 265, "endAngle": 315, "color": "white" },
-            { "type": "text", "at": [0, -104], "text": "有紅圈 → 順時針到斜位", "color": "white" }
+            {
+              "type": "arcArrow",
+              "radius": 44,
+              "startAngle": 355,
+              "endAngle": 45,
+              "color": "white"
+            },
+            {
+              "type": "arcArrow",
+              "radius": 44,
+              "startAngle": 85,
+              "endAngle": 135,
+              "color": "white"
+            },
+            {
+              "type": "arcArrow",
+              "radius": 44,
+              "startAngle": 175,
+              "endAngle": 225,
+              "color": "white"
+            },
+            {
+              "type": "arcArrow",
+              "radius": 44,
+              "startAngle": 265,
+              "endAngle": 315,
+              "color": "white"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "有紅圈 → 順時針到斜位",
+              "color": "white"
+            }
           ],
           "actors": {
-            "MT": { "x": 26, "y": -26 }, "D1": { "x": 0, "y": -36 },
-            "ST": { "x": 26, "y": 26 }, "D2": { "x": 36, "y": 0 },
-            "H2": { "x": -26, "y": 26 }, "D4": { "x": 0, "y": 36 },
-            "H1": { "x": -26, "y": -26 }, "D3": { "x": -36, "y": 0 }
+            "MT": {
+              "x": 26,
+              "y": -26
+            },
+            "D1": {
+              "x": 0,
+              "y": -36
+            },
+            "ST": {
+              "x": 26,
+              "y": 26
+            },
+            "D2": {
+              "x": 36,
+              "y": 0
+            },
+            "H2": {
+              "x": -26,
+              "y": 26
+            },
+            "D4": {
+              "x": 0,
+              "y": 36
+            },
+            "H1": {
+              "x": -26,
+              "y": -26
+            },
+            "D3": {
+              "x": -36,
+              "y": 0
+            }
           }
         },
         {
           "caption": "③ 拒絕旋律擊退:四名 DPS 被推進四個塔完成踩塔,被點名的坦補被推到斜位邊緣,紅圈在那裡爆炸",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "tower", "at": [0, -84], "r": 16 },
-            { "type": "tower", "at": [84, 0], "r": 16 },
-            { "type": "tower", "at": [0, 84], "r": 16 },
-            { "type": "tower", "at": [-84, 0], "r": 16 },
-            { "type": "circle", "at": "MT", "r": 19, "color": "death" },
-            { "type": "circle", "at": "ST", "r": 19, "color": "death" },
-            { "type": "circle", "at": "H1", "r": 19, "color": "death" },
-            { "type": "circle", "at": "H2", "r": 19, "color": "death" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "tower",
+              "at": [
+                0,
+                -84
+              ],
+              "r": 20
+            },
+            {
+              "type": "tower",
+              "at": [
+                84,
+                0
+              ],
+              "r": 20
+            },
+            {
+              "type": "tower",
+              "at": [
+                0,
+                84
+              ],
+              "r": 20
+            },
+            {
+              "type": "tower",
+              "at": [
+                -84,
+                0
+              ],
+              "r": 20
+            },
+            {
+              "type": "circle",
+              "at": "MT",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "ST",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "H1",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "circle",
+              "at": "H2",
+              "r": 30,
+              "color": "death"
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "knockback", "at": [0, 0], "count": 8, "rInner": 32, "rOuter": 62, "color": "red" },
-            { "type": "text", "at": [0, -104], "text": "DPS 進塔 / 坦補到斜位", "color": "yellow" }
+            {
+              "type": "knockback",
+              "at": [
+                0,
+                0
+              ],
+              "count": 8,
+              "rInner": 20,
+              "rOuter": 75,
+              "color": "red"
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "DPS 進塔 / 坦補到斜位",
+              "color": "yellow"
+            }
           ],
           "actors": {
-            "D1": { "x": 0, "y": -84 }, "D2": { "x": 84, "y": 0 },
-            "D4": { "x": 0, "y": 84 }, "D3": { "x": -84, "y": 0 },
-            "MT": { "x": 60, "y": -60 }, "ST": { "x": 60, "y": 60 },
-            "H2": { "x": -60, "y": 60 }, "H1": { "x": -60, "y": -60 }
+            "D1": {
+              "x": 0,
+              "y": -84
+            },
+            "D2": {
+              "x": 84,
+              "y": 0
+            },
+            "D4": {
+              "x": 0,
+              "y": 84
+            },
+            "D3": {
+              "x": -84,
+              "y": 0
+            },
+            "MT": {
+              "x": 60,
+              "y": -60
+            },
+            "ST": {
+              "x": 60,
+              "y": 60
+            },
+            "H2": {
+              "x": -60,
+              "y": 60
+            },
+            "H1": {
+              "x": -60,
+              "y": -60
+            }
           }
         }
       ]
     },
-
     {
       "id": "p3-final",
       "phase": "P3",
@@ -1198,41 +4990,167 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "四字句的爆炸序一定是 ① ③ ② ④ —— 不會連續爆同一格,所以不需要秒穿,站任一格旁邊等它炸完走上去即可",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "ne", "order": "①" },
-            { "type": "quadrant", "quad": "se", "order": "②" },
-            { "type": "quadrant", "quad": "sw", "order": "③" },
-            { "type": "quadrant", "quad": "nw", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["水", "十", "向", "之"] },
-            { "type": "text", "at": [0, -104], "text": "四字 = 對稱型前四次", "color": "yellow" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "水",
+                "十",
+                "向",
+                "之"
+              ]
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "四字 = 對稱型前四次",
+              "color": "yellow"
+            }
           ]
         },
         {
           "caption": "【第 2 句 = 最難的一段】前兩個字是 水(①) 與 十(③)。你的箭頭指向正西 → 沿正西的平行線移動,終點要落在 ③ 十(西南)",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "quadrant", "quad": "ne", "order": "①" },
-            { "type": "quadrant", "quad": "se", "order": "②" },
-            { "type": "quadrant", "quad": "sw", "order": "③" },
-            { "type": "quadrant", "quad": "nw", "order": "④" },
-            { "type": "hole", "at": [0, 0], "r": 26 },
-            { "type": "xmark", "at": [82, 44], "size": 8 },
-            { "type": "xmark", "at": [30, 44], "size": 8 }
+            {
+              "type": "quadrant",
+              "quad": "ne",
+              "order": "①",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "se",
+              "order": "②",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "sw",
+              "order": "③",
+              "r": 105
+            },
+            {
+              "type": "quadrant",
+              "quad": "nw",
+              "order": "④",
+              "r": 105
+            },
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            },
+            {
+              "type": "xmark",
+              "at": [
+                82,
+                44
+              ],
+              "size": 8
+            },
+            {
+              "type": "xmark",
+              "at": [
+                30,
+                44
+              ],
+              "size": 8
+            }
           ],
           "annotations": [
-            { "type": "charStrip", "side": "east", "chars": ["水", "十", "向", "之"] },
-            { "type": "arrow", "from": [56, 44], "to": [-56, 44], "color": "yellow", "dash": true },
-            { "type": "text", "at": [0, -104], "text": "太外側 / 太內側都會死,取適中距離", "color": "yellow" }
+            {
+              "type": "charStrip",
+              "side": "east",
+              "chars": [
+                "水",
+                "十",
+                "向",
+                "之"
+              ]
+            },
+            {
+              "type": "arrow",
+              "from": [
+                56,
+                44
+              ],
+              "to": [
+                -56,
+                44
+              ],
+              "color": "yellow",
+              "dash": true
+            },
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "太外側 / 太內側都會死,取適中距離",
+              "color": "yellow"
+            }
           ],
-          "actors": { "D1": { "x": 56, "y": 44 } }
+          "actors": {
+            "D1": {
+              "x": 56,
+              "y": 44
+            }
+          }
         }
       ]
     },
-
     {
       "id": "p3-timeline",
       "phase": "P3",
@@ -1247,18 +5165,65 @@ window.RAID_DATA['hells-kier-ex'] = {
       "steps": [
         {
           "caption": "【場地提醒,非流程步驟】欄杆與中央圓形地板都已被燃盡天火破壞,中央是天坑。P3 全程切勿穿過 BOSS 身體",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "boss": {
+            "x": 0,
+            "y": 0,
+            "facing": 0
+          },
           "aoes": [
-            { "type": "hole", "at": [0, 0], "r": 26 }
+            {
+              "type": "hole",
+              "at": [
+                0,
+                0
+              ],
+              "r": 17.5
+            }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "中央天坑 = 即死", "color": "red" }
+            {
+              "type": "text",
+              "at": [
+                0,
+                -104
+              ],
+              "text": "中央天坑 = 即死",
+              "color": "red"
+            }
           ],
           "actors": {
-            "MT": { "x": 0, "y": -62 }, "ST": { "x": 44, "y": -44 },
-            "H1": { "x": -44, "y": 44 }, "H2": { "x": 0, "y": 62 },
-            "D1": { "x": 62, "y": 0 }, "D2": { "x": 44, "y": 44 },
-            "D3": { "x": -62, "y": 0 }, "D4": { "x": -44, "y": -44 }
+            "MT": {
+              "x": 0,
+              "y": -62
+            },
+            "ST": {
+              "x": 44,
+              "y": -44
+            },
+            "H1": {
+              "x": -44,
+              "y": 44
+            },
+            "H2": {
+              "x": 0,
+              "y": 62
+            },
+            "D1": {
+              "x": 62,
+              "y": 0
+            },
+            "D2": {
+              "x": 44,
+              "y": 44
+            },
+            "D3": {
+              "x": -62,
+              "y": 0
+            },
+            "D4": {
+              "x": -44,
+              "y": -44
+            }
           }
         }
       ]

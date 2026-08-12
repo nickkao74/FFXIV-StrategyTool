@@ -35,6 +35,7 @@
 | `03-座標與圖元轉換.md` | 世界座標 → 本專案座標的公式,以及 AOEShape → `arena.js` 圖元的對照表 |
 | `04-交叉驗證.md` | 用已驗證的極朱雀攻略反向驗證上述規則,以及發現的落差 |
 | `05-取用SOP.md` | 之後做新副本攻略時的標準流程 |
+| `06-尺寸對照表.md` | 極朱雀每個圖元的實測尺寸;原本是攻略頁的第一章,已移出 |
 
 ## 硬性約束
 
@@ -44,10 +45,39 @@
 - 插件原始碼是 **參考資料**,不是可以直接複製進本專案的內容;
   我們取用的是「機制的客觀幾何事實」,重新用本專案的格式表達。
 
+## 已套用到極朱雀攻略
+
+校準完成後,已經把實測幾何套進正式攻略。**檔案關係如下,動手前務必看清楚**:
+
+```
+data/hells-kier-ex-legacy.js     ← 文字的來源(目測版沙盤圖,首頁封存區可看)
+        │
+        │  node "_Planning/BossMod逆向解析/tools/rebuild-hells-kier.js"
+        ▼
+data/hells-kier-ex.js            ← 現行版(自動產生,勿手改)
+```
+
+| 要改什麼 | 改哪裡 |
+|---|---|
+| 攻略**文字**(body / caption / roleNotes / cheatsheet) | `data/hells-kier-ex-legacy.js` |
+| 沙盤圖**幾何**、新增步驟 | `tools/rebuild-hells-kier.js` |
+| 兩者改完 | 重跑產生器 |
+
+```bash
+node "_Planning/BossMod逆向解析/tools/rebuild-hells-kier.js"
+```
+
+> ⚠️ **直接手改 `data/hells-kier-ex.js` 會在下次重跑時被覆蓋。**
+> 檔頭也寫了同樣的警語。
+
+白板場地 `data/arenas/hells-kier.js` 也一併校正:天坑 26 → **17.5**,
+P3 預設站位改用「塔的位置 − 擊退 11m」反推出來的 29。
+
 ## 目前狀態
 
 - [x] 座標系與角度慣例已解出並用朱雀四色地板交叉驗證通過(4/4 象限吻合)
 - [x] 朱雀全招式幾何表已建立
 - [x] AOEShape → `arena.js` 圖元對照表已建立
-- [ ] 依對照表回頭補正 `data/hells-kier-ex.js` 的既有數值(選作,見 `04`)
+- [x] 補上 `rect` 原生圖元(`js/arena.js` + `js/board/import.js`,已通過白板匯入驗證)
+- [x] 極朱雀攻略已改用實測幾何,舊版封存在首頁
 - [ ] 套用到下一個新副本
