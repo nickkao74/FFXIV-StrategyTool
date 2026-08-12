@@ -204,6 +204,20 @@ class Arena {
         }, layer);
         break;
       }
+      /* 直線 AOE。語意刻意對齊 BossMod 的 AOEShapeRect:
+       * 原點在「前後長度」的分界處,angle 是延伸方向(0 = 北),halfWidth 是半寬。
+       * 詳見 _Planning/BossMod逆向解析/03-座標與圖元轉換.md */
+      case 'rect': {
+        const front = aoe.lengthFront ?? aoe.r ?? 100;
+        const back = aoe.lengthBack || 0;
+        const hw = aoe.halfWidth || 10;
+        el('rect', {
+          x: p.x - hw, y: p.y - front, width: hw * 2, height: front + back,
+          transform: `rotate(${aoe.angle || 0} ${p.x} ${p.y})`,
+          class: cls,
+        }, layer);
+        break;
+      }
       case 'blackhole': {
         const g = el('g', { class: 'blackhole' }, layer);
         el('circle', { cx: p.x, cy: p.y, r: (aoe.r || 10) + 3, class: 'blackhole-glow' }, g);
