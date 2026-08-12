@@ -1,0 +1,54 @@
+/* replay.css — 戰鬥重播頁專用樣式（疊加於 board.css 之上，不修改 board.css） */
+
+.replay-meta { font-size: 12.5px; color: var(--text-dim); margin-left: 8px; }
+
+.replay-body {
+  display: grid; grid-template-columns: 1fr 1fr;
+  flex: 1; min-height: 0;
+}
+.replay-main {
+  display: flex; justify-content: center; align-items: flex-start;
+  padding: 22px; overflow: auto; box-sizing: border-box;
+}
+.replay-side {
+  overflow-y: auto; border-left: 1px solid var(--border); background: var(--bg-panel);
+  display: flex; flex-direction: column;
+}
+.replay-side-block { padding: 14px; border-bottom: 1px solid var(--border); }
+.replay-side-block h3 { margin: 0 0 10px; font-size: 13px; color: var(--text-dim); text-transform: uppercase; letter-spacing: .04em; }
+.replay-chart-block { flex: 1; }
+
+.series-toggles { display: flex; flex-direction: column; gap: 6px; }
+.series-toggle {
+  display: flex; align-items: center; gap: 8px; font-size: 13px; cursor: pointer;
+  padding: 3px 4px; border-radius: 6px;
+}
+.series-toggle:hover { background: var(--bg-panel2); }
+.series-toggle input { accent-color: var(--accent); }
+.series-swatch { width: 10px; height: 10px; border-radius: 3px; flex: none; }
+.series-toggle .series-name { flex: 1; }
+.series-toggle .series-value { color: var(--text-dim); font-variant-numeric: tabular-nums; font-size: 12px; }
+
+#chart-canvas { width: 100%; height: 260px; display: block; background: var(--bg-panel2); border-radius: 8px; cursor: crosshair; }
+.chart-hint { color: var(--text-dim); font-size: 11.5px; margin: 8px 0 0; }
+
+.time-label { font-size: 13px; color: var(--text-dim); flex: none; font-variant-numeric: tabular-nums; min-width: 100px; }
+.scrubber { flex: 1; accent-color: var(--accent); }
+
+/* 重播兵棋位移改用 linear，避免速度加快時因 CSS transition 卡頓延遲 */
+.board-token { transition: transform .12s linear !important; }
+
+/* BOSS 血條（在右側資訊欄） */
+.replay-bosshp-bar { height: 12px; border-radius: 6px; background: var(--bg-panel2); border: 1px solid var(--border); overflow: hidden; }
+.replay-bosshp-fill { height: 100%; background: linear-gradient(90deg, #7a1f1f, #ff5f5f); }
+.replay-bosshp-label { font-size: 13px; color: var(--text); margin: 0 0 6px; display: flex; justify-content: space-between; font-weight: 600; }
+
+/* 圖表模式切換 */
+.chart-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px; }
+.chart-mode-toggle { display: flex; gap: 4px; }
+.chart-mode-btn {
+  padding: 3px 9px; border-radius: 6px; cursor: pointer; font-size: 11.5px; font-weight: 600;
+  background: var(--bg-panel2); border: 1px solid var(--border); color: var(--text-dim);
+}
+.chart-mode-btn:hover { border-color: var(--accent); color: var(--text); }
+.chart-mode-btn.active { background: var(--accent); border-color: var(--accent); color: #08202c; }

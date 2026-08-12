@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>FFXIV 戰鬥重播</title>
+<link rel="stylesheet" href="css/board.css">
+<link rel="stylesheet" href="css/replay.css">
+</head>
+<body>
+
+<div id="gate-overlay" class="gate-overlay">
+  <div class="gate-box">
+    <h1>FFXIV 戰鬥重播</h1>
+    <p>請輸入存取密碼</p>
+    <input id="gate-input" type="password" autocomplete="off" placeholder="密碼">
+    <button id="gate-submit">進入</button>
+    <p id="gate-error" class="gate-error"></p>
+  </div>
+</div>
+
+<div id="board-app" hidden>
+  <header class="board-header">
+    <a class="home-link" href="index.html">← 返回首頁</a>
+    <h1>戰鬥重播</h1>
+    <div class="board-toolbar">
+      <label class="toolbar-item">
+        場次
+        <select id="replay-select"></select>
+      </label>
+      <span id="replay-meta" class="replay-meta"></span>
+    </div>
+  </header>
+  <div class="replay-body">
+    <main class="replay-main">
+      <div id="board-canvas" class="board-canvas-wrap"></div>
+    </main>
+    <aside class="replay-side">
+      <div class="replay-side-block">
+        <div class="replay-bosshp-label"><span id="boss-hp-name">BOSS</span><span id="boss-hp-text">--</span></div>
+        <div class="replay-bosshp-bar"><div id="boss-hp-fill" class="replay-bosshp-fill" style="width:100%"></div></div>
+      </div>
+      <div class="replay-side-block">
+        <h3>顯示對象</h3>
+        <div id="series-toggles" class="series-toggles"></div>
+      </div>
+      <div class="replay-side-block replay-chart-block">
+        <div class="chart-header">
+          <h3 style="margin:0">傷害 / BOSS 血量</h3>
+          <div class="chart-mode-toggle">
+            <button class="chart-mode-btn active" data-mode="cumulative">累積</button>
+            <button class="chart-mode-btn" data-mode="rate">單位時間</button>
+          </div>
+        </div>
+        <canvas id="chart-canvas" width="480" height="260"></canvas>
+        <p class="chart-hint">點擊圖表可跳轉到該時間點</p>
+      </div>
+    </aside>
+  </div>
+  <footer class="timeline-bar">
+    <div class="timeline-row">
+      <button id="play-btn" class="toolbar-btn timeline-play">▶ 播放</button>
+      <label class="toolbar-item">
+        速度
+        <select id="speed-select">
+          <option value="1">1x</option>
+          <option value="2">2x</option>
+          <option value="4">4x</option>
+          <option value="8">8x</option>
+          <option value="16">16x</option>
+        </select>
+      </label>
+      <span id="time-label" class="time-label">00:00 / 00:00</span>
+      <input id="scrubber" class="scrubber" type="range" min="0" max="1000" value="0" step="1">
+    </div>
+  </footer>
+</div>
+
+<script src="js/board/gate.js"></script>
+<script src="data/replays/20260804_幻朱雀征魂戰.js"></script>
+<script src="js/replay/app.js"></script>
+<script>
+  boardGateInit(() => { replayMain().catch(e => { console.error(e); alert('載入失敗:' + e.message); }); });
+</script>
+</body>
+</html>
