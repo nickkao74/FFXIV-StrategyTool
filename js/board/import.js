@@ -84,6 +84,29 @@ function convertGuideStep(step, running) {
         push({ kind: 'aoe-donut', ...pos, rOuter: a.rOuter || 100, rInner: a.rInner || 40, color: guideColor(a.color) }, at); break;
       case 'cone':
         push({ kind: 'aoe-cone', ...pos, angle: a.angle || 0, spread: a.spread || 90, r: a.r || 100, color: guideColor(a.color) }, at); break;
+      // 攻略的 rect 以「原點 + 延伸方向」定義(對齊 BossMod 的 AOEShapeRect),
+      // 白板的 aoe-rect 是「中心 + 寬高 + 旋轉」,這裡把原點換算成中心。
+      // 白板未旋轉時高(h)沿 +y = 南 = 攻略角度 180,故 rot = angle - 180。
+      case 'rect': {
+        const front = a.lengthFront != null ? a.lengthFront : (a.r || 100);
+        const back = a.lengthBack || 0;
+        const hw = a.halfWidth || 10;
+        const rad = ((a.angle || 0) - 90) * Math.PI / 180;
+        const off = (front - back) / 2;
+        const ox = off * Math.cos(rad), oy = off * Math.sin(rad);
+        // 原點若吸附在兵棋上,把中心位移寫進 dx/dy,拖兵棋時矩形才會跟著跑
+        const anchored = pos.attachTo
+          ? { attachTo: pos.attachTo, dx: pos.dx + ox, dy: pos.dy + oy }
+          : { x: pos.x + ox, y: pos.y + oy };
+        push({
+          kind: 'aoe-rect',
+          ...anchored,
+          w: hw * 2, h: front + back,
+          rot: ((a.angle || 0) - 180 + 360) % 360,
+          color: guideColor(a.color),
+        });
+        break;
+      }
       case 'blackhole':
         push({ kind: 'blackhole', ...pos, r: a.r || 10 }, at); break;
       case 'tentacle':

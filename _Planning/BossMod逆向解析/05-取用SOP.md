@@ -1,0 +1,119 @@
+# 05 — 新副本攻略的標準取用流程
+
+朱雀這一輪已經把規則校準完畢。之後要做新副本時,照這份流程走。
+
+---
+
+## 步驟 0 — 找到 module
+
+```
+_OriginalReferences/BossmodReborn/BossMod/Modules/<資料片>/<類別>/<副本代號>/
+```
+
+`<類別>` = `Raid`(零式)/ `Ultimate`(絕)/ `Extreme`(極)/ `Trial` / `Dungeon` /
+`Unreal`(幻)/ `Alliance` / `Foray`。
+
+找不到就全域搜尋 BOSS 英文名。**同一個 BOSS 的極/幻版本常有兩份幾乎相同的 module,
+可以互相對照補完**(朱雀的 `Ex7Suzaku` ↔ `UnSuzaku` 就是這種關係)。
+
+`[ModuleInfo(...)]` 屬性裡的 `Maturity` 值得看一眼:
+`Verified` 表示插件作者實戰驗證過,`WIP` 則要保留懷疑。
+
+## 步驟 1 — 抽場地參數
+
+從主檔(`<副本>.cs`)抄:
+
+```csharp
+public static readonly WPos ArenaCenter = new(X, Z);
+public static readonly ArenaBoundsCustom Bounds = ...;
+```
+
+決定 `RADIUS_YALM`(取外緣)與 `K = 100 / RADIUS_YALM`。
+記錄在新的 `data/<raid>.js` 檔頭註解裡。
+
+## 步驟 2 — 抽時間軸
+
+從 `<副本>States.cs`,把 `delay` 累加成流程表。重點:
+
+- 被抽成 **私有方法** 的段落 = 固定套路組合技,直接對應攻略的一個「節」。
+- `.SetHint(Raidwide / Tankbuster / Knockback / DowntimeStart)` → 攻略的標記。
+- `CastMulti([A, B], ...)` → **需要判讀技能名的二選一機制**,一定要寫進 cheatsheet。
+- `ActivateOnEnter<X>` / `DeactivateOnExit<X>` → 哪些機制同時存在(複合機制的來源)。
+
+## 步驟 3 — 抽幾何
+
+在該資料夾全域搜尋:
+
+```bash
+grep -rn "new AOEShape" .        # 所有形狀與尺寸
+grep -rn "new AOEInstance" .     # 形狀 + 位置 + 指向 + 時間
+grep -rn "AddForcedMovement\|Towers.Add\|Knockback" .
+```
+
+牢記 `halfAngle` / `halfWidth` 都是「一半」。
+
+## 步驟 4 — 抽「解法」(最有價值的一步)
+
+```bash
+grep -rn "AddForbiddenZone\|GoalZones\|ForbiddenDirections\|SetPriority" .
+```
+
+`SD*` 形狀寫的是 **站位解**。常見句型:
+
+| 程式碼 | 意思 |
+|---|---|
+| `SDCircle(c, r)` 禁止 | 站 r 以外 |
+| `SDInvertedCircle(c, r)` 禁止 | 站 r 以內 |
+| `SDInvertedCross(c, dir, len, halfW)` 禁止 | 站在十字線帶上 |
+| `SDCone(c, r, dir, half)` 禁止 | 避開那個扇區 |
+| `SDRect(c, dir, len, back, halfW)` 禁止 | 避開那條帶子 |
+| `SDUnion([...])` | 以上聯集,全都要避開 |
+| `GoalProximity(p, r, w)` | 反過來:**要靠近** p 到 r 以內 |
+| `ForbiddenDirections.Add((d, ~175°, t))` | **必須面向 d** |
+
+**這些數字往往能被反推出物理來源**(例:`14.5 = 3.5 天坑 + 11 牽引)。
+反推成功 = 你真的理解了這個機制;反推不出來就先照抄並標記待驗證。
+
+## 步驟 5 — 轉換並寫入
+
+套用 `03` 的公式與圖元對照表,產出 `data/<raid>.js`。
+
+- 位置:`(worldX - centerX) * K`,`(worldZ - centerZ) * K`
+- 角度:`(180 - bossmodDeg + 360) % 360`
+- 長度:`yalm * K`
+
+## 步驟 6 — 需要新圖元時
+
+1. **先讀 `board-object-parity` skill。**
+2. 在 `js/arena.js` 的 `_drawAoe` 加 case。
+3. **同步** `js/board/objects.js` 與白板工具列的「副本專屬」分類。
+4. 兩邊命名一致,否則攻略匯入白板時會靜默丟棄。
+
+目前已知待補的原生圖元:**`rect`**(規格見 `03` 第 3 節),
+之後可能還會需要 `donutSector` 與 `cross`。
+
+## 步驟 7 — 交叉驗證
+
+新副本沒有「已驗證攻略」可對照,改用這三個替代驗證:
+
+1. **自洽性**:插件的安全區數字能不能由場地尺寸 + 位移距離反推出來?
+2. **時間軸總長**:把 `States.cs` 的所有 delay 累加,應接近該副本的實際 enrage 時間。
+3. **文字攻略對照**:找一份社群攻略,確認出招順序與插件狀態機同構(像 `04` B 段那樣)。
+
+三項都過才把該副本標為可信。
+
+---
+
+## 該做與不該做
+
+**該做**
+
+- 取用機制的客觀幾何事實(位置、尺寸、角度、時間)。
+- 把插件的 AI 站位解當作 **一種解法** 記錄下來,並與社群主流解法並列。
+
+**不該做**
+
+- 修改 `_OriginalReferences/BossmodReborn` 底下任何檔案(它有獨立 Git 版控)。
+- 把插件程式碼直接複製進本專案。
+- 把 `party == 8` 之類的插件體驗調整當成遊戲機制。
+- 相信 AID 註解與檔名而不看實際程式碼(`ScarletMelody.cs` 其實是 P2 音遊,不是朱紅旋律)。
