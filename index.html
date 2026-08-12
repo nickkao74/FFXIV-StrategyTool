@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>FFXIV 高難度副本攻略工具</title>
-<link rel="stylesheet" href="css/style.css?v=4">
+<link rel="stylesheet" href="css/style.css?v=5">
 </head>
 <body>
 <header><h1>FFXIV 高難度副本攻略工具</h1></header>
@@ -20,20 +20,39 @@
       <p>在俯瞰場地圖上拖曳兵棋、畫地毯與箭頭,串成走位動畫,供團練即時討論解法。可直接導入攻略庫的內容當起點。<span class="tool-card-note">需要存取密碼</span></p>
     </a>
   </div>
+
+  <details class="archive" id="archive">
+    <summary>封存</summary>
+    <p class="archive-note">被新版取代、但保留下來供對照的舊攻略。平常不需要打開。</p>
+    <div id="archive-list" class="card-grid"></div>
+  </details>
 </main>
 
 <script src="data/raids.js"></script>
 <script>
 (() => {
-  const list = document.getElementById('raid-list');
-  if (!window.RAID_LIST) { list.textContent = '載入失敗:找不到 data/raids.js'; return; }
-  list.innerHTML = '';
-  for (const raid of window.RAID_LIST) {
+  const card = (raid, extra = '') => {
     const a = document.createElement('a');
     a.className = 'raid-card';
     a.href = `guide.html?raid=${raid.id}`;
-    a.innerHTML = `<h2>${raid.name}</h2><p>${raid.description || ''}</p>`;
-    list.appendChild(a);
+    a.innerHTML = `<h2>${raid.name}${extra}</h2><p>${raid.description || ''}</p>`;
+    return a;
+  };
+
+  const list = document.getElementById('raid-list');
+  if (!window.RAID_LIST) { list.textContent = '載入失敗:找不到 data/raids.js'; return; }
+  list.innerHTML = '';
+  for (const raid of window.RAID_LIST) list.appendChild(card(raid));
+
+  // 封存區沒有內容就整塊不顯示,免得留一個永遠空的折疊區
+  const archive = window.RAID_ARCHIVE || [];
+  const box = document.getElementById('archive');
+  if (!archive.length) { box.remove(); return; }
+  const byId = new Map(window.RAID_LIST.map((r) => [r.id, r.name]));
+  const archiveList = document.getElementById('archive-list');
+  for (const raid of archive) {
+    const now = byId.get(raid.replacedBy);
+    archiveList.appendChild(card(raid, now ? `<span class="archive-replaced">已由「${now}」取代</span>` : ''));
   }
 })();
 </script>
