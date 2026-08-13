@@ -31,6 +31,43 @@ public static readonly ArenaBoundsCustom Bounds = ...;
 決定 `RADIUS_YALM`(取外緣)與 `K = 100 / RADIUS_YALM`。
 記錄在新的 `data/<raid>.js` 檔頭註解裡。
 
+### ⚠️ 註解的可信度:低,不優先採用
+
+`<Module>Enums.cs` 裡每個 AID / OID 後面都有一行看起來很誘人的註解:
+
+```csharp
+WellOfFlame = 43017,   // Boss->self, 4s cast, range 41 width 20 rect
+ScarletLady = 0x47D2,  // R1.12
+```
+
+**這些是半自動產生的,可信度是全部來源裡最低的一級(C 級,見 `01` 第 0 節)。**
+理由:
+
+- 它們由封包 dump 工具批次寫出,**module 改版時不一定會同步更新**。
+- 同一份註解在極版與幻版之間是整段沿用的,**只換 ID 不重新驗證**。
+- 註解描述的是「這一招長什麼樣」,但插件真正拿去判定的是
+  `new AOEShape…` 的參數 —— **兩者不一致時,以程式碼為準**。
+- 檔名同樣不可望文生義:`ScarletMelody.cs` 處理的是 P2 音遊,
+  我們稱為「朱紅旋律」的四色地板在插件裡叫 `Hotspot.cs`。
+
+**工作規則**:
+
+1. 註解**只當索引**,用來快速定位「這招大概是什麼類型」。
+2. 任何要進到沙盤圖的數字,**一律回頭找程式碼裡的 `new AOEShape…`**。
+3. 找不到對應程式碼、又非得引用註解不可時:
+   - 在文件的出處欄標 **`⚠️ 僅註解`**;
+   - **並且在交付訊息裡向使用者明確回報「這一項只有註解佐證」**,
+     讓對方決定要不要實測。不要默默用掉。
+4. 全屏 AOE、單體死刑這類**沒有範圍可畫**的招式是合理例外 ——
+   插件本來就不會替它們建構形狀,引用註解做定性描述沒問題,
+   但註解裡的 `range 41` 之類的數字仍然不要拿去畫圖。
+
+上游官方 wiki
+([Making a Module: What kind of attacks exist?](https://github.com/awgil/ffxiv_bossmod/wiki/Making-a-Module:-What-kind-of-attacks-exist%3F))
+比註解可信,但**只寫了 circle 與 cone 兩種形狀**,而且 `DirectionOffset`
+那一欄官方自己標成「??? (need to experiment on this one)」。
+它可以拿來佐證(例如它確認了 `HalfAngle` 是半角),但不足以當主要依據。
+
 ## 步驟 2 — 抽時間軸
 
 從 `<副本>States.cs`,把 `delay` 累加成流程表。重點:
@@ -116,4 +153,7 @@ grep -rn "AddForbiddenZone\|GoalZones\|ForbiddenDirections\|SetPriority" .
 - 修改 `_OriginalReferences/BossmodReborn` 底下任何檔案(它有獨立 Git 版控)。
 - 把插件程式碼直接複製進本專案。
 - 把 `party == 8` 之類的插件體驗調整當成遊戲機制。
-- 相信 AID 註解與檔名而不看實際程式碼(`ScarletMelody.cs` 其實是 P2 音遊,不是朱紅旋律)。
+- 相信 AID / OID 註解與檔名而不看實際程式碼
+  (`ScarletMelody.cs` 其實是 P2 音遊,不是朱紅旋律)。
+- **把只有註解佐證的數字畫進沙盤圖,而且不告訴使用者。**
+  真的只能用註解時,文件標 `⚠️ 僅註解`,交付時明講。

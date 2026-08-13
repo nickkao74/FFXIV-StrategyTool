@@ -5,6 +5,14 @@
 
 單位一律為 **遊戲碼(yalm)**,角度為 **BossMod 慣例(0°=南,順時針為正)**。
 
+> **可信度標示**(分級定義見 `01` 第 0 節):
+> 下表的「出處」欄標 **`✅ 程式碼`** 者為 A 級,數值直接來自實際執行的
+> `new AOEShape…`;標 **`⚠️ 僅註解`** 者為 C 級,只出現在 `UnSuzakuEnums.cs`
+> 的行末註解裡,**程式碼中找不到對應的形狀建構**,未經佐證。
+>
+> **C 級的數字不要拿來當沙盤圖的依據。** 目前 `data/hells-kier-ex.js` 用到的
+> 幾何**全部是 A 級**;C 級只用來寫「這招是全屏」「這招是死刑」這類定性描述。
+
 ---
 
 ## 0. 場地
@@ -28,7 +36,12 @@ Phase2Bounds = DonutV(ArenaCenter, 3.5f, 20f, 80);    // P3:內 3.5 / 外 20 的
 
 ## 1. 演員 ID(OID)
 
-| OID (Unreal / EX) | 名稱 | 半徑 | 用途 |
+> ⚠️ **「半徑」欄整欄是 C 級** —— 那是 `UnSuzakuEnums.cs` 每一行後面的
+> `// R1.12` 註解,不是程式碼。**只有 `ScarletLady` 的 1.12 有旁證**:
+> `Feathers.cs` 與 `Rekindle.cs` 三處出現的常數 `7.12`,減去程式碼裡的
+> 分散半徑 6 剛好是 1.12,兩者互相佐證。其餘的 R 值都未經驗證。
+
+| OID (Unreal / EX) | 名稱 | 半徑(⚠️ 僅註解) | 用途 |
 |---|---|---:|---|
 | `0x47D1` / `0x2464` | Boss 朱雀 | 2.8–6.93 | 本體(P3 變人形時 hitbox 變小) |
 | `0x47D2` / `0x2465` | ScarletLady | **1.12** | 火焰鳥(小鳥) |
@@ -44,24 +57,32 @@ Phase2Bounds = DonutV(ArenaCenter, 3.5f, 20f, 80);    // P3:內 3.5 / 外 20 的
 
 | AID (Unreal) | 名稱 | 施法者 / 讀條 | 幾何 | 出處 |
 |---|---|---|---|---|
-| 43004 | ScreamsOfTheDamned 悲鳴之詩 | Boss, 3s | 全屏(r40 圓) | Enums |
-| 43003 | Cremate 赤熱擊 | Boss→player, 3s | 單體死刑 | Enums |
-| 43027 | Rout 敗走 | Boss, 3s | **矩形 長 55 × 半寬 3(寬 6)** | `UnSuzaku.cs:561` |
-| 43005 | FleetingSummer 殘夏 | Boss, 3s | **扇形 r40 × 半角 45°(總 90°)** | `UnSuzaku.cs:562` |
-| 43016 | Rekindle 再燃 | Helper→players | **分散 r6,圖示後 5.1s** | `Rekindle.cs:421` |
-| 43006 | WingAndAPrayer(大羽毛) | ScarletTailFeather, **20s** | **圓 r9** | `Feathers.cs:34` |
-| 43001 | WingAndAPrayer(小羽毛) | ScarletPlume, 20s | 圓 r9(同上) | Enums |
-| 43009 | ScarletFever | Helper, 7s | 全屏 + **場地變甜甜圈** | `ArenaChange.cs` |
-| 43015 | SouthronStar 南斗星 | Boss, 4s | 全屏(r41 圓) | Enums |
-| 43010 | MesmerizingMelody 引誘的旋律 | Boss, 4s | **牽引 11m,朝中心** | `KnockbacksForcedMarch.cs:330` |
-| 43011 | RuthlessRefrain 拒絕的旋律 | Boss, 4s | **擊退 11m,遠離中心** | `KnockbacksForcedMarch.cs:344` |
-| 43017 | WellOfFlame 井宿焰 | Boss, 4s | **矩形 長 41 × 半寬 10(寬 20)** | `UnSuzaku.cs:563` |
-| 43000 | ScathingNet | Helper→player | **集合分攤 r6,5.1s,需 8 人** | `UnSuzaku.cs:564` |
-| 43012/13/14 | PhantomFlurry 鬼宿腳 | Boss, 4s | **換坦死刑 + 扇形 r41 × 半角 90°(總 180°)** | `UnSuzaku.cs:565-566` |
-| 43018 | Hotspot 地板爆炸 | Helper, 0.9s | **扇形 r21 × 半角 45°(=一個象限)** | `Hotspot.cs:173` |
-| 43022-25 | PayThePiper 傀儡旋律 | Pyre→player | **強制位移 4m,倒數 10s** | `KnockbacksForcedMarch.cs:382` |
-| 43021 / 43020 | Immolate / Burn | Helper | 踩塔失敗全屏 / 成功 r4 | Enums |
-| 43026 | EnrageSouthronStar | Boss, **39s** | 狂暴 | Enums |
+| 43027 | Rout 敗走 | Boss, 3s | **矩形 長 55 × 半寬 3(寬 6)** | ✅ 程式碼 `UnSuzaku.cs:561` |
+| 43005 | FleetingSummer 殘夏 | Boss, 3s | **扇形 r40 × 半角 45°(總 90°)** | ✅ 程式碼 `UnSuzaku.cs:562` |
+| 43016 | Rekindle 再燃 | Helper→players | **分散 r6,圖示後 5.1s** | ✅ 程式碼 `Rekindle.cs:421` |
+| 43006 | WingAndAPrayer(大羽毛) | ScarletTailFeather, 20s | **圓 r9** | ✅ 程式碼 `Feathers.cs:34` |
+| 43010 | MesmerizingMelody 引誘的旋律 | Boss, 4s | **牽引 11m,朝中心** | ✅ 程式碼 `KnockbacksForcedMarch.cs:330` |
+| 43011 | RuthlessRefrain 拒絕的旋律 | Boss, 4s | **擊退 11m,遠離中心** | ✅ 程式碼 `KnockbacksForcedMarch.cs:344` |
+| 43017 | WellOfFlame 井宿焰 | Boss, 4s | **矩形 長 41 × 半寬 10(寬 20)** | ✅ 程式碼 `UnSuzaku.cs:563` |
+| 43000 | ScathingNet 張宿業火 | Helper→player | **集合分攤 r6,5.1s,需 8 人** | ✅ 程式碼 `UnSuzaku.cs:564` |
+| 43012/13/14 | PhantomFlurry 鬼宿腳 | Boss, 4s | **換坦死刑 + 扇形 r41 × 半角 90°(總 180°)** | ✅ 程式碼 `UnSuzaku.cs:565-566` |
+| 43018 | Hotspot 地板爆炸 | Helper, 0.9s | **扇形 r21 × 半角 45°(=一個象限)** | ✅ 程式碼 `Hotspot.cs:173` |
+| 43022-25 | PayThePiper 傀儡旋律 | Pyre→player | **強制位移 4m,倒數 10s** | ✅ 程式碼 `KnockbacksForcedMarch.cs:382` |
+| 43009 | ScarletFever | Helper, 7s | **場地變甜甜圈**(預警圓 r3.5) | ✅ 程式碼 `ArenaChange.cs`;「全屏」⚠️ 僅註解 |
+| 43004 | ScreamsOfTheDamned 悲鳴之詩 | Boss, 3s | 全屏(註解寫 r40 圓) | ⚠️ 僅註解 |
+| 43003 | Cremate 赤熱擊 | Boss→player, 3s | 單體死刑 | ⚠️ 僅註解 |
+| 43001 | WingAndAPrayer(小羽毛) | ScarletPlume, 20s | 註解寫 r9(與大羽毛同) | ⚠️ 僅註解 |
+| 43015 | SouthronStar 南斗星 | Boss, 4s | 全屏(註解寫 r41 圓) | ⚠️ 僅註解 |
+| 43021 / 43020 | Immolate / Burn | Helper | 踩塔失敗全屏 / 成功 r4 | ⚠️ 僅註解 |
+| 43026 | EnrageSouthronStar | Boss, 39s | 狂暴 | ⚠️ 僅註解 |
+
+**關於 ⚠️ 那幾列**:全屏 AOE 與單體死刑沒有「範圍」可畫,插件本來就不需要
+建構形狀 —— 所以「找不到程式碼」是合理的,不代表註解錯。但那些數字
+(r40 / r41 / r4)**沒有經過任何程式碼佐證**,不要拿去畫圖。
+
+唯一例外是 **小羽毛(43001)**:它有實際的圓形 AOE,但插件只對大羽毛
+(`WingAndAPrayerTailFeather`)建構 `AOEShapeCircle(9f)`。我們現行的沙盤圖
+把小羽毛也畫成 r9,**這一項是引用註解的**,若日後發現對不上,先從這裡查。
 
 ### 兩個常被誤記的數字
 
