@@ -37,6 +37,31 @@
 | `05-取用SOP.md` | 之後做新副本攻略時的標準流程 |
 | `06-尺寸對照表.md` | 極朱雀每個圖元的實測尺寸;原本是攻略頁的第一章,已移出 |
 
+## 外部參考
+
+- [Making a Module: What kind of attacks exist?](https://github.com/awgil/ffxiv_bossmod/wiki/Making-a-Module:-What-kind-of-attacks-exist%3F)
+  —— 上游 `awgil/ffxiv_bossmod` 的官方 wiki。**只寫了 circle 與 cone 兩種形狀**,
+  `DirectionOffset` 官方自己標成「???」。可用來佐證(它確認了 `HalfAngle` 是半角),
+  但不足以當主要依據。我們讀的是 `BossmodReborn` fork,形狀種類比 wiki 多得多。
+
+## 資料可信度(重要)
+
+取用插件資料時一律照這個順序,詳見 `01` 第 0 節與 `05` 的「註解的可信度」:
+
+| 等級 | 來源 |
+|:--:|---|
+| **A** | 形狀類別的實作、module 裡實際 `new AOEShape…` 的參數 |
+| **B** | 官方 wiki(不完整) |
+| **C** | `<Module>Enums.cs` 的 AID / OID 行末註解 |
+
+> ⚠️ **C 級(程式碼註解)對 BOSS 資訊的可信度低,不優先用於對照。**
+> 那些註解是半自動產生的,改版時不保證同步。
+> 若不得不引用,文件要標 `⚠️ 僅註解`,**並且在交付時向使用者回報**。
+>
+> 目前 `data/hells-kier-ex.js` 用到的幾何**全部是 A 級**。
+> 唯一引用註解的地方是 **P1 小羽毛的 r9**(插件只對大羽毛建構了 `AOEShapeCircle(9f)`),
+> 已記錄在 `02` 的技能總表下方。
+
 ## 硬性約束
 
 - **`_OriginalReferences/BossmodReborn` 是唯讀的**(它有自己的 Git 版控),
