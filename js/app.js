@@ -157,13 +157,37 @@ async function main() {
   // ── 速查表 ──────────────────────────────
   if (data.cheatsheet && data.cheatsheet.length) {
     const grid = document.getElementById('cheat-grid');
+    const cheatTabsEl = document.getElementById('cheat-tabs');
+
     for (const card of data.cheatsheet) {
       const el = document.createElement('div');
       el.className = 'cheat-card';
+      el.dataset.phase = card.phase || '';
       el.style.setProperty('--tag-color', `var(--${card.color || 'accent'})`);
       const items = (card.points || []).map((p) => `<li>${inlineFormat(p)}</li>`).join('');
       el.innerHTML = `<h3><span class="cheat-tag">${card.tag || ''}</span>${card.title}</h3><ul>${items}</ul>`;
       grid.appendChild(el);
+    }
+
+    function setCheatGroup(id) {
+      [...cheatTabsEl.children].forEach((b) => b.classList.toggle('active', b.dataset.group === id));
+      for (const el of grid.children) el.hidden = !!id && el.dataset.phase !== id;
+      cheatsheetEl.scrollTop = 0;
+    }
+
+    /* 卡片有填 phase 才長出分組頁籤;沒填的攻略維持單一長列表。
+     * 只有一個階段也不必分組。 */
+    const cheatPhases = [...new Set(data.cheatsheet.map((c) => c.phase).filter(Boolean))];
+    if (cheatPhases.length > 1) {
+      for (const g of [{ id: '', label: '全部' }, ...cheatPhases.map((p) => ({ id: p, label: p }))]) {
+        const btn = document.createElement('button');
+        btn.className = 'cheat-tab';
+        btn.dataset.group = g.id;
+        btn.textContent = g.label;
+        btn.addEventListener('click', () => setCheatGroup(g.id));
+        cheatTabsEl.appendChild(btn);
+      }
+      setCheatGroup('');
     }
   }
 

@@ -172,8 +172,27 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
   grid-column: 2 / 4; overflow-y: auto; padding: 22px 26px;
 }
 #cheatsheet-view h2 { margin: 0 0 4px; font-size: 20px; }
-.cheat-subtitle { margin: 0 0 18px; color: var(--text-dim); font-size: 13.5px; }
+.cheat-subtitle { margin: 0 0 14px; color: var(--text-dim); font-size: 13.5px; }
+/* 分組頁籤:卡片多的時候用來只看某個階段。黏在捲動容器頂端,捲下去也還在。 */
+#cheat-tabs {
+  display: flex; flex-wrap: wrap; gap: 8px;
+  position: sticky; top: -22px; z-index: 2;
+  padding: 10px 0 14px; margin: 0;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+#cheat-tabs:empty { display: none; }
+.cheat-tab {
+  padding: 6px 18px; border-radius: 999px; cursor: pointer;
+  background: var(--bg-panel2); border: 1px solid var(--border);
+  color: var(--text-dim); font-family: inherit; font-size: 13.5px; font-weight: 700;
+}
+.cheat-tab:hover { border-color: var(--accent); color: var(--text); }
+.cheat-tab.active {
+  background: var(--accent); border-color: var(--accent); color: #08202c;
+}
 #cheat-grid {
+  margin-top: 20px;
   display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px;
 }
 .cheat-card {
