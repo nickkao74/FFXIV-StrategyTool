@@ -123,6 +123,8 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
   font-size: 11px; font-weight: 700;
 }
 .timeline-item.active .timeline-num { background: var(--accent); color: #08202c; }
+/* 選取中章節的名稱:只在窄螢幕(數字方塊模式)顯示 */
+#timeline-current { display: none; }
 
 /* 沙盤區 */
 #stage {
@@ -474,4 +476,41 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
   .timeline-item { flex: none; }
   #stage { border-right: none; border-bottom: 1px solid var(--border); }
   #cheatsheet-view { grid-column: 1 / 2; }
+}
+
+/* ── 手機直向:章節改成正方形數字方塊 ──
+ * 橫向捲動的長條在手機上要一直左右滑,改成可換行的數字方塊,
+ * 階段標題各佔一行,選取中的章節名稱顯示在方塊下方。 */
+@media (max-width: 760px) {
+  #timeline {
+    flex-direction: row; flex-wrap: wrap; overflow-x: visible;
+    gap: 6px; padding: 8px 12px 6px;
+  }
+  .timeline-phase {
+    flex: 0 0 100%; margin: 4px 0 0; padding: 0 0 3px;
+  }
+  .timeline-phase:first-child { margin-top: 0; }
+  .timeline-item, .timeline-item-nested {
+    flex: none; margin: 0; padding: 0;
+    width: 40px; height: 40px; justify-content: center;
+    border: 1px solid var(--border); background: var(--bg-panel2);
+  }
+  .timeline-item .timeline-title { display: none; }
+  .timeline-num {
+    width: auto; height: auto; background: none;
+    font-size: 15px; color: var(--text-dim);
+  }
+  .timeline-item.active { background: var(--accent); border-color: var(--accent); }
+  .timeline-item.active .timeline-num { background: none; color: #08202c; }
+  #timeline-current {
+    display: flex; align-items: center; gap: 8px; flex-wrap: wrap;
+    padding: 8px 12px 10px; border-bottom: 1px solid var(--border);
+    font-size: 14.5px; font-weight: 700; color: var(--text); line-height: 1.4;
+  }
+  .timeline-current-num {
+    flex: none; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px;
+    background: var(--accent); color: #08202c;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 12px; font-weight: 800;
+  }
 }

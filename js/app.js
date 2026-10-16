@@ -208,11 +208,17 @@ async function main() {
     }
     const item = document.createElement('button');
     item.className = 'timeline-item' + (sec.phase ? ' timeline-item-nested' : '');
-    item.innerHTML = `<span class="timeline-num">${i + 1}</span><span>${escapeHtml(sec.title)}</span>`;
+    item.innerHTML = `<span class="timeline-num">${i + 1}</span><span class="timeline-title">${escapeHtml(sec.title)}</span>`;
+    item.title = sec.title;
     item.addEventListener('click', () => { setPage('guide'); showSection(i); });
     timeline.appendChild(item);
     timelineItems.push(item);
   });
+
+  // 窄螢幕(手機直向)時章節只顯示數字方塊,選取中的章節名稱改顯示在方塊下方
+  const timelineCurrent = document.createElement('div');
+  timelineCurrent.id = 'timeline-current';
+  timeline.after(timelineCurrent);
 
   const secTitle = document.getElementById('section-title');
   const secBody = document.getElementById('section-body');
@@ -222,6 +228,8 @@ async function main() {
     currentSection = i;
     const sec = data.sections[i];
     timelineItems.forEach((n, j) => n.classList.toggle('active', j === i));
+    timelineCurrent.innerHTML = (sec.phase ? `<span class="section-phase">${escapeHtml(sec.phase)}</span>` : '')
+      + `<span class="timeline-current-num">${i + 1}</span>${escapeHtml(sec.title)}`;
     secTitle.innerHTML = (sec.phase ? `<span class="section-phase">${escapeHtml(sec.phase)}</span>` : '')
       + escapeHtml(sec.title);
     secBody.innerHTML = md(sec.body || '');
