@@ -80,11 +80,11 @@ const step = (id, i) => sec(id).steps[i];
   // 引誘:牽引 11y,中央天坑 3.5y → 必須站在 3.5+11 = 14.5y 以外
   s.steps[0].aoes.unshift({ type: 'donut', at: [0, 0], rInner: y(14.5), rOuter: 100, color: 'accent' });
   s.steps[0].annotations.push({ type: 'text', at: [0, 104], text: '安全帶 = 離中心 14.5m 以外(3.5 天坑 + 11 牽引)', color: 'yellow' });
-  s.steps[0].caption = '【引誘旋律】牽引 11m 朝中心。安全帶是**離中心 14.5m 以外**(天坑 3.5 + 牽引 11),圖中亮環即為該範圍';
+  s.steps[0].caption = '【引誘旋律】牽引 11m 朝中心。安全帶是離中心 14.5m 以外(天坑 3.5 + 牽引 11),圖中亮環即為該範圍';
   // 拒絕:擊退 11y,場地外緣 20y → 必須站在 20-11 = 9y 以內
   s.steps[1].aoes.unshift({ type: 'circle', at: [0, 0], r: y(9), color: 'accent' });
   s.steps[1].annotations.push({ type: 'text', at: [0, 104], text: '安全帶 = 離中心 9m 以內(20 外緣 − 11 擊退)', color: 'yellow' });
-  s.steps[1].caption = '【拒絕旋律】擊退 11m 遠離中心。安全帶是**離中心 9m 以內**(場地外緣 20 − 擊退 11),圖中亮圈即為該範圍';
+  s.steps[1].caption = '【拒絕旋律】擊退 11m 遠離中心。安全帶是離中心 9m 以內(場地外緣 20 − 擊退 11),圖中亮圈即為該範圍';
 }
 
 /* ── 踩塔:站位由「塔的位置 − 擊退距離」反推 ───────────── */
@@ -100,7 +100,7 @@ const step = (id, i) => sec(id).steps[i];
   };
   put(s.steps[0], inner);
   s.steps[0].annotations.push({ type: 'text', at: [0, 104], text: `站位 = 塔(16.8m) − 擊退(11m) → 離中心約 ${(R / K).toFixed(1)}m`, color: 'yellow' });
-  s.steps[0].caption = '① 就位:塔在 A/B/C/D 最外緣(半徑 4m)。**站位由「塔的位置 − 擊退 11m」反推**,八人兩兩貼在該圈上';
+  s.steps[0].caption = '① 就位:塔在 A/B/C/D 最外緣(半徑 4m)。站位由「塔的位置 − 擊退 11m」反推,八人兩兩貼在該圈上';
 }
 
 /* ── 井宿焰:改成矩形後,原圖的 MT 站位落在範圍內 ─────────
@@ -112,14 +112,14 @@ const step = (id, i) => sec(id).steps[i];
   s.annotations = (s.annotations || []).concat([
     { type: 'text', at: [0, 104], text: '⚠ 矩形半寬 10m(圖上 50),|x| 小於 50 一律中招', color: 'red' },
   ]);
-  s.caption = '① 井宿焰(矩形 41 × 寬 20)+ 四人紅圈:**寬度不隨距離變窄**,必須橫向離開中線 10m 以上。原本畫成扇形時看起來安全的內側站位其實會中招';
+  s.caption = '① 井宿焰(矩形 41 × 寬 20)+ 四人紅圈:寬度不隨距離變窄,必須橫向離開中線 10m 以上。原本畫成扇形時看起來安全的內側站位其實會中招';
 }
 
 /* ── 朱紅旋律:補一張插件 AI 的解(站在四塊地板的交界十字帶) ── */
 {
   const s = sec('p3-floor-id');
   s.steps.push({
-    caption: '【插件 AI 的解法】每發只隔 1.25 秒,BossMod 的自動走位是把人壓在**四塊地板交界的十字帶(±1m)**上,靠最短距離左右閃。可當作背不出字時的保底',
+    caption: '【插件 AI 的解法】每發只隔 1.25 秒,BossMod 的自動走位是把人壓在四塊地板交界的十字帶(±1m)上,靠最短距離左右閃。可當作背不出字時的保底',
     boss: { x: 0, y: 0, facing: 0 },
     aoes: [
       { type: 'quadrant', quad: 'nw', r: y(21) },
