@@ -31,6 +31,8 @@ const OBJECT_DEFAULTS = {
   'feather': { size: 'small', r: 28, cleared: 0 },
   'bird': { alive: 0 },
   'xmark': { size: 7 },
+  // 絕神兵
+  'rock': { size: 7 },
   'poem-strip': { text: '十之水向十之水向', side: 'east' },
 };
 
@@ -189,6 +191,17 @@ function renderBoardObject(obj, state) {
       bo('path', {
         class: 'bird-body',
         d: `M${p.x - 7},${p.y + 4} L${p.x},${p.y - 6} L${p.x + 7},${p.y + 4} L${p.x},${p.y + 1} Z`,
+      }, g);
+      return g;
+    }
+    // UWU 泰坦的爆破岩石:橘色梯形(爆炸範圍另放圓形地毯)
+    case 'rock': {
+      const s = obj.size || 7;
+      const g = bo('g', { class: 'bobj' });
+      bo('path', {
+        class: 'rock',
+        d: `M${p.x - s * 0.55},${p.y - s * 0.7} L${p.x + s * 0.55},${p.y - s * 0.7} ` +
+           `L${p.x + s},${p.y + s * 0.7} L${p.x - s},${p.y + s * 0.7} Z`,
       }, g);
       return g;
     }

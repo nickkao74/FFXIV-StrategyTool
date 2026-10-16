@@ -136,6 +136,8 @@ function convertGuideStep(step, running) {
         push({ kind: 'bird', ...pos, alive: a.state === 'alive' ? 1 : 0 }, at); break;
       case 'xmark':
         push({ kind: 'xmark', ...pos, size: a.size || 7 }, at); break;
+      case 'rock':
+        push({ kind: 'rock', ...pos, size: a.size || 7 }, at); break;
 
       // hole 是「場地特徵」而非可操作物件:P3 階段的場地定義已經畫了天坑
       // (data/arenas/hells-kier.js 的 hole 欄位 + canvas.js setPhase)。

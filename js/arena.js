@@ -295,6 +295,16 @@ class Arena {
         }
         break;
       }
+      // 石頭本體(UWU 泰坦的爆破岩石):橘色梯形。爆炸範圍另外用 circle 畫
+      case 'rock': {
+        const s = aoe.size || 7;
+        el('path', {
+          class: 'rock',
+          d: `M${p.x - s * 0.55},${p.y - s * 0.7} L${p.x + s * 0.55},${p.y - s * 0.7} ` +
+             `L${p.x + s},${p.y + s * 0.7} L${p.x - s},${p.y + s * 0.7} Z`,
+        }, layer);
+        break;
+      }
       // 禁止站位標記
       case 'xmark': {
         const s = aoe.size || 7;

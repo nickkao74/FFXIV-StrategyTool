@@ -106,7 +106,7 @@ def check(sid, idx, step, arena_r=100, hit_ok=(), skip_types=()):
         if math.hypot(*p) + ACTOR_R > arena_r + 0.01:
             problems.append(f'{sid}[{idx}] {role} 出界 r={math.hypot(*p):.1f} > {arena_r}')
         for k, a in enumerate(step.get('aoes', [])):
-            if a['type'] in ('donut', 'xmark') or a['type'] in skip_types or a.get('_nocheck'):
+            if a['type'] in ('donut', 'xmark', 'rock') or a['type'] in skip_types or a.get('_nocheck'):
                 continue
             if (role, k) in hit_ok or role in hit_ok:
                 continue
@@ -166,12 +166,13 @@ edge8 = {
     'D1': {'x': 34, 'y': 86}, 'D2': {'x': -34, 'y': 86},
     'D3': {'x': -86, 'y': 34}, 'D4': {'x': -86, 'y': -34},
 }
-north_tank = {
-    'MT': {'x': 0, 'y': -30},
-    'ST': {'x': -26, 'y': 22},
-    'H1': {'x': -22, 'y': 56}, 'H2': {'x': 22, 'y': 56},
-    'D1': {'x': -10, 'y': 32}, 'D2': {'x': 12, 'y': 32},
-    'D3': {'x': -4, 'y': 62}, 'D4': {'x': 14, 'y': 66},
+# 本隊約定:泰坦落地後 MT 在 C 側(面向朝南),其他人在 A 側(泰坦背面)
+south_tank = {
+    'MT': {'x': 0, 'y': 30},
+    'ST': {'x': -26, 'y': -22},
+    'H1': {'x': -22, 'y': -56}, 'H2': {'x': 22, 'y': -56},
+    'D1': {'x': -10, 'y': -32}, 'D2': {'x': 12, 'y': -32},
+    'D3': {'x': -4, 'y': -62}, 'D4': {'x': 14, 'y': -66},
 }
 A = S(
     id='uwu-p3-open', phase='P3 泰坦',
@@ -188,16 +189,16 @@ A = S(
         "### 碎岩 → 山崩 · 二連死刑(無讀條)\n"
         "- **碎岩**:對**當前一仇**的扇形\n"
         "- **山崩**:約 3 秒後,朝**一仇方向**的**更大**扇形,傷害極高\n"
-        "- **處理**:{{tank:MT}} **開滿減傷**承受;王依慣例**面向北(A)**,其他人待在**南側背面** —— **站在泰坦正面會被扁**\n"
+        "- **處理**:{{tank:MT}} **開滿減傷**承受。**本隊約定:泰坦落地後 MT 站 C 側、把面向拉成朝南(C),其他人都在 A 側(泰坦背面)** —— 方便接下來的大地之重。**站在泰坦正面會被扁**\n"
         "- 這組死刑在 P3 共出現 **3 組**,**第 1 組與第 3 組剛好相隔約 2 分鐘** → 減傷與無敵可以照 2 分鐘循環排\n"
         "- **本隊順序:第 1 組 {{tank:MT}} → 第 2 組 {{tank:ST}} → 第 3 組 {{tank:MT}}**\n"
         "> 扇形尺寸來自 BossMod,但它自己在兩招的角度上都標了「待驗證」,圖上的張角僅供參考。"
     ),
     roleNotes={
-        'MT': '大地之怒**會重置仇恨** → 讀條結束立刻**挑釁**接回,把泰坦**面向拉成朝北(A)**。二連死刑**開滿減傷**。',
-        'ST': '大地之怒後別搶到一仇;站在泰坦**背面**輸出,必要時給 MT 減傷。**第 2 組死刑由你接**(MT → ST → MT)。',
+        'MT': '大地之怒**會重置仇恨** → 讀條結束立刻**挑釁**接回,**站到 C 側、把泰坦面向拉成朝南(C)**。二連死刑**開滿減傷**。',
+        'ST': '大地之怒後別搶到一仇;站在泰坦**背面(A 側)**輸出,必要時給 MT 減傷。**第 2 組死刑由你接**(MT → ST → MT)。',
         'H1 H2': '落地的距離衰減 → 大地之怒 → 二連死刑連續三發,**先把血線拉滿**,死刑時集中照顧 MT。',
-        'D1 D2': '站泰坦**背面(南側)**輸出,不要繞到側面。',
+        'D1 D2': '站泰坦**背面(A 側)**輸出,不要繞到側面。',
         'D3 D4': '**D4 等距離衰減結束後**再去撿伊弗利特的突破極限;有人陣亡要**等大地之怒過去再起來**。',
     },
     steps=[
@@ -209,24 +210,24 @@ A = S(
             'annotations': [{'type': 'text', 'at': [0, -104], 'text': '距離衰減 · 退到最邊緣', 'color': 'yellow'}],
         },
         {
-            'caption': '**大地之怒**:全體傷害,**仇恨重置**、**穿無敵**。MT 讀條一結束就**挑釁**,把泰坦**面向拉成朝北(A)**;其他人到**南側背面**集合',
-            'boss': {'x': 0, 'y': 0, 'facing': 0},
-            'actors': north_tank,
+            'caption': '**大地之怒**:全體傷害,**仇恨重置**、**穿無敵**。MT 讀條一結束就挑釁,站到 C 側把泰坦面向拉成朝南;其他人到 A 側(泰坦背面)集合',
+            'boss': {'x': 0, 'y': 0, 'facing': 180},
+            'actors': south_tank,
             'markers': [{'type': 'target', 'at': 'MT'}],
             'annotations': [{'type': 'text', 'at': [0, -104], 'text': '仇恨重置 → MT 挑釁', 'color': 'red'}],
         },
         {
-            'caption': '**碎岩 → 山崩**:無讀條的二連死刑,先是**碎岩**(半徑約 10.5m),約 3 秒後**山崩**(半徑約 15.5m、傷害極高),都朝一仇方向。**MT 開滿減傷**;其他人待在背面',
-            'boss': {'x': 0, 'y': 0, 'facing': 0},
-            'actors': north_tank,
+            'caption': '**碎岩 → 山崩**:無讀條的二連死刑,先是**碎岩**(半徑約 10.5m),約 3 秒後**山崩**(半徑約 15.5m、傷害極高),都朝一仇方向。MT 在 C 側開滿減傷;其他人待在 A 側背面',
+            'boss': {'x': 0, 'y': 0, 'facing': 180},
+            'actors': south_tank,
             'aoes': [
-                {'type': 'cone', 'at': [0, 0], 'angle': 0, 'spread': SZ['mtnSpread'], 'r': SZ['mtnR'], 'color': 'thunder'},
-                {'type': 'cone', 'at': [0, 0], 'angle': 0, 'spread': SZ['rockSpread'], 'r': SZ['rockR'], 'color': 'thunder'},
+                {'type': 'cone', 'at': [0, 0], 'angle': 180, 'spread': SZ['mtnSpread'], 'r': SZ['mtnR'], 'color': 'thunder'},
+                {'type': 'cone', 'at': [0, 0], 'angle': 180, 'spread': SZ['rockSpread'], 'r': SZ['rockR'], 'color': 'thunder'},
             ],
             'markers': [{'type': 'target', 'at': 'MT'}],
             'annotations': [
-                {'type': 'text', 'at': [0, -104], 'text': '二連死刑 · MT 開滿減傷', 'color': 'yellow'},
-                {'type': 'text', 'at': [0, 104], 'text': '⚠ 兩招張角 BossMod 標待驗證', 'color': 'yellow'},
+                {'type': 'text', 'at': [0, -104], 'text': '⚠ 兩招張角 BossMod 標待驗證', 'color': 'yellow'},
+                {'type': 'text', 'at': [0, 104], 'text': '二連死刑 · MT 在 C 開滿減傷', 'color': 'yellow'},
             ],
         },
     ],
@@ -237,21 +238,19 @@ check(A['id'], 2, A['steps'][2], hit_ok=('MT',))
 # ─── B. 大地之重 → 自滅 → 大地粉碎(跳躍) ──────────
 alive4 = ('MT', 'H1', 'H2', 'D4')
 dead4 = ('ST', 'D1', 'D2', 'D3')
-G1 = [0, 46]                       # 第一輪丟重力的位置
-G2 = at(CENTER, 225, 50)           # 第二輪:順時針移到西南
-G3 = at(CENTER, 270, 52)           # 存活組繼續順時針到西
-w1 = {
-    'MT': {'x': 0, 'y': -30},
-    'ST': {'x': -7, 'y': 41}, 'D1': {'x': 7, 'y': 41},
-    'D2': {'x': 0, 'y': 50}, 'D3': {'x': -8, 'y': 52},
-    'H1': {'x': 8, 'y': 52}, 'H2': {'x': -3, 'y': 58}, 'D4': {'x': 6, 'y': 60},
-}
+# 本隊約定:全員在 A 丟第 1 輪 → 一起移到 B 丟第 2 輪,自滅的 4 人留在 B 不動;
+# 8 份重力疊在一起,ST 才吃得夠傷害。MT 自己 C → D → C。
+# 距中心約 7m(影片的場地標記位置);A 與 B 相距約 10m,大於重力半徑 6m 才躲得開
+G1 = [0, -36]                      # A 方向
+G2 = [36, 0]                       # B 方向(自滅的 4 人留在這裡)
+MT1, MT2, MT3 = [0, 36], [-36, 0], [0, 38]
+w1 = cluster(G1, MT1, spread=2)
+w_b = cluster(G2, MT2, spread=2)
 w2 = {
-    'MT': {'x': -24, 'y': -20},
-    'H1': {'x': G3[0] - 2, 'y': G3[1] - 7}, 'H2': {'x': G3[0] + 5, 'y': G3[1] + 2},
-    'D4': {'x': G3[0] - 6, 'y': G3[1] + 6},
+    'MT': {'x': MT3[0], 'y': MT3[1]},
+    'H1': {'x': -6, 'y': -48}, 'H2': {'x': 4, 'y': -52}, 'D4': {'x': -2, 'y': -56},
 }
-corpses = [{'type': 'xmark', 'at': [round(G2[0] + dx, 1), round(G2[1] + dy, 1)]} for dx, dy in ((-6, -4), (6, -4), (-5, 6), (6, 6))]
+corpses = [{'type': 'xmark', 'at': [round(G2[0] + dx, 1), round(G2[1] + dy, 1)]} for dx, dy in ((-5, -4), (5, -4), (-4, 5), (5, 5))]
 run_w = {
     'MT': {'x': -40, 'y': -8},
     'H1': {'x': -70, 'y': -10}, 'H2': {'x': -66, 'y': 6}, 'D4': {'x': -74, 'y': 4},
@@ -267,7 +266,7 @@ B = S(
     body=(
         "### 大地之重(讀條)\n"
         "- **形狀**:在玩家腳下生成**半徑 6m** 的圓形 AOE,**連續 2 輪**(最後兩次會變 3 輪)\n"
-        "- **處理**:全隊**集合**丟下第一輪,接著**沿著泰坦順時針(或逆時針)**移動,讓下一輪落在旁邊\n"
+        "- **本隊做法**(位置指 A/B/C/D 方向、離中心約 7m;兩點相距約 10m,才出得了半徑 6m 的圓):全員在 **A** 集合丟第 1 輪 → 一起移到 **B** 丟第 2 輪;{{tank:MT}} 自己在 **C** 丟第 1 輪 → 移到 **D** 丟第 2 輪 → 回到 **C**\n"
         "### 大地粉碎(跳躍)\n"
         "- 泰坦會**瞬間轉向**,接著**往牠面向的方向跳**、落在場邊的**正點**,從落點發出**隨距離衰減**的傷害\n"
         "- 每跳一次,**場地外圈就變成即死區**:場地半徑 20m → **16m**;第二次跳 → **12m**\n"
@@ -279,43 +278,61 @@ B = S(
         "| 第二輪大地之重 | 成員 |\n|---|---|\n"
         "| **躲開**(存活) | {{tank:MT}}、{{healer:H1}}、{{healer:H2}}、{{dps:D4}}(法系) |\n"
         "| **站著吃**(陣亡) | {{tank:ST}}、{{dps:D1}}、{{dps:D2}}、{{dps:D3}} |\n\n"
+        "**怎麼死**:第 2 輪丟在 B 之後,**自滅的 4 人留在 B 不動**,存活組離開。8 份重力疊在同一點,**連 ST 也吃得到足夠的傷害**。\n"
         "**為什麼要死**:接下來的三連岩牢會點名**一仇以外的 3 人**。場上只剩 4 人時,岩牢**必定落在 H1、H2、D4 身上**,"
         "站位可以完全固定,不用在 4 秒內判斷優先度。\n"
         "陣亡的人等岩牢處理完再被拉起來(見下一節)。現在的版本幾乎沒有 DPS 檢查,少 4 個人也打得過。\n"
         "> **本隊採用自滅法。**(全員存活的打法要 7 人依優先度排固定位置,本攻略不收錄。)"
     ),
     roleNotes={
-        'MT': '大地之重時**自己也會被丟**,側移一步就好,泰坦**維持在正中央**。轉向後跟著存活組退到**反方向**。',
-        'ST': '自滅法:**第二輪大地之重站著吃**,等岩牢結束後被拉。',
-        'H1 H2': '**兩輪都要躲**,轉向後退到反方向邊緣。接下來岩牢**必定點到你們**,先記好站位(下一節)。',
-        'D1 D2': '自滅法:**第二輪大地之重站著吃**。D1 之後還要撿泰坦的突破極限,被拉起來後別忘了。',
-        'D3': '自滅法:**第二輪大地之重站著吃**。',
-        'D4': '**兩輪都要躲**,存活下來處理岩牢;如果是召喚士,之後要負責讀條拉人。',
+        'MT': '大地之重:**C 丟第 1 輪 → 移到 D 丟第 2 輪 → 回到 C**,泰坦**維持在正中央**。轉向後跟著存活組退到**反方向**。',
+        'ST': '自滅法:A 丟第 1 輪 → 移到 **B 丟第 2 輪後留在 B 不動**吃滿重力,等岩牢結束後被拉。',
+        'H1 H2': 'A 丟第 1 輪 → B 丟第 2 輪 → **馬上離開 B**,轉向後退到反方向邊緣。接下來岩牢**必定點到你們**,先記好站位(下一節)。',
+        'D1 D2': '自滅法:A 丟第 1 輪 → **B 丟第 2 輪後留在 B 不動**。D1 之後還要撿泰坦的突破極限,被拉起來後別忘了。',
+        'D3': '自滅法:A 丟第 1 輪 → **B 丟第 2 輪後留在 B 不動**。',
+        'D4': 'A 丟第 1 輪 → B 丟第 2 輪 → **馬上離開 B**,存活下來處理岩牢;如果是召喚士,之後要負責讀條拉人。',
     },
     steps=[
         {
-            'caption': '**大地之重第一輪**:每個人腳下一個**半徑 6m** 的圓。全隊在泰坦**背面集合一起丟**,之後**沿著泰坦順時針**移動。MT 自己的那一發往側邊閃',
-            'boss': {'x': 0, 'y': 0, 'facing': 0},
+            'caption': '大地之重第 1 輪:每個人腳下一個半徑 6m 的圓。全員在 A 集合一起丟,MT 自己在 C 丟。丟完全員移到 B、MT 移到 D',
+            'boss': {'x': 0, 'y': 0, 'facing': 180},
             'actors': w1,
             'aoes': [
-                {'type': 'circle', 'at': [0, 50], 'r': SZ['weight'], 'color': 'fire'},
-                {'type': 'circle', 'at': [0, -30], 'r': SZ['weight'], 'color': 'fire'},
+                {'type': 'circle', 'at': G1, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True},
+                {'type': 'circle', 'at': MT1, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True},
             ],
             'annotations': [
-                {'type': 'arcArrow', 'radius': 72, 'startAngle': 175, 'endAngle': 222, 'color': 'white'},
-                {'type': 'text', 'at': [0, -104], 'text': '集合丟 → 順時針繞', 'color': 'yellow'},
+                {'type': 'arcArrow', 'radius': 46, 'startAngle': 12, 'endAngle': 78, 'color': 'white'},
+                {'type': 'arcArrow', 'radius': 46, 'startAngle': 192, 'endAngle': 258, 'color': 'blue'},
+                {'type': 'text', 'at': [0, -104], 'text': '全員 A → B · MT C → D', 'color': 'yellow'},
             ],
         },
         {
-            'caption': '**第二輪(自滅法)**:**MT、H1、H2、D4 繼續順時針躲開**;**ST、D1、D2、D3 站著吃第二輪**陣亡。場上只剩 4 人 → 等等的三連岩牢必定點到 H1、H2、D4',
-            'boss': {'x': 0, 'y': 0, 'facing': 0},
+            'caption': '大地之重第 2 輪:全員在 B 一起丟(8 份重力疊在同一點),MT 在 D 丟。第 1 輪的圓同時在 A、C 引爆',
+            'boss': {'x': 0, 'y': 0, 'facing': 180},
+            'actors': w_b,
+            'aoes': [
+                {'type': 'circle', 'at': G1, 'r': SZ['weight'], 'color': 'fire'},
+                {'type': 'circle', 'at': MT1, 'r': SZ['weight'], 'color': 'fire'},
+                {'type': 'circle', 'at': G2, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True},
+                {'type': 'circle', 'at': MT2, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True},
+            ],
+            'annotations': [
+                {'type': 'text', 'at': [0, -104], 'text': '全員在 B 丟第 2 輪', 'color': 'yellow'},
+            ],
+        },
+        {
+            'caption': '自滅法:H1、H2、D4 立刻離開 B(回到 A 側),MT 回到 C;ST、D1、D2、D3 留在 B 不動,吃下疊在一起的 8 份重力陣亡。場上只剩 4 人 → 等等的三連岩牢必定點到 H1、H2、D4',
+            'boss': {'x': 0, 'y': 0, 'facing': 180},
             'actors': w2,
             'aoes': [
-                {'type': 'circle', 'at': G2, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True},
-                {'type': 'circle', 'at': [-20, -26], 'r': SZ['weight'], 'color': 'fire', '_nocheck': True},
+                {'type': 'circle', 'at': G2, 'r': SZ['weight'], 'color': 'fire'},
+                {'type': 'circle', 'at': MT2, 'r': SZ['weight'], 'color': 'fire'},
             ] + corpses,
             'annotations': [
-                {'type': 'text', 'at': [G2[0], G2[1] + 28], 'text': 'ST·D1·D2·D3 站著吃', 'color': 'red'},
+                {'type': 'arrow', 'from': [26, -14], 'to': [8, -40], 'color': 'white'},
+                {'type': 'arrow', 'from': [-30, 12], 'to': [-10, 30], 'color': 'blue'},
+                {'type': 'text', 'at': [G2[0] + 40, G2[1] + 34], 'text': 'ST·D1·D2·D3 留在 B', 'color': 'red'},
                 {'type': 'text', 'at': [0, -104], 'text': '自滅法:4 人在這裡陣亡', 'color': 'yellow'},
             ],
         },
@@ -345,9 +362,9 @@ B = S(
         },
     ],
 )
-check(B['id'], 0, B['steps'][0], hit_ok=tuple(w1.keys()))
 check(B['id'], 1, B['steps'][1])
-check(B['id'], 3, B['steps'][3], arena_r=SZ['arena1'])
+check(B['id'], 2, B['steps'][2])
+check(B['id'], 4, B['steps'][4], arena_r=SZ['arena1'])
 
 # ─── C. 大激震 → 三連岩牢 ─────────────────────
 # 影片示意圖(泰坦在北)量測後旋轉 90° 到本圖的方向(泰坦在 B):(x, y) → (-y, x)
@@ -395,7 +412,7 @@ check('uwu-p3-gaols', 'gaol-vs-ls1', _t, arena_r=m(16))
 def rocks_first():
     out = []
     for p in [ROCK_HAS] + ROCKS_FAR:
-        out += [{'type': 'circle', 'at': p, 'r': SZ['burst'], 'color': 'death'}, {'type': 'xmark', 'at': p}]
+        out += [{'type': 'circle', 'at': p, 'r': SZ['burst'], 'color': 'fire'}, {'type': 'rock', 'at': p}]
     return out
 def gaol_marks(points):
     return [{'type': 'circle', 'at': p, 'r': SZ['gaol'] + 2, 'color': 'generic', '_nocheck': True} for p in points]
@@ -455,7 +472,7 @@ C = S(
             'actors': kb_pre,
             'aoes': [shrink(SZ['arena1'])] + rocks_first() + [
                 {'type': 'circle', 'at': TITAN_B, 'r': SZ['titanHit'], 'color': 'generic', '_nocheck': True},
-            ] + corpses,
+            ],
             'annotations': [
                 {'type': 'text', 'at': [ROCK_GAP[0], ROCK_GAP[1] - 2], 'text': '缺角', 'color': 'blue'},
                 {'type': 'text', 'at': [0, -104], 'text': '缺哪邊站哪邊 · 貼紅圈內側', 'color': 'yellow'},
@@ -466,7 +483,7 @@ C = S(
             'caption': '大激震:先暈眩 2 秒,再從泰坦中心擊退 24m —— 防擊退無效。站對位置就會剛好落在缺角的空位。岩石約 2.5 秒後爆炸',
             'boss': {'x': TITAN_B[0], 'y': 0, 'facing': 270},
             'actors': kb_post,
-            'aoes': [shrink(SZ['arena1'])] + rocks_first() + corpses,
+            'aoes': [shrink(SZ['arena1'])] + rocks_first(),
             'annotations': [
                 {'type': 'arrow', 'from': STAND, 'to': [LAND[0] + 9, LAND[1] + 2], 'color': 'white'},
                 {'type': 'knockback', 'at': TITAN_B, 'count': 8, 'rInner': 24, 'rOuter': 40, 'color': 'red'},
@@ -479,9 +496,9 @@ C = S(
             'actors': bait,
             'aoes': [
                 shrink(SZ['arena1']),
-                {'type': 'circle', 'at': LAND, 'r': SZ['burst'], 'color': 'death', '_nocheck': True},
-                {'type': 'xmark', 'at': LAND},
-            ] + landslide(TITAN_B, phi1) + corpses,
+                {'type': 'circle', 'at': LAND, 'r': SZ['burst'], 'color': 'fire', '_nocheck': True},
+                {'type': 'rock', 'at': LAND},
+            ] + landslide(TITAN_B, phi1),
             'markers': [{'type': 'target', 'at': 'H1'}, {'type': 'target', 'at': 'H2'}, {'type': 'target', 'at': 'D4'}],
             'annotations': [
                 {'type': 'arrow', 'from': [LAND[0] - 2, LAND[1] - 8], 'to': [BAIT[0] + 2, BAIT[1] + 12], 'color': 'white'},
@@ -494,9 +511,9 @@ C = S(
             'actors': gaol_pos,
             'aoes': [
                 shrink(SZ['arena1']),
-                {'type': 'circle', 'at': LAND, 'r': SZ['burst'], 'color': 'death', '_nocheck': True},
-                {'type': 'xmark', 'at': LAND},
-            ] + landslide(TITAN_B, phi2, color='ice') + gaol_marks([GAOL_H2, GAOL_H1, GAOL_D4]) + corpses,
+                {'type': 'circle', 'at': LAND, 'r': SZ['burst'], 'color': 'fire', '_nocheck': True},
+                {'type': 'rock', 'at': LAND},
+            ] + landslide(TITAN_B, phi2, color='ice') + gaol_marks([GAOL_H2, GAOL_H1, GAOL_D4]),
             'annotations': [
                 {'type': 'text', 'at': [0, -104], 'text': '岩牢內無敵 · MT 遠離中央', 'color': 'yellow'},
             ],
@@ -507,11 +524,11 @@ C = S(
             'actors': gaol_pos,
             'aoes': [
                 shrink(SZ['arena1']),
-                {'type': 'circle', 'at': LAND, 'r': SZ['burst'], 'color': 'death', '_nocheck': True},
+                {'type': 'circle', 'at': LAND, 'r': SZ['burst'], 'color': 'fire', '_nocheck': True},
                 {'type': 'circle', 'at': GAOL_H2, 'r': SZ['freefire'], 'color': 'void', '_nocheck': True},
                 {'type': 'circle', 'at': GAOL_H1, 'r': SZ['freefire'], 'color': 'void', '_nocheck': True},
                 {'type': 'circle', 'at': GAOL_D4, 'r': SZ['freefire'], 'color': 'void', '_nocheck': True},
-            ] + corpses,
+            ],
             'annotations': [
                 
                 {'type': 'arrow', 'from': [GAOL_H2[0] + 8, GAOL_H2[1] + 3], 'to': [GAOL_H1[0] - 8, GAOL_H1[1] - 1], 'color': 'white', 'dash': True},
@@ -536,13 +553,12 @@ revive = {
     'ST': {'x': 14, 'y': -58}, 'D1': {'x': 28, 'y': -62},
     'D2': {'x': 0, 'y': -64}, 'D3': {'x': 16, 'y': -70},
 }
-GW = [-10, -52]
-grp_w = {
-    'MT': {'x': 28, 'y': -10},
-    'ST': {'x': GW[0] - 6, 'y': GW[1] + 2}, 'D1': {'x': GW[0] + 6, 'y': GW[1] + 2},
-    'D2': {'x': GW[0], 'y': GW[1] - 5}, 'D3': {'x': GW[0] - 4, 'y': GW[1] + 8},
-    'H1': {'x': GW[0] + 5, 'y': GW[1] + 9}, 'H2': {'x': GW[0] - 8, 'y': GW[1] - 6}, 'D4': {'x': GW[0] + 9, 'y': GW[1] - 4},
-}
+# 本隊約定:地上還有汙泥,所以在泰坦附近排。從中央面向泰坦時的「左側」丟第 1 輪 →
+# 穿過泰坦到對面丟第 2 輪 → 再回到左側。泰坦在 B(東),左側 = 北。
+GW = [56, -34]                 # 第 1 輪(也是最後回來的位置)
+GW2 = [56, 34]                 # 第 2 輪:穿過泰坦到對面
+MTW1, MTW2 = [44, -8], [44, 28]     # MT 跟著同樣穿過去再回來
+grp_w = cluster(GW, [44, -6], spread=2)
 phiD = bearing(TITAN_D, GW)
 GD1, GD2, MTD = ls_spots(TITAN_D, phiD, SZ['arena1'], near=at(TITAN_D, phiD + 22.5, 90), mt_near=[60, 40], extra=sludge)
 
@@ -554,7 +570,7 @@ D = S(
         "- 起來之後**馬上有汙泥的即死範圍與連續全體攻擊** → 在補到足夠的血之前,**維持復活無敵、往遠離汙泥的方向走,先不要攻擊**\n"
         "- 法系若是召喚士,即刻詠唱不夠用,激震期間要**在旁邊讀條拉人**\n"
         "### 大地之重 ×2\n"
-        "- 全員集合,像**畫圓**一樣繞著泰坦把兩輪重力排好\n"
+        "- **本隊做法**:地上的**汙泥還在**,所以在泰坦旁邊排。站在**從中央面向泰坦時的左側**丟第 1 輪 → **穿過泰坦到對面**丟第 2 輪 → **再回到左側**\n"
         "### 覺醒\n"
         "- 汙泥有讓泰坦踩到的話,**以太供應會累積,在這裡覺醒**\n"
         "### 覺醒地裂斬(二連)\n"
@@ -581,15 +597,17 @@ D = S(
             ],
         },
         {
-            'caption': '**大地之重 ×2**:全員集合,像**畫圓**一樣繞著泰坦把兩輪重力排好。泰坦若有踩到汙泥,**在這裡覺醒**',
-            'boss': {'x': TITAN_D[0], 'y': 0, 'facing': 300},
+            'caption': '大地之重 ×2:地上的汙泥還在,所以在泰坦旁邊排。站在從中央面向泰坦時的左側(本例:北)丟第 1 輪 → 穿過泰坦到對面丟第 2 輪 → 再回到左側。MT 在泰坦前方自己錯開。泰坦若有踩到汙泥,在這裡覺醒',
+            'boss': {'x': TITAN_D[0], 'y': 0, 'facing': 270},
             'actors': grp_w,
-            'aoes': [shrink(SZ['arena1']),
-                     {'type': 'circle', 'at': [GW[0] + 22, GW[1] + 30], 'r': SZ['weight'], 'color': 'fire', '_nocheck': True},
-                     {'type': 'circle', 'at': GW, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True}],
+            'aoes': [shrink(SZ['arena1'])] + sludge + [
+                {'type': 'circle', 'at': c, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True} for c in (GW, GW2, MTW1, MTW2)],
             'annotations': [
-                {'type': 'arcArrow', 'radius': 64, 'startAngle': 330, 'endAngle': 300, 'dir': 'ccw', 'color': 'white'},
-                {'type': 'text', 'at': [0, -104], 'text': '畫圓排重力 → 覺醒', 'color': 'yellow'},
+                {'type': 'arrow', 'from': [64, -20], 'to': [64, 22], 'color': 'white'},
+                {'type': 'arrow', 'from': [50, 22], 'to': [50, -20], 'color': 'white', 'dash': True},
+                {'type': 'text', 'at': [GW[0] - 22, GW[1] - 10], 'text': '①', 'color': 'white'},
+                {'type': 'text', 'at': [GW2[0] - 22, GW2[1] + 14], 'text': '②', 'color': 'white'},
+                {'type': 'text', 'at': [0, -104], 'text': '左側 ① → 穿過泰坦 ② → 回左側', 'color': 'yellow'},
             ],
         },
         {
@@ -612,6 +630,8 @@ D = S(
     ],
 )
 check(D['id'], 2, D['steps'][2], arena_r=SZ['arena1'])
+_t = {'actors': grp_w, 'aoes': sludge + [{'type': 'circle', 'at': c, 'r': SZ['weight']} for c in (GW2, MTW2)]}
+check(D['id'], '1/final', _t, arena_r=SZ['arena1'], hit_ok=('MT',))
 check(D['id'], 3, D['steps'][3], arena_r=SZ['arena1'])
 # 第 1 發的位置也要閃得過第 2 發、MT 兩發都安全
 tmp = dict(D['steps'][2]); tmp['aoes'] = landslide(TITAN_D, phiD, second=True)
@@ -721,7 +741,7 @@ MT_W = [-50, 0]
 behind = cluster([8, 0], MT_W)
 behind['MT'], behind['ST'] = behind['ST'], behind['MT']   # 第 2 組死刑由 ST 接
 BOMBS = [[16, 16], [-16, 16], [16, -16], [-16, -16]]     # 示意圖約 (±3.4, ±3.4)m
-bombs = [{'type': 'circle', 'at': p, 'r': SZ['burst'], 'color': 'death'} for p in BOMBS]
+bombs = [{'type': 'circle', 'at': p, 'r': SZ['burst'], 'color': 'fire'} for p in BOMBS] + [{'type': 'rock', 'at': p} for p in BOMBS]
 GF0 = [-52, 0]                 # 第 1 輪:全員(含 MT)在 MT 身邊的外周
 f_gather = cluster([-53, 0], [-52, 10], spread=1.5)
 GF_2 = [-44, -31]              # 大部隊第 2 輪(示意圖 ②)
