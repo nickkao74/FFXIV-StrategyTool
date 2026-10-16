@@ -15,6 +15,20 @@ function polar(deg, r) {
   return { x: +(r * Math.cos(rad)).toFixed(2), y: +(r * Math.sin(rad)).toFixed(2) };
 }
 
+/** 以原點為圓心的弧線 path:start(deg,0=上)沿 dir(1 順時針 / -1 逆時針)掃 sweep 度。
+ *  一個 A 指令最多畫 180°,所以拆成多段,終點切線仍正確。 */
+function arcPathD(r, start, sweep, dir) {
+  const pt = (deg) => polar(deg, r);
+  const n = Math.ceil(sweep / 180);
+  const s0 = pt(start);
+  let d = `M${s0.x},${s0.y}`;
+  for (let i = 1; i <= n; i++) {
+    const q = pt(start + (sweep * i / n) * dir);
+    d += ` A${r},${r} 0 0,${dir > 0 ? 1 : 0} ${q.x},${q.y}`;
+  }
+  return d;
+}
+
 function sectorPath(cx, cy, r, a0, a1) {
   const p0 = polar(a0, r), p1 = polar(a1, r);
   const large = (a1 - a0) > 180 ? 1 : 0;
@@ -362,20 +376,14 @@ class Arena {
       }
       case 'arcArrow': {
         // 以場地中心為圓心的弧形箭頭:radius、startAngle、endAngle(deg,0=上)
-        // 預設順時針;ann.dir === 'ccw' 為逆時針。以取樣點繪製,圓心固定在中心。
+        // 預設順時針;ann.dir === 'ccw' 為逆時針。圓心固定在中心。
+        // 用 SVG 的 A 弧線指令畫,箭頭(marker orient=auto)才會沿著終點的切線方向。
+        // 舊版用 6° 取樣的折線:弧長是 6° 的倍數時最後一段長度為 0,箭頭方向會歪掉。
         const r = ann.radius || 80;
         const dir = ann.dir === 'ccw' ? -1 : 1;
         const sweep = ((ann.endAngle - ann.startAngle) * dir % 360 + 360) % 360 || 360;
-        const toXY = (deg) => {
-          const rad = (deg - 90) * Math.PI / 180;
-          return `${(r * Math.cos(rad)).toFixed(2)},${(r * Math.sin(rad)).toFixed(2)}`;
-        };
-        const pts = [];
-        const stepDeg = 6;
-        for (let a = 0; a <= sweep; a += stepDeg) pts.push(toXY(ann.startAngle + a * dir));
-        pts.push(toXY(ann.startAngle + sweep * dir));
         el('path', {
-          d: 'M' + pts.join(' L'),
+          d: arcPathD(r, ann.startAngle, sweep, dir),
           class: `ann-arc ann-${ann.color || 'white'}`,
           'marker-end': 'url(#arrowhead)',
         }, layer);

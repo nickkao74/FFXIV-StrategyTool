@@ -557,8 +557,8 @@ revive = {
 # 穿過泰坦到對面丟第 2 輪 → 再回到左側。泰坦在 B(東),左側 = 北。
 GW = [56, -34]                 # 第 1 輪(也是最後回來的位置)
 GW2 = [56, 34]                 # 第 2 輪:穿過泰坦到對面
-MTW1, MTW2 = [44, -8], [44, 28]     # MT 跟著同樣穿過去再回來
-grp_w = cluster(GW, [44, -6], spread=2)
+# 全員(含 MT)站在一起,讓重力圈盡量疊在同一點,才不會有人來不及跑出去
+grp_w = cluster(GW, [GW[0] + 3, GW[1] + 3], spread=1)
 phiD = bearing(TITAN_D, GW)
 GD1, GD2, MTD = ls_spots(TITAN_D, phiD, SZ['arena1'], near=at(TITAN_D, phiD + 22.5, 90), mt_near=[60, 40], extra=sludge)
 
@@ -571,6 +571,7 @@ D = S(
         "- 法系若是召喚士,即刻詠唱不夠用,激震期間要**在旁邊讀條拉人**\n"
         "### 大地之重 ×2\n"
         "- **本隊做法**:地上的**汙泥還在**,所以在泰坦旁邊排。站在**從中央面向泰坦時的左側**丟第 1 輪 → **穿過泰坦到對面**丟第 2 輪 → **再回到左側**\n"
+        "- **全員(含 {{tank:MT}})站在一起**,讓重力圈盡量疊在同一點 —— 散開的話,有人會來不及跑出範圍\n"
         "### 覺醒\n"
         "- 汙泥有讓泰坦踩到的話,**以太供應會累積,在這裡覺醒**\n"
         "### 覺醒地裂斬(二連)\n"
@@ -597,11 +598,11 @@ D = S(
             ],
         },
         {
-            'caption': '大地之重 ×2:地上的汙泥還在,所以在泰坦旁邊排。站在從中央面向泰坦時的左側(本例:北)丟第 1 輪 → 穿過泰坦到對面丟第 2 輪 → 再回到左側。MT 在泰坦前方自己錯開。泰坦若有踩到汙泥,在這裡覺醒',
-            'boss': {'x': TITAN_D[0], 'y': 0, 'facing': 270},
+            'caption': '大地之重 ×2:地上的汙泥還在,所以在泰坦旁邊排。全員(含 MT)站在一起,讓重力圈盡量疊在同一點 —— 散開的話,有人會來不及跑出範圍。站在從中央面向泰坦時的左側(本例:北)丟第 1 輪 → 一起穿過泰坦到對面丟第 2 輪 → 再回到左側。泰坦若有踩到汙泥,在這裡覺醒',
+            'boss': {'x': TITAN_D[0], 'y': 0, 'facing': bearing(TITAN_D, GW)},
             'actors': grp_w,
             'aoes': [shrink(SZ['arena1'])] + sludge + [
-                {'type': 'circle', 'at': c, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True} for c in (GW, GW2, MTW1, MTW2)],
+                {'type': 'circle', 'at': c, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True} for c in (GW, GW2)],
             'annotations': [
                 {'type': 'arrow', 'from': [64, -20], 'to': [64, 22], 'color': 'white'},
                 {'type': 'arrow', 'from': [50, 22], 'to': [50, -20], 'color': 'white', 'dash': True},
@@ -630,8 +631,8 @@ D = S(
     ],
 )
 check(D['id'], 2, D['steps'][2], arena_r=SZ['arena1'])
-_t = {'actors': grp_w, 'aoes': sludge + [{'type': 'circle', 'at': c, 'r': SZ['weight']} for c in (GW2, MTW2)]}
-check(D['id'], '1/final', _t, arena_r=SZ['arena1'], hit_ok=('MT',))
+_t = {'actors': grp_w, 'aoes': sludge + [{'type': 'circle', 'at': GW2, 'r': SZ['weight']}]}
+check(D['id'], '1/final', _t, arena_r=SZ['arena1'])
 check(D['id'], 3, D['steps'][3], arena_r=SZ['arena1'])
 # 第 1 發的位置也要閃得過第 2 發、MT 兩發都安全
 tmp = dict(D['steps'][2]); tmp['aoes'] = landslide(TITAN_D, phiD, second=True)
