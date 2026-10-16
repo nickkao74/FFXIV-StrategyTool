@@ -147,6 +147,7 @@ grep -rn "AddForbiddenZone\|GoalZones\|ForbiddenDirections\|SetPriority" .
 
 - 取用機制的客觀幾何事實(位置、尺寸、角度、時間)。
 - 把插件的 AI 站位解當作 **一種解法** 記錄下來,並與社群主流解法並列。
+- 步驟的 `caption`(沙盤下方的說明、白板匯入的影格說明)是**純文字**,不要用 `**粗體**` 等 Markdown 語法,否則會原樣顯示成一堆 `*`。`body`、`roleNotes`、速查卡 `points` 才支援粗體與 `{{role:標籤}}`。
 
 **不該做**
 

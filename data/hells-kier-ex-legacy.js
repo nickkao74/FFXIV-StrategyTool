@@ -204,7 +204,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "② 四名 DPS 被紅圈點名 → 各自往內罩住**一隻**鳥。絕不可一圈蓋到兩隻鳥,也不要兩圈疊在同一隻鳥上",
+          "caption": "② 四名 DPS 被紅圈點名 → 各自往內罩住一隻鳥。絕不可一圈蓋到兩隻鳥,也不要兩圈疊在同一隻鳥上",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
@@ -233,7 +233,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "③ 小羽毛已清除 → **斜位變成無黃圈的空檔**。鳥復活(金色)並連線各自的 DPS,只剩大羽毛的黃圈",
+          "caption": "③ 小羽毛已清除 → 斜位變成無黃圈的空檔。鳥復活(金色)並連線各自的 DPS,只剩大羽毛的黃圈",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
@@ -338,7 +338,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "② 關鍵:T/H 留在正位打小羽毛,**四名 DPS 到斜位**用紅圈罩鳥(鳥屍體固定在斜向,正位罩不到)",
+          "caption": "② 關鍵:T/H 留在正位打小羽毛,四名 DPS 到斜位用紅圈罩鳥(鳥屍體固定在斜向,正位罩不到)",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "feather", "at": [0, 0], "size": "big", "r": 30 },
@@ -409,7 +409,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
       },
       "steps": [
         {
-          "caption": "【#02 猛進 + 全員紅圈】BOSS 從 B 側飛向 D 側,直線路徑勿站人;全員零星分散且**遠離中央的鳥**",
+          "caption": "【#02 猛進 + 全員紅圈】BOSS 從 B 側飛向 D 側,直線路徑勿站人;全員零星分散且遠離中央的鳥",
           "boss": { "x": 92, "y": 0, "facing": 270 },
           "aoes": [
             { "type": "cone", "at": [92, 0], "angle": 270, "spread": 26, "r": 190, "color": "fire" },
@@ -484,7 +484,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "【轉場】燃盡天火:全員往 C 點(正南)靠攏,**絕對不要留在中央** —— 中央的圓形地板即將被破壞成天坑",
+          "caption": "【轉場】燃盡天火:全員往 C 點(正南)靠攏,絕對不要留在中央 —— 中央的圓形地板即將被破壞成天坑",
           "boss": { "x": 0, "y": 0, "facing": 180 },
           "aoes": [
             { "type": "hole", "at": [0, 0], "r": 26 }
@@ -514,7 +514,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
       },
       "steps": [
         {
-          "caption": "【引誘旋律】往內拉 → 讀條期間全員靠**外場邊緣**,預留被拉拽的距離",
+          "caption": "【引誘旋律】往內拉 → 讀條期間全員靠外場邊緣,預留被拉拽的距離",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [{ "type": "hole", "at": [0, 0], "r": 26 }],
           "annotations": [
@@ -532,7 +532,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "【拒絕旋律】往外推 → 讀條期間全員靠**中央天坑外緣**,預留被擊退的距離",
+          "caption": "【拒絕旋律】往外推 → 讀條期間全員靠中央天坑外緣,預留被擊退的距離",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [{ "type": "hole", "at": [0, 0], "r": 26 }],
           "annotations": [
@@ -616,7 +616,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
       },
       "steps": [
         {
-          "caption": "① 讀條期間:有仇恨的坦克(MT)走到 **A 方位**誘使 BOSS 面向 A,並開好大減傷。其他七人待在對向的 **C 方位**",
+          "caption": "① 讀條期間:有仇恨的坦克(MT)走到 A 方位誘使 BOSS 面向 A,並開好大減傷。其他七人待在對向的 C 方位",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "hole", "at": [0, 0], "r": 26 }
@@ -635,7 +635,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "② 連擊開始 → **面向就此鎖定在 A**。坦克此時立刻從側面繞出北半場(避開天坑,不可穿過 BOSS)。連擊每段累加易傷 debuff",
+          "caption": "② 連擊開始 → 面向就此鎖定在 A。坦克此時立刻從側面繞出北半場(避開天坑,不可穿過 BOSS)。連擊每段累加易傷 debuff",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "hole", "at": [0, 0], "r": 26 },
@@ -654,7 +654,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "③ 180° 扇形即死:整個北半場是即死範圍,全員都在南側。連擊**結束後**由 ST 挑釁接手常規仇恨(帶易傷的坦克撐不住)",
+          "caption": "③ 180° 扇形即死:整個北半場是即死範圍,全員都在南側。連擊結束後由 ST 挑釁接手常規仇恨(帶易傷的坦克撐不住)",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "hole", "at": [0, 0], "r": 26 },
@@ -698,7 +698,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           ]
         },
         {
-          "caption": "【時鐘型】字列 `十 之 水 向 ｜ 十 之 水 向`,第 4、5 字 = 向、十 → **不同**。爆炸序 ①②③④①②③④ 連續繞圈",
+          "caption": "【時鐘型】字列 `十 之 水 向 ｜ 十 之 水 向`,第 4、5 字 = 向、十 → 不同。爆炸序 ①②③④①②③④ 連續繞圈",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "sw", "order": "①" },
@@ -713,7 +713,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           ]
         },
         {
-          "caption": "【對稱型】字列 `十 水 向 之 ｜ 之 向 水 十`,第 4、5 字 = 之、之 → **相同**。爆炸序 ①③②④④②③① 是回文",
+          "caption": "【對稱型】字列 `十 水 向 之 ｜ 之 向 水 十`,第 4、5 字 = 之、之 → 相同。爆炸序 ①③②④④②③① 是回文",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "sw", "order": "①" },
@@ -741,7 +741,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
       },
       "steps": [
         {
-          "caption": "預備:字列 `向 十 之 水 ｜ 向 十 之 水`。① = 向(東南)。全員先站到 **④ = 水(東北)** 上",
+          "caption": "預備:字列 `向 十 之 水 ｜ 向 十 之 水`。① = 向(東南)。全員先站到 ④ = 水(東北) 上",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "se", "order": "①" },
@@ -762,7 +762,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "第 1 次爆炸:① 向(東南)爆 → 立刻踩進 **①**",
+          "caption": "第 1 次爆炸:① 向(東南)爆 → 立刻踩進 ①",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "se", "order": "①", "state": "boom" },
@@ -803,7 +803,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "⚠ 第 4 次爆炸:④ 水(東北)爆的**瞬間秒穿回 ④** —— 下一個就是 ① 再爆,慢了就被炸。這是唯一需要秒穿的一步",
+          "caption": "⚠ 第 4 次爆炸:④ 水(東北)爆的瞬間秒穿回 ④ —— 下一個就是 ① 再爆,慢了就被炸。這是唯一需要秒穿的一步",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "se", "order": "①" },
@@ -845,7 +845,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "第 8 次爆炸:④ 再爆之前回到 **①**,機制結束(共 3 次移動)",
+          "caption": "第 8 次爆炸:④ 再爆之前回到 ①,機制結束(共 3 次移動)",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "se", "order": "①" },
@@ -880,7 +880,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
       },
       "steps": [
         {
-          "caption": "預備:字列 `十 水 向 之 ｜ 之 向 水 十`。① = 十(西南)。站到它**旁邊**的 ②(向/東南)或 ④(之/西北),此處示範站 ②",
+          "caption": "預備:字列 `十 水 向 之 ｜ 之 向 水 十`。① = 十(西南)。站到它旁邊的 ②(向/東南)或 ④(之/西北),此處示範站 ②",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "sw", "order": "①" },
@@ -901,7 +901,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "第 1 次爆炸:① 十(西南)爆 → 踩進 **①**。之後就待在這裡不動",
+          "caption": "第 1 次爆炸:① 十(西南)爆 → 踩進 ①。之後就待在這裡不動",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "sw", "order": "①", "state": "boom" },
@@ -922,7 +922,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "第 2~7 次爆炸:③ ② ④ ④ ② ③ 依序爆炸。你的 ② 在第 3 次與第 6 次各爆一次 —— **炸完兩次**就可以準備回去了",
+          "caption": "第 2~7 次爆炸:③ ② ④ ④ ② ③ 依序爆炸。你的 ② 在第 3 次與第 6 次各爆一次 —— 炸完兩次就可以準備回去了",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "sw", "order": "①" },
@@ -943,7 +943,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "第 8 次爆炸:① 再爆之前回到 **②**,機制結束(共 2 次移動,全程不需秒穿)",
+          "caption": "第 8 次爆炸:① 再爆之前回到 ②,機制結束(共 2 次移動,全程不需秒穿)",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "sw", "order": "①", "state": "boom" },
@@ -1008,7 +1008,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           ]
         },
         {
-          "caption": "⚠ 第 ② / ④ 次:BOSS 一上來先讀隨機旋律(此例為拒絕 → 貼中央)。**先處理旋律,字等一下再看**",
+          "caption": "⚠ 第 ② / ④ 次:BOSS 一上來先讀隨機旋律(此例為拒絕 → 貼中央)。先處理旋律,字等一下再看",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "quadrant", "quad": "nw" },
@@ -1059,7 +1059,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           "actors": { "D1": { "x": 40, "y": 40 } }
         },
         {
-          "caption": "✅ 正解:箭頭圖示指的是**正西**,所以沿正西畫一條通過自己的平行線 —— 路線在南半場水平向西,不會經過天坑",
+          "caption": "✅ 正解:箭頭圖示指的是正西,所以沿正西畫一條通過自己的平行線 —— 路線在南半場水平向西,不會經過天坑",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "hole", "at": [0, 0], "r": 26 }
@@ -1114,7 +1114,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
       },
       "steps": [
         {
-          "caption": "① 就位:四個塔在 A/B/C/D 最外緣。八人依十字型分組,**兩人一組緊貼中央天坑外圈**(靠近中央是關鍵)",
+          "caption": "① 就位:四個塔在 A/B/C/D 最外緣。八人依十字型分組,兩人一組緊貼中央天坑外圈(靠近中央是關鍵)",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "tower", "at": [0, -84], "r": 16 },
@@ -1134,7 +1134,7 @@ window.RAID_DATA['hells-kier-ex-legacy'] = {
           }
         },
         {
-          "caption": "② 點名:此例為**雙坦雙補**被紅圈點名。被點名的四人**順時針移到相鄰斜位**,四名 DPS 原地不動",
+          "caption": "② 點名:此例為雙坦雙補被紅圈點名。被點名的四人順時針移到相鄰斜位,四名 DPS 原地不動",
           "boss": { "x": 0, "y": 0, "facing": 0 },
           "aoes": [
             { "type": "tower", "at": [0, -84], "r": 16 },
