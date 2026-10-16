@@ -133,10 +133,11 @@ def point_safe(p, aoes_list, arena_r):
         return False
     return not any(a['type'] in ('rect', 'circle', 'cone') and inside(a, p, {'actors': {}}) for aoes in aoes_list for a in aoes)
 
-def ls_spots(titan, phi, arena_r, near=None, mt_near=None, spread=3, extra=()):
+def ls_spots(titan, phi, arena_r, near=None, mt_near=None, spread=3, extra=(), extra_second=()):
     """網格搜尋:g1 = 離 near 最近、躲得過第 1 發的集合點;g2 = 離 g1 最近、躲得過第 2 發的點;
     MT = 離 mt_near 最近、兩發都躲得過的點。"""
-    first, second = landslide(titan, phi) + list(extra), landslide(titan, phi, second=True) + list(extra)
+    # extra_second:只在第 2 發時要避開的東西(例如第 2 發之後才爆炸的岩石)
+    first, second = landslide(titan, phi) + list(extra), landslide(titan, phi, second=True) + list(extra) + list(extra_second)
     near = near or at(titan, phi, 50)
     grid = [(x, y) for x in range(-int(arena_r), int(arena_r) + 1, 2) for y in range(-int(arena_r), int(arena_r) + 1, 2)]
     def best(target, ok):
@@ -705,23 +706,28 @@ tmp = dict(E['steps'][3]); tmp['aoes'] = landslide(TITAN_E, phiE, second=True)
 check(E['id'], '3/second', tmp, arena_r=SZ['arena2'], hit_ok=tuple(r for r in gath if r != 'MT'))
 
 # ─── F. 第 2 組死刑 → 三連重力 + 覺醒地裂斬 → 第 3 組死刑 → 狂暴 ──
-TITAN_W = [-26, 0]
-MT_W = [-44, 0]
+# 影片示意圖 06:34–06:59(泰坦在南)量測,旋轉到本圖的方向(泰坦在西):(x, y) → (-y, x)。
+# 示意圖的重力圈中心畫在 13.4m,超出 12m 的場地,所以位置一律乘 0.8 縮回場邊。
+TITAN_W = [-24, 0]
+MT_W = [-50, 0]
 behind = cluster([8, 0], MT_W)
-BOMBS = [[8, 8], [-8, 8], [8, -8], [-8, -8]]
+BOMBS = [[16, 16], [-16, 16], [16, -16], [-16, -16]]     # 示意圖 (±4.3, ±4.3)m × 0.8 ≈ ±3.2m
 bombs = [{'type': 'circle', 'at': p, 'r': SZ['burst'], 'color': 'death'} for p in BOMBS]
-GF0 = [-48, -6]
-f_gather = cluster(GF0, [-50, 6], spread=3)
-GF = at(CENTER, 330, 51)     # 順時針到西北偏北
-MTF = at(CENTER, 205, 54)    # 逆時針到西南
-TITAN_F = at(CENTER, 222, 30)
-f_split = cluster(GF, MTF, spread=3)
+GF0 = [-52, 0]                 # 第 1 輪:全員(含 MT)在 MT 身邊的外周
+f_gather = cluster([-53, 0], [-52, 10], spread=1.5)
+GF_2 = [-44, -31]              # 大部隊第 2 輪(示意圖 ②)
+GF = at(CENTER, 350, 54)       # 大部隊第 3 輪:順時針到北偏西(示意圖 ③)
+MTF_2 = [-46, 39]              # MT 第 2 輪
+MTF = at(CENTER, 190, 53)      # MT 第 3 輪:逆時針到南
+TITAN_F = [-8, 31]             # 泰坦跟著 MT 走
+f_split = cluster(GF, MTF, spread=1.5)
 phiF = bearing(TITAN_F, GF)
-GF1, GF2, MTL = ls_spots(TITAN_F, phiF, SZ['arena2'], near=GF, mt_near=MTF, extra=bombs)
-f_ls1 = cluster(GF1, MTL, spread=3)
-f_ls2 = cluster(GF2, MTL, spread=3)
-TITAN_G = at(CENTER, 205, 32)
-f_cleave3 = cluster(GF2, MTF, spread=3)
+GF1, GF2, MTL = ls_spots(TITAN_F, phiF, SZ['arena2'], near=GF, mt_near=MTF, spread=1.5, extra_second=bombs)
+bombs_pending = [dict(b, _nocheck=True) for b in bombs]   # 第 1 發時還沒爆炸
+f_ls1 = cluster(GF1, MTL, spread=1.5)
+f_ls2 = cluster(GF2, MTL, spread=1.5)
+TITAN_G = list(TITAN_F)
+f_cleave3 = cluster(GF2, MTF, spread=1.5)
 phiG = bearing(TITAN_G, MTF)
 F = S(
     id='uwu-p3-end', phase='P3 泰坦',
@@ -732,7 +738,7 @@ F = S(
         "- ⚠ **第 2 組死刑後一定要往外周走** —— 中央附近會**落下 4 顆岩石爆炸**,能用的空間只剩**外周邊緣**。這點**一定會忘**,請記住\n"
         "- 近戰這段基本上打不到王,但輸出仍然足夠\n"
         "### 三連大地之重 + 覺醒地裂斬\n"
-        "- 全員集合把第一輪重力排好後:\n"
+        "- 全員(含 {{tank:MT}})先在 **MT 身邊的外周**集合丟第 1 輪,之後:\n"
         "  - **{{tank:MT}} 以外的人**:**順時針**沿著重力往外周移動\n"
         "  - **{{tank:MT}}**:一邊排重力,一邊往**遠離大部隊的方向逆時針**移動 → 兩邊分開,安全區變大\n"
         "- 不要忘記躲**覺醒地裂斬的第二下**(衝回第 1 發的位置)\n"
@@ -776,25 +782,29 @@ F = S(
             'annotations': [
                 {'type': 'arrow', 'from': [6, -8], 'to': [-38, -16], 'color': 'white'},
                 {'type': 'text', 'at': [0, -104], 'text': '⚠ 死刑後往外周走', 'color': 'red'},
-                {'type': 'text', 'at': [0, 104], 'text': '中央 4 顆岩石的位置為示意', 'color': 'yellow'},
+                {'type': 'text', 'at': [0, 104], 'text': '中央 4 顆岩石依影片示意圖', 'color': 'yellow'},
             ],
         },
         {
-            'caption': '三連大地之重:**MT 以外的人順時針**沿外周排重力,**MT 逆時針**往遠離大部隊的方向帶 —— 兩邊分開,安全區變大。**逆時針的人就是吃第 3 組死刑的人**',
+            'caption': '三連大地之重:第 1 輪全員一起丟在 MT 身邊,之後 MT 以外的人順時針沿外周丟第 2、3 輪,MT 逆時針往遠離大部隊的方向丟 —— 兩邊分開,安全區變大。逆時針的人就是吃第 3 組死刑的人',
             'boss': {'x': TITAN_F[0], 'y': TITAN_F[1], 'facing': bearing(TITAN_F, MTF)},
             'actors': f_split,
-            'aoes': [shrink(SZ['arena2'])] + bombs,
+            'aoes': [shrink(SZ['arena2'])] + bombs + [
+                {'type': 'circle', 'at': p, 'r': SZ['weight'], 'color': 'fire', '_nocheck': True} for p in (GF0, GF_2, MTF_2)],
             'annotations': [
-                {'type': 'arcArrow', 'radius': 54, 'startAngle': 290, 'endAngle': 335, 'color': 'white'},
-                {'type': 'arcArrow', 'radius': 54, 'startAngle': 255, 'endAngle': 212, 'dir': 'ccw', 'color': 'blue'},
+                {'type': 'arcArrow', 'radius': 47, 'startAngle': 282, 'endAngle': 335, 'color': 'white'},
+                {'type': 'arcArrow', 'radius': 47, 'startAngle': 258, 'endAngle': 198, 'dir': 'ccw', 'color': 'blue'},
+                {'type': 'text', 'at': [-60, 0], 'text': '①', 'color': 'white'},
+                {'type': 'text', 'at': [GF_2[0] - 8, GF_2[1] - 6], 'text': '②', 'color': 'white'},
+                {'type': 'text', 'at': [MTF_2[0] - 8, MTF_2[1] + 8], 'text': '②', 'color': 'blue'},
                 {'type': 'text', 'at': [0, -104], 'text': '大部隊順時針 · MT 逆時針', 'color': 'yellow'},
             ],
         },
         {
-            'caption': '**覺醒地裂斬第 1 發**(朝大部隊方向)→ 閃到直線之間',
+            'caption': '覺醒地裂斬第 1 發(朝大部隊方向)→ 閃到直線之間。中央岩石要到第 2 發之後才爆炸',
             'boss': {'x': TITAN_F[0], 'y': TITAN_F[1], 'facing': phiF},
             'actors': f_ls1,
-            'aoes': [shrink(SZ['arena2'])] + bombs + landslide(TITAN_F, phiF),
+            'aoes': [shrink(SZ['arena2'])] + bombs_pending + landslide(TITAN_F, phiF),
             'annotations': [{'type': 'text', 'at': [0, -104], 'text': '第 1 發', 'color': 'yellow'}],
         },
         {
