@@ -8,7 +8,7 @@
   4. BossMod Reborn          _OriginalReferences/BossmodReborn/.../Ultimate/UWU/
 
 BossMod 只用來「調整」既有圖解的尺寸,不用來推翻前三者的機制描述。
-逐項比對與判斷理由見 ../07-UWU-P1對照.md 與 ../08-UWU-P2對照.md。
+逐項比對與判斷理由見 ../07-UWU-P1對照.md、../08-UWU-P2對照.md 與 ../09-UWU-P3對照.md。
 
 用法:py "_Planning/BossMod逆向解析/tools/rebuild-uwu.py"
 ⚠ 要改文字請改 data/uwu.js;要改幾何請改這支腳本。
@@ -373,6 +373,43 @@ note('收尾死刑同步改為 120°/15m;分攤圈 4m;⚠ 討伐後距離衰減�
 
 
 # ═══════════════════════════════════════════════════════════
+# P3 泰坦
+# ═══════════════════════════════════════════════════════════
+# P3 是先有 BossMod 才畫圖的:data/uwu.js 的 P3 章節本來就用下列實測值,
+# 這裡不需要再修正,只做檢查(值不對就中止,避免兩邊悄悄分岔)。
+#   Geocrush1        SimpleAOEs(18)              大地粉碎(落地)  距離衰減
+#   Geocrush2        AOEShapeCircle(24)          大地粉碎(跳躍)  距離衰減;場地 20 → 16 → 12m
+#   RockBuster       AOEShapeCone(10.55, 60°)    碎岩    ⚠ BossMod 標 TODO: verify angle
+#   MountainBuster   AOEShapeCone(15.55, 45°)    山崩    ⚠ BossMod 標 TODO: verify angle
+#   WeightOfTheLand  SimpleAOEs(6)               大地之重
+#   Upheaval         Knockback(24)               大激震
+#   Burst            AOEShapeCircle(6.3)         爆破岩石的大爆炸
+#   FreefireGaol     AOEShapeCircle(6)           石牢被炸開的爆炸
+#   Landslide        AOEShapeRect(44.55, 3, 4.55) / Rect(40.5, 3, 0.5)  地裂斬 寬 6m
+#   Titan 本體半徑 R = 4.55
+EXPECT_P3 = {
+    ('circle', y(18)), ('circle', y(24)), ('circle', y(6)), ('circle', y(6.3)),
+    ('donut', y(16)), ('donut', y(12)),
+    ('cone', (y(10.55), 120)), ('cone', (y(15.55), 90)),
+    ('rect', (y(44.55), y(4.55), y(3))), ('rect', (y(40.5), y(0.5), y(3))),
+}
+p3 = [x for x in d['sections'] if x.get('phase') == 'P3 泰坦']
+for x in p3:
+    for stp in x['steps']:
+        for a in stp.get('aoes', []):
+            t = a['type']
+            key = {'circle': lambda: a['r'], 'donut': lambda: a['rInner'],
+                   'cone': lambda: (a['r'], a['spread']),
+                   'rect': lambda: (a['lengthFront'], a['lengthBack'], a['halfWidth'])}.get(t)
+            if key is None:
+                continue
+            v = key()
+            if (t, v) not in EXPECT_P3 and not (t == 'circle' and a.get('color') in ('generic', 'void')):
+                sys.exit(f'P3 {x["id"]} 出現非 BossMod 尺寸:{t} {v}')
+note(f'P3 泰坦 {len(p3)} 個章節沿用 data/uwu.js(已是 BossMod 實測值,逐項見 09-UWU-P3對照.md)')
+
+
+# ═══════════════════════════════════════════════════════════
 header = '''/* 絕神兵零式(UWU) —— 校對版
  *
  * ⚠ 自動產生,請勿手改 —— 下次重跑會被覆蓋。
@@ -382,7 +419,7 @@ header = '''/* 絕神兵零式(UWU) —— 校對版
  *
  * 文字沿用 data/uwu.js(來源:攻略逐字稿 + 影片截圖 + 灰機 wiki + 繁中隊伍簡報),
  * 沙盤圖尺寸改採 BossMod Reborn 的實測數值。換算 1m = 5 單位。
- * 逐項比對見 _Planning/BossMod逆向解析/07-UWU-P1對照.md 與 08-UWU-P2對照.md。
+ * 逐項比對見 _Planning/BossMod逆向解析/07-UWU-P1對照.md、08-UWU-P2對照.md 與 09-UWU-P3對照.md。
  */
 window.RAID_DATA = window.RAID_DATA || {};
 window.RAID_DATA['uwu-lab'] = '''
