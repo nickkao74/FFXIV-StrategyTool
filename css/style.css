@@ -478,21 +478,27 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
   #cheatsheet-view { grid-column: 1 / 2; }
 }
 
-/* ── 手機直向:章節改成正方形數字方塊 ──
- * 橫向捲動的長條在手機上要一直左右滑,改成可換行的數字方塊,
- * 階段標題各佔一行,選取中的章節名稱顯示在方塊下方。 */
-@media (max-width: 760px) {
+/* ── 窄螢幕(平板與手機):章節改成單行的正方形數字方塊 ──
+ * 原本的橫向長條每個章節都帶完整標題,要一直左右滑。改成數字方塊排成一行,
+ * 階段以行內的短標籤(P1/P2/P3)+ 分隔線區分,放不下時這一行可橫向捲動,
+ * 選取中的章節名稱(含階段全名)顯示在方塊下方。 */
+@media (max-width: 1100px) {
   #timeline {
-    flex-direction: row; flex-wrap: wrap; overflow-x: visible;
-    gap: 6px; padding: 8px 12px 6px;
+    flex-direction: row; flex-wrap: nowrap; overflow-x: auto; overflow-y: hidden;
+    align-items: center; gap: 6px; padding: 8px 12px;
+    scrollbar-width: thin;
   }
   .timeline-phase {
-    flex: 0 0 100%; margin: 4px 0 0; padding: 0 0 3px;
+    flex: none; display: flex; align-items: center; align-self: stretch;
+    margin: 0 0 0 6px; padding: 0 2px 0 10px;
+    border-bottom: none; border-left: 2px solid var(--border);
+    font-size: 12px; letter-spacing: .04em;
   }
-  .timeline-phase:first-child { margin-top: 0; }
+  .timeline-phase:first-child { margin-left: 0; padding-left: 0; border-left: none; }
+  .timeline-phase .phase-full { display: none; }
   .timeline-item, .timeline-item-nested {
     flex: none; margin: 0; padding: 0;
-    width: 40px; height: 40px; justify-content: center;
+    width: 38px; height: 38px; justify-content: center;
     border: 1px solid var(--border); background: var(--bg-panel2);
   }
   .timeline-item .timeline-title { display: none; }

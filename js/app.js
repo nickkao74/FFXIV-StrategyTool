@@ -202,7 +202,10 @@ async function main() {
     if (sec.phase && sec.phase !== lastPhase) {
       const head = document.createElement('div');
       head.className = 'timeline-phase';
-      head.textContent = sec.phase;
+      // 窄螢幕只顯示短標籤(P1),全名改由下方的「目前章節」列呈現
+      const [short, ...rest] = sec.phase.split(' ');
+      head.innerHTML = `<span class="phase-short">${escapeHtml(short)}</span>`
+        + (rest.length ? `<span class="phase-full"> ${escapeHtml(rest.join(' '))}</span>` : '');
       timeline.appendChild(head);
       lastPhase = sec.phase;
     }
@@ -228,6 +231,11 @@ async function main() {
     currentSection = i;
     const sec = data.sections[i];
     timelineItems.forEach((n, j) => n.classList.toggle('active', j === i));
+    // 單行數字方塊模式(可橫向捲動)時,把選取的方塊捲到中間
+    if (timeline.scrollWidth > timeline.clientWidth) {
+      const it = timelineItems[i];
+      timeline.scrollTo({ left: it.offsetLeft - timeline.clientWidth / 2 + it.offsetWidth / 2, behavior: 'smooth' });
+    }
     timelineCurrent.innerHTML = (sec.phase ? `<span class="section-phase">${escapeHtml(sec.phase)}</span>` : '')
       + `<span class="timeline-current-num">${i + 1}</span>${escapeHtml(sec.title)}`;
     secTitle.innerHTML = (sec.phase ? `<span class="section-phase">${escapeHtml(sec.phase)}</span>` : '')
