@@ -1269,12 +1269,12 @@ window.RAID_DATA['uwu'] = {
       "id": "uwu-p3-open",
       "phase": "P3 泰坦",
       "title": "落地:大地粉碎 → 大地之怒 → 二連死刑",
-      "body": "伊弗利特倒下後,泰坦會**落在場地中央**。\n### 大地粉碎(落地)\n- **形狀**:以泰坦為中心、**隨距離衰減**的全體傷害(衰減半徑 18m)\n- **處理**:**全員退到外周最邊緣**。伊弗利特的突破極限**等衰減結束後再撿**({{dps:D4}})\n### 大地之怒(讀條)\n- **形狀**:全體傷害,**非常痛**\n- ⚠ **仇恨會重置** —— 坦克注意姿態,{{tank:MT}} 第一時間**挑釁**把泰坦接住\n- ⚠ **這招穿無敵**(火神篇簡報的轉場注意事項) —— 有人陣亡的話,**等這一發過去再起來**\n### 碎岩 → 山崩 · 二連死刑(無讀條)\n- **碎岩**:對**當前一仇**的扇形\n- **山崩**:約 3 秒後,朝**一仇方向**的**更大**扇形,傷害極高\n- **處理**:{{tank:MT}} **開滿減傷**承受;王依慣例**面向北(A)**,其他人待在**南側背面** —— **站在泰坦正面會被扁**\n- 這組死刑在 P3 共出現 **3 組**,**第 1 組與第 3 組剛好相隔約 2 分鐘** → 減傷與無敵可以照 2 分鐘循環排\n- **本隊順序:第 1 組 {{tank:MT}} → 第 2 組 {{tank:ST}} → 第 3 組 {{tank:MT}}**\n> 扇形尺寸來自 BossMod,但它自己在兩招的角度上都標了「待驗證」,圖上的張角僅供參考。",
+      "body": "伊弗利特倒下後,泰坦會**落在場地中央**。\n### 大地粉碎(落地)\n- **形狀**:以泰坦為中心、**隨距離衰減**的全體傷害(衰減半徑 18m)\n- **處理**:**全員退到外周最邊緣**。伊弗利特的突破極限**等衰減結束後再撿**({{dps:D4}})\n### 大地之怒(讀條)\n- **形狀**:全體傷害,**非常痛**\n- ⚠ **仇恨會重置** —— 坦克注意姿態,{{tank:MT}} 第一時間**挑釁**把泰坦接住\n- ⚠ **這招穿無敵**(火神篇簡報的轉場注意事項) —— 有人陣亡的話,**等這一發過去再起來**\n### 碎岩 → 山崩 · 二連死刑(無讀條)\n- **碎岩**:對**當前一仇**的扇形\n- **山崩**:約 3 秒後,朝**一仇方向**的**更大**扇形,傷害極高\n- **處理**:{{tank:MT}} **開滿減傷**承受。**本隊約定:泰坦落地後 MT 站 C 側、把面向拉成朝南(C),其他人都在 A 側(泰坦背面)** —— 方便接下來的大地之重。**站在泰坦正面會被扁**\n- 這組死刑在 P3 共出現 **3 組**,**第 1 組與第 3 組剛好相隔約 2 分鐘** → 減傷與無敵可以照 2 分鐘循環排\n- **本隊順序:第 1 組 {{tank:MT}} → 第 2 組 {{tank:ST}} → 第 3 組 {{tank:MT}}**\n> 扇形尺寸來自 BossMod,但它自己在兩招的角度上都標了「待驗證」,圖上的張角僅供參考。",
       "roleNotes": {
-        "MT": "大地之怒**會重置仇恨** → 讀條結束立刻**挑釁**接回,把泰坦**面向拉成朝北(A)**。二連死刑**開滿減傷**。",
-        "ST": "大地之怒後別搶到一仇;站在泰坦**背面**輸出,必要時給 MT 減傷。**第 2 組死刑由你接**(MT → ST → MT)。",
+        "MT": "大地之怒**會重置仇恨** → 讀條結束立刻**挑釁**接回,**站到 C 側、把泰坦面向拉成朝南(C)**。二連死刑**開滿減傷**。",
+        "ST": "大地之怒後別搶到一仇;站在泰坦**背面(A 側)**輸出,必要時給 MT 減傷。**第 2 組死刑由你接**(MT → ST → MT)。",
         "H1 H2": "落地的距離衰減 → 大地之怒 → 二連死刑連續三發,**先把血線拉滿**,死刑時集中照顧 MT。",
-        "D1 D2": "站泰坦**背面(南側)**輸出,不要繞到側面。",
+        "D1 D2": "站泰坦**背面(A 側)**輸出,不要繞到側面。",
         "D3 D4": "**D4 等距離衰減結束後**再去撿伊弗利特的突破極限;有人陣亡要**等大地之怒過去再起來**。"
       },
       "steps": [
@@ -1296,14 +1296,14 @@ window.RAID_DATA['uwu'] = {
           ]
         },
         {
-          "caption": "大地之怒:全體傷害,仇恨重置、穿無敵。MT 讀條一結束就挑釁,把泰坦面向拉成朝北(A);其他人到南側背面集合",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "caption": "大地之怒:全體傷害,仇恨重置、穿無敵。MT 讀條一結束就挑釁,站到 C 側把泰坦面向拉成朝南;其他人到 A 側(泰坦背面)集合",
+          "boss": { "x": 0, "y": 0, "facing": 180 },
           "actors": {
-            "MT": { "x": 0, "y": -30 },
-            "ST": { "x": -26, "y": 22 },
-            "H1": { "x": -22, "y": 56 }, "H2": { "x": 22, "y": 56 },
-            "D1": { "x": -10, "y": 32 }, "D2": { "x": 12, "y": 32 },
-            "D3": { "x": -4, "y": 62 }, "D4": { "x": 14, "y": 66 }
+            "MT": { "x": 0, "y": 30 },
+            "ST": { "x": -26, "y": -22 },
+            "H1": { "x": -22, "y": -56 }, "H2": { "x": 22, "y": -56 },
+            "D1": { "x": -10, "y": -32 }, "D2": { "x": 12, "y": -32 },
+            "D3": { "x": -4, "y": -62 }, "D4": { "x": 14, "y": -66 }
           },
           "markers": [
             { "type": "target", "at": "MT" }
@@ -1313,25 +1313,25 @@ window.RAID_DATA['uwu'] = {
           ]
         },
         {
-          "caption": "碎岩 → 山崩:無讀條的二連死刑,先是碎岩(半徑約 10.5m),約 3 秒後山崩(半徑約 15.5m、傷害極高),都朝一仇方向。MT 開滿減傷;其他人待在背面",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "caption": "碎岩 → 山崩:無讀條的二連死刑,先是碎岩(半徑約 10.5m),約 3 秒後山崩(半徑約 15.5m、傷害極高),都朝一仇方向。MT 在 C 側開滿減傷;其他人待在 A 側背面",
+          "boss": { "x": 0, "y": 0, "facing": 180 },
           "actors": {
-            "MT": { "x": 0, "y": -30 },
-            "ST": { "x": -26, "y": 22 },
-            "H1": { "x": -22, "y": 56 }, "H2": { "x": 22, "y": 56 },
-            "D1": { "x": -10, "y": 32 }, "D2": { "x": 12, "y": 32 },
-            "D3": { "x": -4, "y": 62 }, "D4": { "x": 14, "y": 66 }
+            "MT": { "x": 0, "y": 30 },
+            "ST": { "x": -26, "y": -22 },
+            "H1": { "x": -22, "y": -56 }, "H2": { "x": 22, "y": -56 },
+            "D1": { "x": -10, "y": -32 }, "D2": { "x": 12, "y": -32 },
+            "D3": { "x": -4, "y": -62 }, "D4": { "x": 14, "y": -66 }
           },
           "aoes": [
-            { "type": "cone", "at": [0, 0], "angle": 0, "spread": 90, "r": 77.75, "color": "thunder" },
-            { "type": "cone", "at": [0, 0], "angle": 0, "spread": 120, "r": 52.75, "color": "thunder" }
+            { "type": "cone", "at": [0, 0], "angle": 180, "spread": 90, "r": 77.75, "color": "thunder" },
+            { "type": "cone", "at": [0, 0], "angle": 180, "spread": 120, "r": 52.75, "color": "thunder" }
           ],
           "markers": [
             { "type": "target", "at": "MT" }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "二連死刑 · MT 開滿減傷", "color": "yellow" },
-            { "type": "text", "at": [0, 104], "text": "⚠ 兩招張角 BossMod 標待驗證", "color": "yellow" }
+            { "type": "text", "at": [0, -104], "text": "⚠ 兩招張角 BossMod 標待驗證", "color": "yellow" },
+            { "type": "text", "at": [0, 104], "text": "二連死刑 · MT 在 C 開滿減傷", "color": "yellow" }
           ]
         }
       ]
@@ -1340,53 +1340,76 @@ window.RAID_DATA['uwu'] = {
       "id": "uwu-p3-jump",
       "phase": "P3 泰坦",
       "title": "大地之重 → 大地粉碎(跳躍)· 自滅法",
-      "body": "### 大地之重(讀條)\n- **形狀**:在玩家腳下生成**半徑 6m** 的圓形 AOE,**連續 2 輪**(最後兩次會變 3 輪)\n- **處理**:全隊**集合**丟下第一輪,接著**沿著泰坦順時針(或逆時針)**移動,讓下一輪落在旁邊\n### 大地粉碎(跳躍)\n- 泰坦會**瞬間轉向**,接著**往牠面向的方向跳**、落在場邊的**正點**,從落點發出**隨距離衰減**的傷害\n- 每跳一次,**場地外圈就變成即死區**:場地半徑 20m → **16m**;第二次跳 → **12m**\n- **處理**:看清楚**轉向的那一瞬間**,往**反方向**退。範例:面向 **B** → 退到 **D** 側的邊緣\n- 為了讓轉向好判斷,**{{tank:MT}} 要把泰坦盡量固定在正中央**\n- 不知道躲哪的話,現在場地還寬,**躲在兩個點中間**也撐得過去\n### ⚠ 自滅法(影片介紹的主流打法)\n本攻略以影片的「**自滅法**」為前提:**第二輪大地之重時,刻意讓 4 個人站著吃重力死掉**。\n| 第二輪大地之重 | 成員 |\n|---|---|\n| **躲開**(存活) | {{tank:MT}}、{{healer:H1}}、{{healer:H2}}、{{dps:D4}}(法系) |\n| **站著吃**(陣亡) | {{tank:ST}}、{{dps:D1}}、{{dps:D2}}、{{dps:D3}} |\n\n**為什麼要死**:接下來的三連岩牢會點名**一仇以外的 3 人**。場上只剩 4 人時,岩牢**必定落在 H1、H2、D4 身上**,站位可以完全固定,不用在 4 秒內判斷優先度。\n陣亡的人等岩牢處理完再被拉起來(見下一節)。現在的版本幾乎沒有 DPS 檢查,少 4 個人也打得過。\n> **本隊採用自滅法。**(全員存活的打法要 7 人依優先度排固定位置,本攻略不收錄。)",
+      "body": "### 大地之重(讀條)\n- **形狀**:在玩家腳下生成**半徑 6m** 的圓形 AOE,**連續 2 輪**(最後兩次會變 3 輪)\n- **本隊做法**(位置指 A/B/C/D 方向、離中心約 7m;兩點相距約 10m,才出得了半徑 6m 的圓):全員在 **A** 集合丟第 1 輪 → 一起移到 **B** 丟第 2 輪;{{tank:MT}} 自己在 **C** 丟第 1 輪 → 移到 **D** 丟第 2 輪 → 回到 **C**\n### 大地粉碎(跳躍)\n- 泰坦會**瞬間轉向**,接著**往牠面向的方向跳**、落在場邊的**正點**,從落點發出**隨距離衰減**的傷害\n- 每跳一次,**場地外圈就變成即死區**:場地半徑 20m → **16m**;第二次跳 → **12m**\n- **處理**:看清楚**轉向的那一瞬間**,往**反方向**退。範例:面向 **B** → 退到 **D** 側的邊緣\n- 為了讓轉向好判斷,**{{tank:MT}} 要把泰坦盡量固定在正中央**\n- 不知道躲哪的話,現在場地還寬,**躲在兩個點中間**也撐得過去\n### ⚠ 自滅法(影片介紹的主流打法)\n本攻略以影片的「**自滅法**」為前提:**第二輪大地之重時,刻意讓 4 個人站著吃重力死掉**。\n| 第二輪大地之重 | 成員 |\n|---|---|\n| **躲開**(存活) | {{tank:MT}}、{{healer:H1}}、{{healer:H2}}、{{dps:D4}}(法系) |\n| **站著吃**(陣亡) | {{tank:ST}}、{{dps:D1}}、{{dps:D2}}、{{dps:D3}} |\n\n**怎麼死**:第 2 輪丟在 B 之後,**自滅的 4 人留在 B 不動**,存活組離開。8 份重力疊在同一點,**連 ST 也吃得到足夠的傷害**。\n**為什麼要死**:接下來的三連岩牢會點名**一仇以外的 3 人**。場上只剩 4 人時,岩牢**必定落在 H1、H2、D4 身上**,站位可以完全固定,不用在 4 秒內判斷優先度。\n陣亡的人等岩牢處理完再被拉起來(見下一節)。現在的版本幾乎沒有 DPS 檢查,少 4 個人也打得過。\n> **本隊採用自滅法。**(全員存活的打法要 7 人依優先度排固定位置,本攻略不收錄。)",
       "roleNotes": {
-        "MT": "大地之重時**自己也會被丟**,側移一步就好,泰坦**維持在正中央**。轉向後跟著存活組退到**反方向**。",
-        "ST": "自滅法:**第二輪大地之重站著吃**,等岩牢結束後被拉。",
-        "H1 H2": "**兩輪都要躲**,轉向後退到反方向邊緣。接下來岩牢**必定點到你們**,先記好站位(下一節)。",
-        "D1 D2": "自滅法:**第二輪大地之重站著吃**。D1 之後還要撿泰坦的突破極限,被拉起來後別忘了。",
-        "D3": "自滅法:**第二輪大地之重站著吃**。",
-        "D4": "**兩輪都要躲**,存活下來處理岩牢;如果是召喚士,之後要負責讀條拉人。"
+        "MT": "大地之重:**C 丟第 1 輪 → 移到 D 丟第 2 輪 → 回到 C**,泰坦**維持在正中央**。轉向後跟著存活組退到**反方向**。",
+        "ST": "自滅法:A 丟第 1 輪 → 移到 **B 丟第 2 輪後留在 B 不動**吃滿重力,等岩牢結束後被拉。",
+        "H1 H2": "A 丟第 1 輪 → B 丟第 2 輪 → **馬上離開 B**,轉向後退到反方向邊緣。接下來岩牢**必定點到你們**,先記好站位(下一節)。",
+        "D1 D2": "自滅法:A 丟第 1 輪 → **B 丟第 2 輪後留在 B 不動**。D1 之後還要撿泰坦的突破極限,被拉起來後別忘了。",
+        "D3": "自滅法:A 丟第 1 輪 → **B 丟第 2 輪後留在 B 不動**。",
+        "D4": "A 丟第 1 輪 → B 丟第 2 輪 → **馬上離開 B**,存活下來處理岩牢;如果是召喚士,之後要負責讀條拉人。"
       },
       "steps": [
         {
-          "caption": "大地之重第一輪:每個人腳下一個半徑 6m 的圓。全隊在泰坦背面集合一起丟,之後沿著泰坦順時針移動。MT 自己的那一發往側邊閃",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "caption": "大地之重第 1 輪:每個人腳下一個半徑 6m 的圓。全員在 A 集合一起丟,MT 自己在 C 丟。丟完全員移到 B、MT 移到 D",
+          "boss": { "x": 0, "y": 0, "facing": 180 },
           "actors": {
-            "MT": { "x": 0, "y": -30 },
-            "ST": { "x": -7, "y": 41 },
-            "H1": { "x": 8, "y": 52 }, "H2": { "x": -3, "y": 58 },
-            "D1": { "x": 7, "y": 41 }, "D2": { "x": 0, "y": 50 },
-            "D3": { "x": -8, "y": 52 }, "D4": { "x": 6, "y": 60 }
+            "MT": { "x": 0, "y": 36 },
+            "ST": { "x": -2.4, "y": -35.2 },
+            "H1": { "x": 2, "y": -32.8 }, "H2": { "x": -3.2, "y": -38 },
+            "D1": { "x": 2.4, "y": -35.2 }, "D2": { "x": 0, "y": -38 },
+            "D3": { "x": -1.6, "y": -32.8 }, "D4": { "x": 3.2, "y": -38 }
           },
           "aoes": [
-            { "type": "circle", "at": [0, 50], "r": 30, "color": "fire" },
-            { "type": "circle", "at": [0, -30], "r": 30, "color": "fire" }
+            { "type": "circle", "at": [0, -36], "r": 30, "color": "fire" },
+            { "type": "circle", "at": [0, 36], "r": 30, "color": "fire" }
           ],
           "annotations": [
-            { "type": "arcArrow", "radius": 72, "startAngle": 175, "endAngle": 222, "color": "white" },
-            { "type": "text", "at": [0, -104], "text": "集合丟 → 順時針繞", "color": "yellow" }
+            { "type": "arcArrow", "radius": 46, "startAngle": 12, "endAngle": 78, "color": "white" },
+            { "type": "arcArrow", "radius": 46, "startAngle": 192, "endAngle": 258, "color": "blue" },
+            { "type": "text", "at": [0, -104], "text": "全員 A → B · MT C → D", "color": "yellow" }
           ]
         },
         {
-          "caption": "第二輪(自滅法):MT、H1、H2、D4 繼續順時針躲開;ST、D1、D2、D3 站著吃第二輪陣亡。場上只剩 4 人 → 等等的三連岩牢必定點到 H1、H2、D4",
-          "boss": { "x": 0, "y": 0, "facing": 0 },
+          "caption": "大地之重第 2 輪:全員在 B 一起丟(8 份重力疊在同一點),MT 在 D 丟。第 1 輪的圓同時在 A、C 引爆",
+          "boss": { "x": 0, "y": 0, "facing": 180 },
           "actors": {
-            "MT": { "x": -24, "y": -20 },
-            "H1": { "x": -54, "y": -7 }, "H2": { "x": -47, "y": 2 },
-            "D4": { "x": -58, "y": 6 }
+            "MT": { "x": -36, "y": 0 },
+            "ST": { "x": 33.6, "y": 0.8 },
+            "H1": { "x": 38, "y": 3.2 }, "H2": { "x": 32.8, "y": -2 },
+            "D1": { "x": 38.4, "y": 0.8 }, "D2": { "x": 36, "y": -2 },
+            "D3": { "x": 34.4, "y": 3.2 }, "D4": { "x": 39.2, "y": -2 }
           },
           "aoes": [
-            { "type": "circle", "at": [-35.4, 35.4], "r": 30, "color": "fire" },
-            { "type": "circle", "at": [-20, -26], "r": 30, "color": "fire" },
-            { "type": "xmark", "at": [-41.4, 31.4] },
-            { "type": "xmark", "at": [-29.4, 31.4] },
-            { "type": "xmark", "at": [-40.4, 41.4] },
-            { "type": "xmark", "at": [-29.4, 41.4] }
+            { "type": "circle", "at": [0, -36], "r": 30, "color": "fire" },
+            { "type": "circle", "at": [0, 36], "r": 30, "color": "fire" },
+            { "type": "circle", "at": [36, 0], "r": 30, "color": "fire" },
+            { "type": "circle", "at": [-36, 0], "r": 30, "color": "fire" }
           ],
           "annotations": [
-            { "type": "text", "at": [-35.4, 63.4], "text": "ST·D1·D2·D3 站著吃", "color": "red" },
+            { "type": "text", "at": [0, -104], "text": "全員在 B 丟第 2 輪", "color": "yellow" }
+          ]
+        },
+        {
+          "caption": "自滅法:H1、H2、D4 立刻離開 B(回到 A 側),MT 回到 C;ST、D1、D2、D3 留在 B 不動,吃下疊在一起的 8 份重力陣亡。場上只剩 4 人 → 等等的三連岩牢必定點到 H1、H2、D4",
+          "boss": { "x": 0, "y": 0, "facing": 180 },
+          "actors": {
+            "MT": { "x": 0, "y": 38 },
+            "H1": { "x": -6, "y": -48 }, "H2": { "x": 4, "y": -52 },
+            "D4": { "x": -2, "y": -56 }
+          },
+          "aoes": [
+            { "type": "circle", "at": [36, 0], "r": 30, "color": "fire" },
+            { "type": "circle", "at": [-36, 0], "r": 30, "color": "fire" },
+            { "type": "xmark", "at": [31, -4] },
+            { "type": "xmark", "at": [41, -4] },
+            { "type": "xmark", "at": [32, 5] },
+            { "type": "xmark", "at": [41, 5] }
+          ],
+          "annotations": [
+            { "type": "arrow", "from": [26, -14], "to": [8, -40], "color": "white" },
+            { "type": "arrow", "from": [-30, 12], "to": [-10, 30], "color": "blue" },
+            { "type": "text", "at": [76, 34], "text": "ST·D1·D2·D3 留在 B", "color": "red" },
             { "type": "text", "at": [0, -104], "text": "自滅法:4 人在這裡陣亡", "color": "yellow" }
           ]
         },
@@ -1399,10 +1422,10 @@ window.RAID_DATA['uwu'] = {
             "D4": { "x": -74, "y": 4 }
           },
           "aoes": [
-            { "type": "xmark", "at": [-41.4, 31.4] },
-            { "type": "xmark", "at": [-29.4, 31.4] },
-            { "type": "xmark", "at": [-40.4, 41.4] },
-            { "type": "xmark", "at": [-29.4, 41.4] }
+            { "type": "xmark", "at": [31, -4] },
+            { "type": "xmark", "at": [41, -4] },
+            { "type": "xmark", "at": [32, 5] },
+            { "type": "xmark", "at": [41, 5] }
           ],
           "annotations": [
             { "type": "arrow", "from": [26, 0], "to": [76, 0], "color": "red", "dash": true },
@@ -1421,10 +1444,10 @@ window.RAID_DATA['uwu'] = {
           "aoes": [
             { "type": "circle", "at": [80, 0], "r": 120, "color": "ice" },
             { "type": "donut", "at": [0, 0], "rInner": 80, "rOuter": 100, "color": "death" },
-            { "type": "xmark", "at": [-41.4, 31.4] },
-            { "type": "xmark", "at": [-29.4, 31.4] },
-            { "type": "xmark", "at": [-40.4, 41.4] },
-            { "type": "xmark", "at": [-29.4, 41.4] }
+            { "type": "xmark", "at": [31, -4] },
+            { "type": "xmark", "at": [41, -4] },
+            { "type": "xmark", "at": [32, 5] },
+            { "type": "xmark", "at": [41, 5] }
           ],
           "annotations": [
             { "type": "text", "at": [0, -104], "text": "場地縮成半徑 16m", "color": "red" },
@@ -1457,21 +1480,17 @@ window.RAID_DATA['uwu'] = {
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 80, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [-57.5, 18.5], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-57.5, 18.5] },
-            { "type": "circle", "at": [-27, -18], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-27, -18] },
-            { "type": "circle", "at": [-27, 18], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-27, 18] },
-            { "type": "circle", "at": [-57.5, -55], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-57.5, -55] },
-            { "type": "circle", "at": [-57.5, 55], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-57.5, 55] },
-            { "type": "circle", "at": [80, 0], "r": 22.75, "color": "generic" },
-            { "type": "xmark", "at": [-41.4, 31.4] },
-            { "type": "xmark", "at": [-29.4, 31.4] },
-            { "type": "xmark", "at": [-40.4, 41.4] },
-            { "type": "xmark", "at": [-29.4, 41.4] }
+            { "type": "circle", "at": [-57.5, 18.5], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-57.5, 18.5] },
+            { "type": "circle", "at": [-27, -18], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-27, -18] },
+            { "type": "circle", "at": [-27, 18], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-27, 18] },
+            { "type": "circle", "at": [-57.5, -55], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-57.5, -55] },
+            { "type": "circle", "at": [-57.5, 55], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-57.5, 55] },
+            { "type": "circle", "at": [80, 0], "r": 22.75, "color": "generic" }
           ],
           "annotations": [
             { "type": "text", "at": [-57.5, -20.5], "text": "缺角", "color": "blue" },
@@ -1489,20 +1508,16 @@ window.RAID_DATA['uwu'] = {
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 80, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [-57.5, 18.5], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-57.5, 18.5] },
-            { "type": "circle", "at": [-27, -18], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-27, -18] },
-            { "type": "circle", "at": [-27, 18], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-27, 18] },
-            { "type": "circle", "at": [-57.5, -55], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-57.5, -55] },
-            { "type": "circle", "at": [-57.5, 55], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-57.5, 55] },
-            { "type": "xmark", "at": [-41.4, 31.4] },
-            { "type": "xmark", "at": [-29.4, 31.4] },
-            { "type": "xmark", "at": [-40.4, 41.4] },
-            { "type": "xmark", "at": [-29.4, 41.4] }
+            { "type": "circle", "at": [-57.5, 18.5], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-57.5, 18.5] },
+            { "type": "circle", "at": [-27, -18], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-27, -18] },
+            { "type": "circle", "at": [-27, 18], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-27, 18] },
+            { "type": "circle", "at": [-57.5, -55], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-57.5, -55] },
+            { "type": "circle", "at": [-57.5, 55], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-57.5, 55] }
           ],
           "annotations": [
             { "type": "arrow", "from": [57.5, -2.9], "to": [-52.5, -16.5], "color": "white" },
@@ -1520,17 +1535,13 @@ window.RAID_DATA['uwu'] = {
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 80, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [-61.5, -18.5], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-61.5, -18.5] },
+            { "type": "circle", "at": [-61.5, -18.5], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-61.5, -18.5] },
             { "type": "rect", "at": [80, 0], "angle": 292.5, "lengthFront": 222.75, "lengthBack": 22.75, "halfWidth": 15, "color": "ice" },
             { "type": "rect", "at": [80, 0], "angle": 337.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
             { "type": "rect", "at": [80, 0], "angle": 247.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
             { "type": "rect", "at": [80, 0], "angle": 67.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [80, 0], "angle": 157.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "xmark", "at": [-41.4, 31.4] },
-            { "type": "xmark", "at": [-29.4, 31.4] },
-            { "type": "xmark", "at": [-40.4, 41.4] },
-            { "type": "xmark", "at": [-29.4, 41.4] }
+            { "type": "rect", "at": [80, 0], "angle": 157.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" }
           ],
           "markers": [
             { "type": "target", "at": "H1" },
@@ -1552,8 +1563,8 @@ window.RAID_DATA['uwu'] = {
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 80, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [-61.5, -18.5], "r": 31.5, "color": "death" },
-            { "type": "xmark", "at": [-61.5, -18.5] },
+            { "type": "circle", "at": [-61.5, -18.5], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [-61.5, -18.5] },
             { "type": "rect", "at": [80, 0], "angle": 270, "lengthFront": 222.75, "lengthBack": 22.75, "halfWidth": 15, "color": "ice" },
             { "type": "rect", "at": [80, 0], "angle": 315, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
             { "type": "rect", "at": [80, 0], "angle": 225, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
@@ -1561,11 +1572,7 @@ window.RAID_DATA['uwu'] = {
             { "type": "rect", "at": [80, 0], "angle": 135, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
             { "type": "circle", "at": [-31, -14.5], "r": 11, "color": "generic" },
             { "type": "circle", "at": [4, 0], "r": 11, "color": "generic" },
-            { "type": "circle", "at": [32.5, 0], "r": 11, "color": "generic" },
-            { "type": "xmark", "at": [-41.4, 31.4] },
-            { "type": "xmark", "at": [-29.4, 31.4] },
-            { "type": "xmark", "at": [-40.4, 41.4] },
-            { "type": "xmark", "at": [-29.4, 41.4] }
+            { "type": "circle", "at": [32.5, 0], "r": 11, "color": "generic" }
           ],
           "annotations": [
             { "type": "text", "at": [0, -104], "text": "岩牢內無敵 · MT 遠離中央", "color": "yellow" }
@@ -1581,14 +1588,10 @@ window.RAID_DATA['uwu'] = {
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 80, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [-61.5, -18.5], "r": 31.5, "color": "death" },
+            { "type": "circle", "at": [-61.5, -18.5], "r": 31.5, "color": "fire" },
             { "type": "circle", "at": [-31, -14.5], "r": 30, "color": "void" },
             { "type": "circle", "at": [4, 0], "r": 30, "color": "void" },
-            { "type": "circle", "at": [32.5, 0], "r": 30, "color": "void" },
-            { "type": "xmark", "at": [-41.4, 31.4] },
-            { "type": "xmark", "at": [-29.4, 31.4] },
-            { "type": "xmark", "at": [-40.4, 41.4] },
-            { "type": "xmark", "at": [-29.4, 41.4] }
+            { "type": "circle", "at": [32.5, 0], "r": 30, "color": "void" }
           ],
           "annotations": [
             { "type": "arrow", "from": [-23, -11.5], "to": [-4, -1], "color": "white", "dash": true },
@@ -1604,7 +1607,7 @@ window.RAID_DATA['uwu'] = {
       "id": "uwu-p3-awake",
       "phase": "P3 泰坦",
       "title": "復活 → 大地之重 → 覺醒 · 覺醒地裂斬",
-      "body": "### 剛復活的人\n- 起來之後**馬上有汙泥的即死範圍與連續全體攻擊** → 在補到足夠的血之前,**維持復活無敵、往遠離汙泥的方向走,先不要攻擊**\n- 法系若是召喚士,即刻詠唱不夠用,激震期間要**在旁邊讀條拉人**\n### 大地之重 ×2\n- 全員集合,像**畫圓**一樣繞著泰坦把兩輪重力排好\n### 覺醒\n- 汙泥有讓泰坦踩到的話,**以太供應會累積,在這裡覺醒**\n### 覺醒地裂斬(二連)\n- 第 1 發照常 5 道;約 **2 秒後**追加第 2 發 5 道,方向是第 1 發主線的 **±22.5°、±90°、正後方**,**沒有預兆**\n- **兩發的範圍不重疊** → **第 1 發的範圍就是第 2 發的安全區**:第 1 發一結束就**衝進剛才的直線裡**\n> 如果泰坦這時**沒有覺醒**,就只有第 1 發,但後面的流程照舊,等於少了一次以太供應 —— 拿不到突破極限。",
+      "body": "### 剛復活的人\n- 起來之後**馬上有汙泥的即死範圍與連續全體攻擊** → 在補到足夠的血之前,**維持復活無敵、往遠離汙泥的方向走,先不要攻擊**\n- 法系若是召喚士,即刻詠唱不夠用,激震期間要**在旁邊讀條拉人**\n### 大地之重 ×2\n- **本隊做法**:地上的**汙泥還在**,所以在泰坦旁邊排。站在**從中央面向泰坦時的左側**丟第 1 輪 → **穿過泰坦到對面**丟第 2 輪 → **再回到左側**\n- **全員(含 {{tank:MT}})站在一起**,讓重力圈盡量疊在同一點 —— 散開的話,有人會來不及跑出範圍\n### 覺醒\n- 汙泥有讓泰坦踩到的話,**以太供應會累積,在這裡覺醒**\n### 覺醒地裂斬(二連)\n- 第 1 發照常 5 道;約 **2 秒後**追加第 2 發 5 道,方向是第 1 發主線的 **±22.5°、±90°、正後方**,**沒有預兆**\n- **兩發的範圍不重疊** → **第 1 發的範圍就是第 2 發的安全區**:第 1 發一結束就**衝進剛才的直線裡**\n> 如果泰坦這時**沒有覺醒**,就只有第 1 發,但後面的流程照舊,等於少了一次以太供應 —— 拿不到突破極限。",
       "roleNotes": {
         "MT": "激震期間把泰坦帶到汙泥上(汙泥延伸到牠腳下即可)。覺醒地裂斬時站在**第 1、2 發都打不到的縫隙**,或照口訣跟著衝回第 1 發的位置。",
         "ST": "剛復活:**先不要攻擊**,維持無敵遠離汙泥,等血補滿再接手。",
@@ -1635,42 +1638,48 @@ window.RAID_DATA['uwu'] = {
           ]
         },
         {
-          "caption": "大地之重 ×2:全員集合,像畫圓一樣繞著泰坦把兩輪重力排好。泰坦若有踩到汙泥,在這裡覺醒",
-          "boss": { "x": 80, "y": 0, "facing": 300 },
+          "caption": "大地之重 ×2:地上的汙泥還在,所以在泰坦旁邊排。全員(含 MT)站在一起,讓重力圈盡量疊在同一點 —— 散開的話,有人會來不及跑出範圍。站在從中央面向泰坦時的左側(本例:北)丟第 1 輪 → 一起穿過泰坦到對面丟第 2 輪 → 再回到左側。泰坦若有踩到汙泥,在這裡覺醒",
+          "boss": { "x": 80, "y": 0, "facing": 324.8 },
           "actors": {
-            "MT": { "x": 28, "y": -10 },
-            "ST": { "x": -16, "y": -50 },
-            "H1": { "x": -5, "y": -43 }, "H2": { "x": -18, "y": -58 },
-            "D1": { "x": -4, "y": -50 }, "D2": { "x": -10, "y": -57 },
-            "D3": { "x": -14, "y": -44 }, "D4": { "x": -1, "y": -56 }
+            "MT": { "x": 59, "y": -31 },
+            "ST": { "x": 54.8, "y": -33.6 },
+            "H1": { "x": 57, "y": -32.4 }, "H2": { "x": 54.4, "y": -35 },
+            "D1": { "x": 57.2, "y": -33.6 }, "D2": { "x": 56, "y": -35 },
+            "D3": { "x": 55.2, "y": -32.4 }, "D4": { "x": 57.6, "y": -35 }
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 80, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [12, -22], "r": 30, "color": "fire" },
-            { "type": "circle", "at": [-10, -52], "r": 30, "color": "fire" }
+            { "type": "circle", "at": [-31, -14.5], "r": 30, "color": "void" },
+            { "type": "circle", "at": [4, 0], "r": 30, "color": "void" },
+            { "type": "circle", "at": [32.5, 0], "r": 30, "color": "void" },
+            { "type": "circle", "at": [56, -34], "r": 30, "color": "fire" },
+            { "type": "circle", "at": [56, 34], "r": 30, "color": "fire" }
           ],
           "annotations": [
-            { "type": "arcArrow", "radius": 64, "startAngle": 330, "endAngle": 300, "dir": "ccw", "color": "white" },
-            { "type": "text", "at": [0, -104], "text": "畫圓排重力 → 覺醒", "color": "yellow" }
+            { "type": "arrow", "from": [64, -20], "to": [64, 22], "color": "white" },
+            { "type": "arrow", "from": [50, 22], "to": [50, -20], "color": "white", "dash": true },
+            { "type": "text", "at": [34, -44], "text": "①", "color": "white" },
+            { "type": "text", "at": [34, 48], "text": "②", "color": "white" },
+            { "type": "text", "at": [0, -104], "text": "左側 ① → 穿過泰坦 ② → 回左側", "color": "yellow" }
           ]
         },
         {
           "caption": "覺醒地裂斬第 1 發:朝一仇以外隨機一人放主線,加 ±45°、±135° 共 5 道。全隊先閃到直線之間的縫隙",
-          "boss": { "x": 80, "y": 0, "facing": 300 },
+          "boss": { "x": 80, "y": 0, "facing": 324.8 },
           "actors": {
-            "MT": { "x": 38, "y": 36 },
-            "ST": { "x": 20.4, "y": -66.8 },
-            "H1": { "x": 27, "y": -63.2 }, "H2": { "x": 19.2, "y": -71 },
-            "D1": { "x": 27.6, "y": -66.8 }, "D2": { "x": 24, "y": -71 },
-            "D3": { "x": 21.6, "y": -63.2 }, "D4": { "x": 28.8, "y": -71 }
+            "MT": { "x": 54, "y": 42 },
+            "ST": { "x": 6.4, "y": -56.8 },
+            "H1": { "x": 13, "y": -53.2 }, "H2": { "x": 5.2, "y": -61 },
+            "D1": { "x": 13.6, "y": -56.8 }, "D2": { "x": 10, "y": -61 },
+            "D3": { "x": 7.6, "y": -53.2 }, "D4": { "x": 14.8, "y": -61 }
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 80, "rOuter": 100, "color": "death" },
-            { "type": "rect", "at": [80, 0], "angle": 300, "lengthFront": 222.75, "lengthBack": 22.75, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [80, 0], "angle": 345, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [80, 0], "angle": 255, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [80, 0], "angle": 75, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [80, 0], "angle": 165, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" }
+            { "type": "rect", "at": [80, 0], "angle": 324.8, "lengthFront": 222.75, "lengthBack": 22.75, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [80, 0], "angle": 9.8, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [80, 0], "angle": 279.8, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [80, 0], "angle": 99.8, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [80, 0], "angle": 189.8, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" }
           ],
           "annotations": [
             { "type": "text", "at": [0, -104], "text": "第 1 發:5 道直線", "color": "yellow" }
@@ -1678,24 +1687,24 @@ window.RAID_DATA['uwu'] = {
         },
         {
           "caption": "約 2 秒後無預兆的第 2 發:主線的 ±22.5°、±90°、正後方 → 剛才的縫隙會被打。第 1 發一結束就衝進第 1 發的直線裡 —— 兩發的範圍不重疊",
-          "boss": { "x": 80, "y": 0, "facing": 300 },
+          "boss": { "x": 80, "y": 0, "facing": 324.8 },
           "actors": {
-            "MT": { "x": 38, "y": 36 },
-            "ST": { "x": 4.4, "y": -52.8 },
-            "H1": { "x": 11, "y": -49.2 }, "H2": { "x": 3.2, "y": -57 },
-            "D1": { "x": 11.6, "y": -52.8 }, "D2": { "x": 8, "y": -57 },
-            "D3": { "x": 5.6, "y": -49.2 }, "D4": { "x": 12.8, "y": -57 }
+            "MT": { "x": 54, "y": 42 },
+            "ST": { "x": 10.4, "y": -68.8 },
+            "H1": { "x": 17, "y": -65.2 }, "H2": { "x": 9.2, "y": -73 },
+            "D1": { "x": 17.6, "y": -68.8 }, "D2": { "x": 14, "y": -73 },
+            "D3": { "x": 11.6, "y": -65.2 }, "D4": { "x": 18.8, "y": -73 }
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 80, "rOuter": 100, "color": "death" },
-            { "type": "rect", "at": [80, 0], "angle": 322.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
-            { "type": "rect", "at": [80, 0], "angle": 277.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
-            { "type": "rect", "at": [80, 0], "angle": 30, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
-            { "type": "rect", "at": [80, 0], "angle": 210, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
-            { "type": "rect", "at": [80, 0], "angle": 120, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" }
+            { "type": "rect", "at": [80, 0], "angle": 347.3, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
+            { "type": "rect", "at": [80, 0], "angle": 302.3, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
+            { "type": "rect", "at": [80, 0], "angle": 54.8, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
+            { "type": "rect", "at": [80, 0], "angle": 234.8, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
+            { "type": "rect", "at": [80, 0], "angle": 144.8, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" }
           ],
           "annotations": [
-            { "type": "arrow", "from": [18, -60], "to": [14, -60], "color": "white" },
+            { "type": "arrow", "from": [4, -50], "to": [20, -76], "color": "white" },
             { "type": "text", "at": [0, -104], "text": "第 2 發 → 衝回第 1 發的位置", "color": "red" }
           ]
         }
@@ -1866,10 +1875,14 @@ window.RAID_DATA['uwu'] = {
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 60, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [16, 16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [-16, 16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [16, -16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [-16, -16], "r": 31.5, "color": "death" },
+            { "type": "circle", "at": [16, 16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [-16, 16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [16, -16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [-16, -16], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [16, 16] },
+            { "type": "rock", "at": [-16, 16] },
+            { "type": "rock", "at": [16, -16] },
+            { "type": "rock", "at": [-16, -16] },
             { "type": "circle", "at": [-52, 0], "r": 30, "color": "fire" }
           ],
           "annotations": [
@@ -1890,10 +1903,14 @@ window.RAID_DATA['uwu'] = {
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 60, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [16, 16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [-16, 16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [16, -16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [-16, -16], "r": 31.5, "color": "death" },
+            { "type": "circle", "at": [16, 16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [-16, 16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [16, -16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [-16, -16], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [16, 16] },
+            { "type": "rock", "at": [-16, 16] },
+            { "type": "rock", "at": [16, -16] },
+            { "type": "rock", "at": [-16, -16] },
             { "type": "circle", "at": [-52, 0], "r": 30, "color": "fire" },
             { "type": "circle", "at": [-44, -31], "r": 30, "color": "fire" },
             { "type": "circle", "at": [-46, 39], "r": 30, "color": "fire" }
@@ -1919,10 +1936,14 @@ window.RAID_DATA['uwu'] = {
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 60, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [16, 16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [-16, 16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [16, -16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [-16, -16], "r": 31.5, "color": "death" },
+            { "type": "circle", "at": [16, 16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [-16, 16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [16, -16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [-16, -16], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [16, 16] },
+            { "type": "rock", "at": [-16, 16] },
+            { "type": "rock", "at": [16, -16] },
+            { "type": "rock", "at": [-16, -16] },
             { "type": "rect", "at": [-8, 31], "angle": 359, "lengthFront": 222.75, "lengthBack": 22.75, "halfWidth": 15, "color": "ice" },
             { "type": "rect", "at": [-8, 31], "angle": 44, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
             { "type": "rect", "at": [-8, 31], "angle": 314, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
@@ -1945,10 +1966,14 @@ window.RAID_DATA['uwu'] = {
           },
           "aoes": [
             { "type": "donut", "at": [0, 0], "rInner": 60, "rOuter": 100, "color": "death" },
-            { "type": "circle", "at": [16, 16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [-16, 16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [16, -16], "r": 31.5, "color": "death" },
-            { "type": "circle", "at": [-16, -16], "r": 31.5, "color": "death" },
+            { "type": "circle", "at": [16, 16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [-16, 16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [16, -16], "r": 31.5, "color": "fire" },
+            { "type": "circle", "at": [-16, -16], "r": 31.5, "color": "fire" },
+            { "type": "rock", "at": [16, 16] },
+            { "type": "rock", "at": [-16, 16] },
+            { "type": "rock", "at": [16, -16] },
+            { "type": "rock", "at": [-16, -16] },
             { "type": "rect", "at": [-8, 31], "angle": 21.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
             { "type": "rect", "at": [-8, 31], "angle": 336.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },
             { "type": "rect", "at": [-8, 31], "angle": 89, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "death" },

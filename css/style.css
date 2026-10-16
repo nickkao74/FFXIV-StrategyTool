@@ -389,6 +389,7 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
 }
 
 /* 禁止站位 */
+.rock { fill: #f08a24; stroke: #5a2c08; stroke-width: 1.4; stroke-linejoin: round; }
 .xmark path { stroke: #ff3b30; stroke-width: 2.6; stroke-linecap: round; fill: none; }
 
 /* 場外「詩」文字列 */

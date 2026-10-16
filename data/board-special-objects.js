@@ -16,4 +16,7 @@ window.BOARD_SPECIAL_OBJECTS = [
   { kind: 'feather', label: '羽毛', icon: '❋', raids: ['hells-kier-ex'] },
   { kind: 'bird', label: '火焰鳥', icon: '➤', raids: ['hells-kier-ex'] },
   { kind: 'xmark', label: '禁止標記', icon: '✕', raids: ['hells-kier-ex'] },
+
+  // 絕神兵
+  { kind: 'rock', label: '石頭', icon: '⏢', raids: ['uwu', 'uwu-lab'] },
 ];

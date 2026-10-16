@@ -31,6 +31,8 @@ const OBJECT_DEFAULTS = {
   'feather': { size: 'small', r: 28, cleared: 0 },
   'bird': { alive: 0 },
   'xmark': { size: 7 },
+  // 絕神兵
+  'rock': { size: 7 },
   'poem-strip': { text: '十之水向十之水向', side: 'east' },
 };
 
@@ -113,16 +115,18 @@ function renderBoardObject(obj, state) {
     case 'arrow-arc': {
       const dir = obj.dir === 'ccw' ? -1 : 1;
       const sweep = ((obj.end - obj.start) * dir % 360 + 360) % 360 || 360;
-      const pts = [];
-      const step = 6;
-      for (let a = 0; a <= sweep; a += step) {
-        const pt = boardDegToPoint(obj.start + a * dir, obj.radius);
-        pts.push(`${pt.x.toFixed(2)},${pt.y.toFixed(2)}`);
+      // 用 SVG 的 A 弧線指令畫,箭頭才會沿著終點的切線方向(舊版 6° 折線在弧長為
+      // 6° 倍數時最後一段長度為 0,箭頭會歪掉)。一個 A 指令最多 180°,所以拆段。
+      const r = obj.radius;
+      const n = Math.ceil(sweep / 180);
+      const s0 = boardDegToPoint(obj.start, r);
+      let d = `M${s0.x.toFixed(2)},${s0.y.toFixed(2)}`;
+      for (let i = 1; i <= n; i++) {
+        const q = boardDegToPoint(obj.start + (sweep * i / n) * dir, r);
+        d += ` A${r},${r} 0 0,${dir > 0 ? 1 : 0} ${q.x.toFixed(2)},${q.y.toFixed(2)}`;
       }
-      const last = boardDegToPoint(obj.start + sweep * dir, obj.radius);
-      pts.push(`${last.x.toFixed(2)},${last.y.toFixed(2)}`);
       return bo('path', {
-        d: 'M' + pts.join(' L'),
+        d,
         class: `bobj ann-arc ann-${obj.color}`, 'marker-end': 'url(#board-arrowhead)',
       });
     }
@@ -189,6 +193,17 @@ function renderBoardObject(obj, state) {
       bo('path', {
         class: 'bird-body',
         d: `M${p.x - 7},${p.y + 4} L${p.x},${p.y - 6} L${p.x + 7},${p.y + 4} L${p.x},${p.y + 1} Z`,
+      }, g);
+      return g;
+    }
+    // UWU 泰坦的爆破岩石:橘色梯形(爆炸範圍另放圓形地毯)
+    case 'rock': {
+      const s = obj.size || 7;
+      const g = bo('g', { class: 'bobj' });
+      bo('path', {
+        class: 'rock',
+        d: `M${p.x - s * 0.55},${p.y - s * 0.7} L${p.x + s * 0.55},${p.y - s * 0.7} ` +
+           `L${p.x + s},${p.y + s * 0.7} L${p.x - s},${p.y + s * 0.7} Z`,
       }, g);
       return g;
     }
