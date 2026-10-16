@@ -620,12 +620,12 @@ check(D['id'], '3/first', tmp, arena_r=SZ['arena1'], hit_ok=tuple(r for r in grp
 
 # ─── E. 第二次大地粉碎 → 單岩牢 → 覺醒地裂斬 → 激震 ×6 ──
 TITAN_A = [0, -TITAN_JUMP]
-TITAN_E = [0, -76]
+TITAN_E = [0, -34]            # 泰坦從落點走向中央,停在打得到正中央坦克的位置(約字母標記處)
 run_s = cluster([0, 44], [0, 30], spread=3)
-gath = cluster([2, 10], [0, -50])
+gath = cluster([2, 12], [0, -8], spread=2)
 gath['H1'] = {'x': -24, 'y': 14}
 phiE = bearing(TITAN_E, [2, 10])
-GE1, GE2, MTE = ls_spots(TITAN_E, phiE, SZ['arena2'], near=at(TITAN_E, phiE - 22.5, 80), mt_near=[-30, -46])
+GE1, GE2, MTE = ls_spots(TITAN_E, phiE, SZ['arena2'], near=at(TITAN_E, phiE - 22.5, 70), mt_near=[-30, 10])
 e_first = cluster(GE1, MTE, spread=3)
 e_second = cluster(GE2, MTE, spread=3)
 E = S(
@@ -635,7 +635,7 @@ E = S(
         "### 大地粉碎(第二次跳躍)\n"
         "- **{{tank:MT}} 盡量把泰坦拉到正中央** —— 這次場地會**縮到半徑 12m**,轉向判斷**不能有任何妥協**\n"
         "- 判斷方式同第一次:看轉向 → 往反方向退\n"
-        "- 落地後 {{tank:MT}} 把泰坦**稍微往外拉一點**,其他人到**中央**集合\n"
+        "- 落地後**全員(含 {{tank:MT}})在正中央集合**。泰坦會從落地的場邊**往中間走**,直到打得到正中央的坦克 —— 大約停在**字母標記**的位置\n"
         "### 單岩牢\n"
         "- **點名 1 人**(影片中是 {{healer:H1}}),約 5 秒後拘束\n"
         "- 這次**直接用技能把岩牢打爆**就好 —— 用技能打壞不會爆炸、也不會留汙泥\n"
@@ -648,7 +648,7 @@ E = S(
         "- 這段期間 **{{tank:MT}} 移動到外周**,準備接第 2 組死刑"
     ),
     roleNotes={
-        'MT': '跳之前**把泰坦拉到正中央**(場地會縮到 12m)。落地後稍微往外拉,**別拉得離岩牢太近**。激震期間移到外周準備第 2 組死刑。',
+        'MT': '跳之前**把泰坦拉到正中央**(場地會縮到 12m)。落地後**站在正中央**等泰坦走過來(約停在字母標記處),**別讓泰坦離岩牢太近**。激震期間移到外周準備第 2 組死刑。',
         'ST': '中央集合打岩牢;激震時給 MT 減傷,準備好接第 2/3 組死刑的分工。',
         'H1': '影片中這次岩牢點到你;被關時是無敵的,脫困後馬上躲地裂斬。',
         'H2': '激震 ×6 的主要治療,配合減傷。',
@@ -674,12 +674,15 @@ E = S(
             'annotations': [{'type': 'text', 'at': [0, -104], 'text': '場地縮成半徑 12m', 'color': 'red'}],
         },
         {
-            'caption': 'MT 把泰坦**稍微往外拉**,其他人到**中央集合**。**單岩牢**點名 1 人(影片中是 H1)→ **直接用技能打爆**。MT 別把泰坦拉得離岩牢太近',
+            'caption': '全員(含 MT)在正中央集合,泰坦從落地的場邊往中間走,直到打得到正中央的坦克 —— 大約停在字母標記的位置。單岩牢點名 1 人(影片中是 H1)→ 直接用技能打爆。別讓泰坦離岩牢太近',
             'boss': {'x': TITAN_E[0], 'y': TITAN_E[1], 'facing': 0},
             'actors': gath,
             'aoes': [shrink(SZ['arena2'])] + gaol_marks([[-24, 14]]),
             'markers': [{'type': 'target', 'at': 'H1'}],
-            'annotations': [{'type': 'text', 'at': [0, -104], 'text': '單岩牢:直接打爆', 'color': 'yellow'}],
+            'annotations': [
+                {'type': 'arrow', 'from': [0, -76], 'to': [0, TITAN_E[1] - 14], 'color': 'red', 'dash': True},
+                {'type': 'text', 'at': [0, -104], 'text': '泰坦走向中央 · 單岩牢直接打爆', 'color': 'yellow'},
+            ],
         },
         {
             'caption': '**覺醒地裂斬第 1 發** → 閃到直線之間的縫隙',
@@ -755,7 +758,7 @@ F = S(
         "- **狂暴**:泰坦**變成不可選中**後讀**大地之怒** → 滅團。即使前面自滅少了 4 人,DPS 也完全足夠\n"
         "### 討伐與拾取\n"
         "- 打倒泰坦後,**近戰({{dps:D1}})馬上趕去撿突破極限** —— 三隻蠻神的最後一個(迦樓羅 → H2、伊弗利特 → D4、泰坦 → D1)\n"
-        "- 接著有**從中央來的距離衰減**:影片的做法是**全員先在中央集合、把 HP 補滿**就沒問題\n"
+        "- 泰坦倒下後**縮場解除**,場地回到 20m;接著場地邊緣的 **4 個斜角(45° / 135° / 225° / 315°)**各落下一發**距離衰減** → **全員到正中央集合**、把 HP 補滿\n"
         "- 之後進入 **LB 階段**"
     ),
     roleNotes={
@@ -834,12 +837,21 @@ F = S(
             'annotations': [{'type': 'text', 'at': [0, -104], 'text': '第 3 組死刑 · 爆發提早開', 'color': 'yellow'}],
         },
         {
-            'caption': '打倒泰坦 → **D1 馬上去撿突破極限**(第三個,集滿)。接著有**從中央來的距離衰減**,影片的做法是**全員先到中央集合、把 HP 補滿**,然後進入 LB 階段',
+            'caption': '打倒泰坦 → D1 馬上去撿突破極限(第三個,集滿)。泰坦的縮場同時解除,場地回到半徑 20m',
             'boss': None,
-            'actors': cluster([0, 4], [-8, -8], spread=4) | {'D1': {'x': TITAN_G[0], 'y': TITAN_G[1]}},
-            'aoes': [shrink(SZ['arena2'])],
+            'actors': cluster([-20, 30], [-8, 50], spread=3) | {'D1': {'x': TITAN_G[0], 'y': TITAN_G[1]}},
             'markers': [{'type': 'target', 'at': 'D1'}],
-            'annotations': [{'type': 'text', 'at': [0, -104], 'text': 'D1 撿泰坦的突破極限', 'color': 'yellow'}],
+            'annotations': [{'type': 'text', 'at': [0, -104], 'text': 'D1 撿泰坦的突破極限 · 縮場解除', 'color': 'yellow'}],
+        },
+        {
+            'caption': '場地邊緣的 4 個斜角(45° / 135° / 225° / 315°)各落下一發距離衰減 → 全員到正中央集合、把 HP 補滿,然後進入 LB 階段',
+            'boss': None,
+            'actors': cluster([0, 2], [-6, -6], spread=3),
+            'aoes': [{'type': 'circle', 'at': at(CENTER, a, 92), 'r': 60, 'color': 'generic'} for a in (45, 135, 225, 315)],
+            'annotations': [
+                {'type': 'text', 'at': [0, -104], 'text': '四角距離衰減 → 正中央集合', 'color': 'yellow'},
+                {'type': 'text', 'at': [0, 104], 'text': '衰減範圍為示意', 'color': 'yellow'},
+            ],
         },
     ],
 )
@@ -853,6 +865,7 @@ check(F['id'], '4/first', tmp, arena_r=SZ['arena2'], hit_ok=tuple(r for r in f_l
 tmp = dict(F['steps'][3]); tmp['aoes'] = landslide(TITAN_F, phiF, second=True)
 check(F['id'], '3/second', tmp, arena_r=SZ['arena2'], hit_ok=tuple(r for r in f_ls1 if r != 'MT'))
 check(F['id'], 5, F['steps'][5], arena_r=SZ['arena2'], hit_ok=('MT',))
+check(F['id'], 7, F['steps'][7])
 
 # ─── 速查卡 ───────────────────────────────
 CARDS = [
