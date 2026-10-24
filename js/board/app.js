@@ -68,6 +68,11 @@ const PROPERTY_SCHEMAS = {
   'bird': [{ key: 'alive', label: '狀態', type: 'select', options: [[0, '屍體'], [1, '已復活']] }],
   'xmark': [{ key: 'size', label: '大小', type: 'number', min: 3, max: 20 }],
   'rock': [{ key: 'size', label: '大小', type: 'number', min: 3, max: 20 }],
+  'enemy': [
+    { key: 'label', label: '文字', type: 'text' },
+    { key: 'tone', label: '配色', type: 'select', options: [['wind', '風(綠)'], ['fire', '火(紅)'], ['earth', '土(褐)'], ['ultima', '神兵(紫)'], ['neutral', '灰']] },
+    { key: 'facing', label: '面向(-1 不畫)', type: 'number', min: -1, max: 359 },
+  ],
   'poem-strip': [
     { key: 'text', label: '文字(依爆炸序)', type: 'text' },
     { key: 'side', label: '位置', type: 'select', options: [['east', '東側'], ['west', '西側']] },
@@ -97,12 +102,13 @@ const OBJECT_LABELS = {
   'knockback': '擊退', 'arrow-line': '直線箭頭', 'arrow-arc': '弧形箭頭', 'tether': '連線',
   'blackhole': '黑洞', 'tentacle': '觸手',
   'quadrant': '假名地板', 'tower': '塔', 'feather': '羽毛', 'bird': '火焰鳥',
-  'xmark': '禁止標記', 'poem-strip': '詩文字列', 'rock': '石頭',
+  'xmark': '禁止標記', 'poem-strip': '詩文字列', 'rock': '石頭', 'enemy': '敵人',
   'marker': { share: '分攤標記', triangle: '三角標記', target: '目標標記', death: '死刑標記', forbid: '禁止標記', text: '文字標記' },
 };
 function objectLabel(o) {
   if (o.kind === 'marker') return OBJECT_LABELS.marker[o.markerType] || '標註';
   if (o.kind === 'tentacle') return `觸手 ${o.label || ''}`.trim();
+  if (o.kind === 'enemy') return `敵人 ${o.label || ''}`.trim();
   return OBJECT_LABELS[o.kind] || o.kind;
 }
 
@@ -112,7 +118,7 @@ const OBJECT_GROUPS = [
   { id: 'arrow', title: '箭頭', match: (o) => ['arrow-line', 'arrow-arc'].includes(o.kind) },
   { id: 'tether', title: '連線', match: (o) => o.kind === 'tether' },
   { id: 'marker', title: '標註', match: (o) => o.kind === 'marker' },
-  { id: 'special', title: '副本專屬', match: (o) => ['blackhole', 'tentacle', 'quadrant', 'tower', 'feather', 'bird', 'xmark', 'poem-strip', 'rock'].includes(o.kind) },
+  { id: 'special', title: '副本專屬', match: (o) => ['blackhole', 'tentacle', 'quadrant', 'tower', 'feather', 'bird', 'xmark', 'poem-strip', 'rock', 'enemy'].includes(o.kind) },
 ];
 
 async function boardMain() {

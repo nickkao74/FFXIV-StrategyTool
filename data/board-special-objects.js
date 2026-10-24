@@ -19,4 +19,5 @@ window.BOARD_SPECIAL_OBJECTS = [
 
   // 絕神兵
   { kind: 'rock', label: '石頭', icon: '⏢', raids: ['uwu', 'uwu-lab'] },
+  { kind: 'enemy', label: '敵人', icon: '◉', raids: ['uwu', 'uwu-lab'] },
 ];

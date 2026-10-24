@@ -319,6 +319,25 @@ class Arena {
         }, layer);
         break;
       }
+      // 場上的其他敵人(UWU P4 同時出現的蠻神 / 究極神兵分身)。
+      // tone 決定配色,facing 有給才畫面向三角;主要 BOSS 仍用 step.boss。
+      case 'enemy': {
+        const r = aoe.r || 9;
+        const g = el('g', { class: `enemy enemy-${aoe.tone || 'neutral'}` }, layer);
+        if (typeof aoe.facing === 'number') {
+          el('path', {
+            class: 'enemy-facing',
+            d: `M0,${-r - 9} L${r * 0.6},${-r + 1} L${-r * 0.6},${-r + 1} Z`,
+            transform: `translate(${p.x} ${p.y}) rotate(${aoe.facing})`,
+          }, g);
+        }
+        el('circle', { cx: p.x, cy: p.y, r, class: 'enemy-body' }, g);
+        if (aoe.label != null) {
+          const t = el('text', { x: p.x, y: p.y + 0.5, class: 'enemy-label' }, g);
+          t.textContent = aoe.label;
+        }
+        break;
+      }
       // 禁止站位標記
       case 'xmark': {
         const s = aoe.size || 7;
