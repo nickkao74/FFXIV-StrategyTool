@@ -2275,7 +2275,7 @@ window.RAID_DATA['uwu'] = {
       "id": "uwu-p4-predation",
       "phase": "P4 究極神兵",
       "title": "追擊之究極幻想:背對迦樓羅 → 沒有泰坦的正點 → 硬吃十字",
-      "body": "究極神兵讀**追擊之究極幻想**後消失,**三隻蠻神與究極神兵同時出現**,接連放出覺醒後的招式。這是一運的**第一個難關**。\n### 出現位置的規則\n| 誰 | 出現在哪 | 模式 |\n|---|---|---|\n| **迦樓羅** | **中央附近**、剛好在**兩個標記之間** | 4 種 |\n| **伊弗利特** | **斜點**的場邊 | 4 種 |\n| **究極神兵** | **斜點**的場邊(不會和伊弗利特重疊) | 4 種 |\n| **泰坦** | **正點兩側、偏一點點**的位置 | 8 種 |\n\n### 兩波攻擊\n| | 第 1 波 | 第 2 波(約 2 秒後) |\n|---|---|---|\n| 迦樓羅 | **邪輪旋風**(自身周圍 8.7m) | **邪氣龍捲**(7~20m 的環) |\n| 伊弗利特 | **深紅旋風**:穿過場中央的寬直線衝鋒(寬 18m) | **十字**深紅旋風(沿正點方向,寬 10m) |\n| 泰坦 | **地裂斬**:朝面向 + ±45°、±135° 共 5 道 | **覺醒地裂斬**:±22.5°、±90°、180° 再 5 道 |\n| 究極神兵 | — | **青磷放射**:以自己為中心半徑 14m |\n\n泰坦的地裂斬範圍是固定的,剛好會打在**東南西北偏一點點**的位置。\n### 本隊打法:無視十字\n要把兩波全部閃掉需要很極限的走位,這裡還在究極神兵階段的開頭,**不強求**。\n伊弗利特的**十字只要做好團隊減傷,補師和 DPS 都吃得下來** → 把十字當作不存在,安全區就變得很大,機制非常簡單。\n1. **先開好團隊減傷**,在**中央集合**。\n2. 找到**迦樓羅** → **背對牠、看向反方向**。\n3. 往反方向兩側的**正點**中、**沒有泰坦的那一個**走過去(穿過內側的標記**直直往外走**)。\n4. 閃第 1 波的**地裂斬**:往**容易閃的那一側**,**貼著預兆線**極限迴避。\n5. 第 2 波:**究極神兵在附近的話,稍微往反方向偏一點**(圓其實不大,一點點就夠),然後**硬吃十字**。\n### 三個注意事項\n- 往外周走時**穿過標記直直前進**,這樣自然就知道地裂斬該往哪邊躲\n- 地裂斬**貼著預兆線**閃,不要為了躲究極神兵的圓而閃太大步(會撞進別的直線)\n- 吃十字時**盡量靠外周邊緣**\n### 最後:飛羽雨\n- 結束後迦樓羅會放**飛羽雨** → 全員**集中排好**,**一定要聽到迦樓羅的叫聲再移動**\n> 十字也可以完全閃掉,但這段也有**累積 LB 量表**的目的,硬吃比較好。\n> 圖上是一個範例配置:迦樓羅在東北、伊弗利特在西北、究極神兵在東南、泰坦在西偏北。各隻的確切位置是示意,尺寸是 BossMod 的實測值。",
+      "body": "究極神兵讀**追擊之究極幻想**後消失,**三隻蠻神與究極神兵同時出現**,接連放出覺醒後的招式。這是一運的**第一個難關**。\n### 出現位置的規則\n| 誰 | 出現在哪 | 模式 |\n|---|---|---|\n| **迦樓羅** | **中央附近**、剛好在**兩個標記之間** | 4 種 |\n| **伊弗利特** | **斜點**、場地外側 | 4 種 |\n| **究極神兵** | **斜點**、場地外側(不會和伊弗利特重疊) | 4 種 |\n| **泰坦** | **正點兩側、偏一點點**的場邊 | 8 種 |\n\n### 兩波攻擊\n| | 第 1 波 | 第 2 波(約 2 秒後) |\n|---|---|---|\n| 迦樓羅 | **邪輪旋風**(自身周圍 8.7m) | **邪氣龍捲**(7~20m 的環) |\n| 伊弗利特 | **深紅旋風**:穿過場中央的寬直線衝鋒(寬 18m) | **十字**深紅旋風(沿正點方向,寬 10m) |\n| 泰坦 | **地裂斬**:朝面向 + ±45°、±135° 共 5 道 | **覺醒地裂斬**:±22.5°、±90°、180° 再 5 道 |\n| 究極神兵 | — | **青磷放射**:以自己為中心半徑 14m |\n\n泰坦**面向正前方(不是朝中央)**放地裂斬,範圍是固定的:主線沿著自己那個正點的方向、偏一點點穿過場地,±45° 的兩道剛好打在**左右兩個正點偏一點點**的位置。\n### 本隊打法:無視十字\n要把兩波全部閃掉需要很極限的走位,這裡還在究極神兵階段的開頭,**不強求**。\n伊弗利特的**十字只要做好團隊減傷,補師和 DPS 都吃得下來** → 把十字當作不存在,安全區就變得很大,機制非常簡單。\n1. **先開好團隊減傷**,在**中央集合**。\n2. 找到**迦樓羅** → **背對牠、看向反方向**。\n3. 往反方向兩側的**正點**中、**沒有泰坦的那一個**走過去(穿過內側的標記**直直往外走**)。\n4. 閃第 1 波的**地裂斬**:往**容易閃的那一側**,**貼著預兆線**極限迴避。\n5. 第 2 波:**究極神兵在附近的話,稍微往反方向偏一點**(圓其實不大,一點點就夠),然後**硬吃十字**。\n### 三個注意事項\n- 往外周走時**穿過標記直直前進**,這樣自然就知道地裂斬該往哪邊躲\n- 地裂斬**貼著預兆線**閃,不要為了躲究極神兵的圓而閃太大步(會撞進別的直線)\n- 吃十字時**盡量靠外周邊緣**\n### 最後:飛羽雨\n- 結束後迦樓羅會放**飛羽雨** → 全員**集中排好**,**一定要聽到迦樓羅的叫聲再移動**\n> 十字也可以完全閃掉,但這段也有**累積 LB 量表**的目的,硬吃比較好。\n> 圖上是影片的範例配置:迦樓羅與伊弗利特在東南、究極神兵在西北、泰坦在北偏東 → 往西。位置依影片示意圖量測,尺寸是 BossMod 的實測值。",
       "roleNotes": {
         "MT": "讀條時**先把團隊減傷排好**(第 2 波要硬吃十字)。跟大部隊一起走,不用另外處理仇恨。",
         "ST": "跟大部隊一起走;第 2 波前補一個團隊減傷。",
@@ -2294,18 +2294,18 @@ window.RAID_DATA['uwu'] = {
             "D3": { "x": -6, "y": 7.2 }, "D4": { "x": 6, "y": 7.2 }
           },
           "aoes": [
-            { "type": "enemy", "at": [16.6, -16.6], "label": "風", "tone": "wind" },
-            { "type": "enemy", "at": [-67.2, -67.2], "label": "火", "tone": "fire", "facing": 135 },
-            { "type": "enemy", "at": [-92.9, -19.8], "label": "土", "tone": "earth", "facing": 102 },
-            { "type": "enemy", "at": [63.6, 63.6], "label": "神", "tone": "ultima" }
+            { "type": "enemy", "at": [23.7, 23.7], "label": "風", "tone": "wind" },
+            { "type": "enemy", "at": [79.5, 79.5], "label": "火", "tone": "fire", "facing": 315 },
+            { "type": "enemy", "at": [15.6, -98.8], "label": "土", "tone": "earth", "facing": 180 },
+            { "type": "enemy", "at": [-79.5, -79.5], "label": "神", "tone": "ultima" }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "中央集合 · 先開減傷 · 找迦樓羅", "color": "yellow" },
-            { "type": "text", "at": [0, 104], "text": "範例配置;位置為示意", "color": "yellow" }
+            { "type": "text", "at": [0, -113], "text": "中央集合 · 先開減傷 · 找迦樓羅", "color": "yellow" },
+            { "type": "text", "at": [0, 112], "text": "影片的範例配置", "color": "yellow" }
           ]
         },
         {
-          "caption": "背對迦樓羅、看向反方向:兩側的正點是南與西,西邊有泰坦 → 往南走。穿過內側的標記直直往外走",
+          "caption": "背對迦樓羅(東南)、看向反方向:兩側的正點是北與西,北邊有泰坦 → 往西走。穿過內側的標記直直往外走",
           "boss": null,
           "actors": {
             "MT": { "x": 0, "y": 0 },
@@ -2315,98 +2315,98 @@ window.RAID_DATA['uwu'] = {
             "D3": { "x": -6, "y": 7.2 }, "D4": { "x": 6, "y": 7.2 }
           },
           "aoes": [
-            { "type": "enemy", "at": [16.6, -16.6], "label": "風", "tone": "wind" },
-            { "type": "enemy", "at": [-67.2, -67.2], "label": "火", "tone": "fire", "facing": 135 },
-            { "type": "enemy", "at": [-92.9, -19.8], "label": "土", "tone": "earth", "facing": 102 },
-            { "type": "enemy", "at": [63.6, 63.6], "label": "神", "tone": "ultima" }
+            { "type": "enemy", "at": [23.7, 23.7], "label": "風", "tone": "wind" },
+            { "type": "enemy", "at": [79.5, 79.5], "label": "火", "tone": "fire", "facing": 315 },
+            { "type": "enemy", "at": [15.6, -98.8], "label": "土", "tone": "earth", "facing": 180 },
+            { "type": "enemy", "at": [-79.5, -79.5], "label": "神", "tone": "ultima" }
           ],
           "annotations": [
-            { "type": "arrow", "from": [0, 10], "to": [0, 78], "color": "white" },
-            { "type": "arrow", "from": [-8, 8], "to": [-62, 62], "color": "white", "dash": true },
-            { "type": "text", "at": [-56, 18], "text": "泰坦 → 不去", "color": "red" },
-            { "type": "text", "at": [0, -104], "text": "背對迦樓羅 → 沒有泰坦的正點", "color": "yellow" }
+            { "type": "arrow", "from": [-10, 0], "to": [-78, 0], "color": "white" },
+            { "type": "arrow", "from": [0, -12], "to": [0, -66], "color": "white", "dash": true },
+            { "type": "text", "at": [26, -60], "text": "泰坦 → 不去", "color": "red" },
+            { "type": "text", "at": [0, -113], "text": "背對迦樓羅 → 沒有泰坦的正點", "color": "yellow" }
           ]
         },
         {
-          "caption": "第 1 波:迦樓羅的邪輪旋風、伊弗利特穿過中央的深紅旋風、泰坦的地裂斬(5 道)。地裂斬剛好打在南邊偏一點的位置 → 往容易閃的一側、貼著預兆線閃",
+          "caption": "第 1 波:迦樓羅的邪輪旋風、伊弗利特穿過中央的深紅旋風、泰坦的地裂斬(5 道)。泰坦的 45° 線剛好打在西邊偏一點的位置;北側夾在伊弗利特的衝鋒之間太窄 → 往容易閃的南側、貼著預兆線閃",
           "boss": null,
           "actors": {
-            "MT": { "x": 8, "y": 90 },
-            "ST": { "x": 3.5, "y": 91.8 },
-            "H1": { "x": 12.5, "y": 91.8 }, "H2": { "x": 8, "y": 94.5 },
-            "D1": { "x": 4.4, "y": 86.4 }, "D2": { "x": 11.6, "y": 86.4 },
-            "D3": { "x": 3.5, "y": 95.4 }, "D4": { "x": 12.5, "y": 95.4 }
+            "MT": { "x": -80, "y": 30 },
+            "ST": { "x": -84.5, "y": 31.8 },
+            "H1": { "x": -75.5, "y": 31.8 }, "H2": { "x": -80, "y": 34.5 },
+            "D1": { "x": -83.6, "y": 26.4 }, "D2": { "x": -76.4, "y": 26.4 },
+            "D3": { "x": -84.5, "y": 35.4 }, "D4": { "x": -75.5, "y": 35.4 }
           },
           "aoes": [
-            { "type": "circle", "at": [16.6, -16.6], "r": 43.5, "color": "wind" },
-            { "type": "rect", "at": [-67.2, -67.2], "angle": 135, "lengthFront": 245, "lengthBack": 25, "halfWidth": 45, "color": "fire" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 102, "lengthFront": 222.75, "lengthBack": 22.75, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 147, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 57, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 237, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 327, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "enemy", "at": [16.6, -16.6], "label": "風", "tone": "wind" },
-            { "type": "enemy", "at": [-67.2, -67.2], "label": "火", "tone": "fire", "facing": 135 },
-            { "type": "enemy", "at": [-92.9, -19.8], "label": "土", "tone": "earth", "facing": 102 },
-            { "type": "enemy", "at": [63.6, 63.6], "label": "神", "tone": "ultima" }
+            { "type": "circle", "at": [23.7, 23.7], "r": 43.5, "color": "wind" },
+            { "type": "rect", "at": [79.5, 79.5], "angle": 315, "lengthFront": 245, "lengthBack": 25, "halfWidth": 45, "color": "fire" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 180, "lengthFront": 222.75, "lengthBack": 22.75, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 225, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 135, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 315, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 45, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "enemy", "at": [23.7, 23.7], "label": "風", "tone": "wind" },
+            { "type": "enemy", "at": [79.5, 79.5], "label": "火", "tone": "fire", "facing": 315 },
+            { "type": "enemy", "at": [15.6, -98.8], "label": "土", "tone": "earth", "facing": 180 },
+            { "type": "enemy", "at": [-79.5, -79.5], "label": "神", "tone": "ultima" }
           ],
           "annotations": [
-            { "type": "text", "at": [0, -104], "text": "第 1 波 · 貼著地裂斬的預兆線", "color": "yellow" }
+            { "type": "text", "at": [0, -113], "text": "第 1 波 · 貼著地裂斬的預兆線", "color": "yellow" }
           ]
         },
         {
-          "caption": "第 2 波:邪氣龍捲(環)、泰坦的覺醒地裂斬、究極神兵的青磷放射(半徑 14m)、伊弗利特的十字。究極神兵在附近 → 稍微往反方向偏一點,十字靠著外周硬吃",
+          "caption": "第 2 波:邪氣龍捲(環)、泰坦的覺醒地裂斬、究極神兵的青磷放射(半徑 14m)、伊弗利特的十字。這個配置的究極神兵在西北場外,青磷放射打不到這裡,不用偏;十字剛好擦邊,打得到時就靠著外周硬吃",
           "boss": null,
           "actors": {
-            "MT": { "x": -10, "y": 90 },
-            "ST": { "x": -14.5, "y": 91.8 },
-            "H1": { "x": -5.5, "y": 91.8 }, "H2": { "x": -10, "y": 94.5 },
-            "D1": { "x": -13.6, "y": 86.4 }, "D2": { "x": -6.4, "y": 86.4 },
-            "D3": { "x": -14.5, "y": 95.4 }, "D4": { "x": -5.5, "y": 95.4 }
+            "MT": { "x": -84, "y": 30 },
+            "ST": { "x": -88.5, "y": 31.8 },
+            "H1": { "x": -79.5, "y": 31.8 }, "H2": { "x": -84, "y": 34.5 },
+            "D1": { "x": -87.6, "y": 26.4 }, "D2": { "x": -80.4, "y": 26.4 },
+            "D3": { "x": -88.5, "y": 35.4 }, "D4": { "x": -79.5, "y": 35.4 }
           },
           "aoes": [
-            { "type": "donut", "at": [16.6, -16.6], "rInner": 35, "rOuter": 100, "color": "wind" },
-            { "type": "circle", "at": [63.6, 63.6], "r": 70, "color": "void" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 124.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 79.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 192, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 12, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [-92.9, -19.8], "angle": 282, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
-            { "type": "rect", "at": [0, -97.5], "angle": 180, "lengthFront": 222.5, "lengthBack": 2.5, "halfWidth": 25, "color": "fire" },
-            { "type": "rect", "at": [-97.5, 0], "angle": 90, "lengthFront": 222.5, "lengthBack": 2.5, "halfWidth": 25, "color": "fire" },
-            { "type": "enemy", "at": [16.6, -16.6], "label": "風", "tone": "wind" },
-            { "type": "enemy", "at": [-67.2, -67.2], "label": "火", "tone": "fire", "facing": 135 },
-            { "type": "enemy", "at": [-92.9, -19.8], "label": "土", "tone": "earth", "facing": 102 },
-            { "type": "enemy", "at": [63.6, 63.6], "label": "神", "tone": "ultima" }
+            { "type": "donut", "at": [23.7, 23.7], "rInner": 35, "rOuter": 100, "color": "wind" },
+            { "type": "circle", "at": [-79.5, -79.5], "r": 70, "color": "void" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 202.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 157.5, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 270, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 90, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [15.6, -98.8], "angle": 0, "lengthFront": 202.5, "lengthBack": 2.5, "halfWidth": 15, "color": "ice" },
+            { "type": "rect", "at": [0, 97.5], "angle": 0, "lengthFront": 222.5, "lengthBack": 2.5, "halfWidth": 25, "color": "fire" },
+            { "type": "rect", "at": [97.5, 0], "angle": 270, "lengthFront": 222.5, "lengthBack": 2.5, "halfWidth": 25, "color": "fire" },
+            { "type": "enemy", "at": [23.7, 23.7], "label": "風", "tone": "wind" },
+            { "type": "enemy", "at": [79.5, 79.5], "label": "火", "tone": "fire", "facing": 315 },
+            { "type": "enemy", "at": [15.6, -98.8], "label": "土", "tone": "earth", "facing": 180 },
+            { "type": "enemy", "at": [-79.5, -79.5], "label": "神", "tone": "ultima" }
           ],
           "annotations": [
-            { "type": "arrow", "from": [8, 78], "to": [-12, 78], "color": "white" },
-            { "type": "text", "at": [0, -104], "text": "第 2 波 · 遠離神兵 · 硬吃十字", "color": "yellow" }
+            { "type": "arrow", "from": [-68, 30], "to": [-72, 30], "color": "white" },
+            { "type": "text", "at": [0, 112], "text": "第 2 波 · 十字打得到就硬吃", "color": "yellow" }
           ]
         },
         {
           "caption": "最後迦樓羅放飛羽雨:全員維持集中,聽到迦樓羅的叫聲之後再一起移出圈外。接著究極神兵回到中央",
           "boss": null,
           "actors": {
-            "MT": { "x": -8, "y": 68 },
-            "ST": { "x": -12.5, "y": 69.8 },
-            "H1": { "x": -3.5, "y": 69.8 }, "H2": { "x": -8, "y": 72.5 },
-            "D1": { "x": -11.6, "y": 64.4 }, "D2": { "x": -4.4, "y": 64.4 },
-            "D3": { "x": -12.5, "y": 73.4 }, "D4": { "x": -3.5, "y": 73.4 }
+            "MT": { "x": -62, "y": 30 },
+            "ST": { "x": -66.5, "y": 31.8 },
+            "H1": { "x": -57.5, "y": 31.8 }, "H2": { "x": -62, "y": 34.5 },
+            "D1": { "x": -65.6, "y": 26.4 }, "D2": { "x": -58.4, "y": 26.4 },
+            "D3": { "x": -66.5, "y": 35.4 }, "D4": { "x": -57.5, "y": 35.4 }
           },
           "aoes": [
-            { "type": "circle", "at": [-10, 90], "r": 15, "color": "wind" },
-            { "type": "circle", "at": [-14.5, 91.8], "r": 15, "color": "wind" },
-            { "type": "circle", "at": [-5.5, 91.8], "r": 15, "color": "wind" },
-            { "type": "circle", "at": [-10, 94.5], "r": 15, "color": "wind" },
-            { "type": "circle", "at": [-13.6, 86.4], "r": 15, "color": "wind" },
-            { "type": "circle", "at": [-6.4, 86.4], "r": 15, "color": "wind" },
-            { "type": "circle", "at": [-14.5, 95.4], "r": 15, "color": "wind" },
-            { "type": "circle", "at": [-5.5, 95.4], "r": 15, "color": "wind" }
+            { "type": "circle", "at": [-84, 30], "r": 15, "color": "wind" },
+            { "type": "circle", "at": [-88.5, 31.8], "r": 15, "color": "wind" },
+            { "type": "circle", "at": [-79.5, 31.8], "r": 15, "color": "wind" },
+            { "type": "circle", "at": [-84, 34.5], "r": 15, "color": "wind" },
+            { "type": "circle", "at": [-87.6, 26.4], "r": 15, "color": "wind" },
+            { "type": "circle", "at": [-80.4, 26.4], "r": 15, "color": "wind" },
+            { "type": "circle", "at": [-88.5, 35.4], "r": 15, "color": "wind" },
+            { "type": "circle", "at": [-79.5, 35.4], "r": 15, "color": "wind" }
           ],
           "annotations": [
-            { "type": "arrow", "from": [-10, 82], "to": [-8, 72], "color": "white" },
-            { "type": "text", "at": [0, -104], "text": "聽到叫聲再移動", "color": "yellow" }
+            { "type": "arrow", "from": [-76, 30], "to": [-66, 30], "color": "white" },
+            { "type": "text", "at": [0, -113], "text": "聽到叫聲再移動", "color": "yellow" }
           ]
         }
       ]

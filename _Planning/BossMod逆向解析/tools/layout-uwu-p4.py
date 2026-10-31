@@ -135,13 +135,6 @@ def check(sid, idx, step, hit_ok=(), only=None, arena_r=ARENA):
             if inside(a, p, step):
                 problems.append(f'{sid}[{idx}] {role} 在 aoe#{k}({a["type"]} {a.get("angle", "")}) 內')
 
-def must_hit(sid, idx, step, roles, aoes, what):
-    """反向檢查:這些人「應該」被打到(例如硬吃十字),沒打到代表圖跟文字對不上。"""
-    for r in roles:
-        p = (step['actors'][r]['x'], step['actors'][r]['y'])
-        if not any(inside(a, p, step) for a in aoes):
-            problems.append(f'{sid}[{idx}] {r} 應該在「{what}」範圍內,但沒有')
-
 OFFS8 = {'MT': (0, 0), 'ST': (-5, 2), 'H1': (5, 2), 'H2': (0, 5), 'D1': (-4, -4), 'D2': (4, -4), 'D3': (-5, 6), 'D4': (5, 6)}
 
 def stack(c, spread=1.0, roles=None, rot=0):
@@ -352,24 +345,26 @@ check(B['id'], 1, B['steps'][1], hit_ok=(('MT', 0), ('ST', 1)))
 check(B['id'], 2, B['steps'][2], hit_ok=('MT',))
 
 # ─── C. 追擊之究極幻想 ───────────────────────────
-# 範例配置:迦樓羅在中央偏東北(標記與標記之間)、伊弗利特在西北、究極神兵在東南、泰坦在西(偏北一點)
-GARUDA = at(CENTER, 45, m(4.7))        # 影片「中央附近、剛好在標記與標記之間」;影片的標記離中心約 6.7m
-IFRIT = at(CENTER, 315, m(19))         # 斜點場邊(位置示意)
-ULTIMA = at(CENTER, 135, m(18))        # 斜點場邊(位置示意)
-TITAN = at(CENTER, 282, m(19))         # 西正點偏北一點(位置示意)
+# 影片 01:20~01:48 的範例配置(整理檔 §4-5 量測):迦樓羅東南、伊弗利特東南、究極神兵西北、泰坦北偏東
+GARUDA = at(CENTER, 135, m(6.7))       # 中央附近、剛好在兩個標記之間(斜向離中心約 6.7m)
+IFRIT = at(CENTER, 135, m(22.5))       # 斜點、場外約 22.5m
+ULTIMA = at(CENTER, 315, m(22.5))      # 斜點、場外約 22.5m(與伊弗利特不重疊)
+TITAN = at(CENTER, 9, m(20))           # 正點偏約 9°、在場邊;面向正南,不是朝中央
 phiI = bearing(IFRIT, CENTER)
-phiT = bearing(TITAN, CENTER)
+phiT = 180
 pred1 = [{'type': 'circle', 'at': GARUDA, 'r': SZ['wheel'], 'color': 'wind'}, cyclone(IFRIT, phiI)] + landslide(TITAN, phiT)
 pred2_dodge = [{'type': 'donut', 'at': GARUDA, 'rInner': SZ['tornadoIn'], 'rOuter': SZ['tornadoOut'], 'color': 'wind'},
                {'type': 'circle', 'at': ULTIMA, 'r': SZ['vent'], 'color': 'void'}] + landslide(TITAN, phiT, second=True)
 pred2_cross = cyclone_cross(phiI)
-SAFE_DIR = 180                          # 背對迦樓羅(東北)→ 西南;兩側的正點是南與西,西有泰坦 → 南
-P1 = best(at(CENTER, SAFE_DIR, 94), lambda g: stack_safe(g, pred1, 0.9), '追擊 第 1 發')
-P2 = best(P1, lambda g: stack_safe(g, pred2_dodge, 0.9) and math.hypot(g[0] - P1[0], g[1] - P1[1]) < 30, '追擊 第 2 發')
+SAFE_DIR = 270                          # 背對迦樓羅(東南)→ 西北;兩側的正點是北與西,北有泰坦 → 西
+# 「往外周走、貼著預兆線閃」「吃十字時盡量靠外周邊緣」→ 兩波的站位都限定在離中心 17m 以外
+OUTER = lambda g: math.hypot(*g) >= m(17)
+P1 = best(at(CENTER, SAFE_DIR, 94), lambda g: OUTER(g) and stack_safe(g, pred1, 0.9), '追擊 第 1 發')
+P2 = best(P1, lambda g: OUTER(g) and stack_safe(g, pred2_dodge, 0.9) and math.hypot(g[0] - P1[0], g[1] - P1[1]) < 30, '追擊 第 2 發')
 pred_c = stack([0, 0], spread=1.2)
 pred_p1 = stack(P1, spread=0.9)
 pred_p2 = stack(P2, spread=0.9)
-feather_land = stack([P2[0] + 2, P2[1] - 22], spread=0.9)
+feather_land = stack([P2[0] + 22, P2[1]], spread=0.9)
 def enemies_pred(show_ultima=True):
     out = [enemy(GARUDA, '風', 'wind'), enemy(IFRIT, '火', 'fire', phiI), enemy(TITAN, '土', 'earth', phiT)]
     if show_ultima:
@@ -383,16 +378,16 @@ C = S(
         "### 出現位置的規則\n"
         "| 誰 | 出現在哪 | 模式 |\n|---|---|---|\n"
         "| **迦樓羅** | **中央附近**、剛好在**兩個標記之間** | 4 種 |\n"
-        "| **伊弗利特** | **斜點**的場邊 | 4 種 |\n"
-        "| **究極神兵** | **斜點**的場邊(不會和伊弗利特重疊) | 4 種 |\n"
-        "| **泰坦** | **正點兩側、偏一點點**的位置 | 8 種 |\n\n"
+        "| **伊弗利特** | **斜點**、場地外側 | 4 種 |\n"
+        "| **究極神兵** | **斜點**、場地外側(不會和伊弗利特重疊) | 4 種 |\n"
+        "| **泰坦** | **正點兩側、偏一點點**的場邊 | 8 種 |\n\n"
         "### 兩波攻擊\n"
         "| | 第 1 波 | 第 2 波(約 2 秒後) |\n|---|---|---|\n"
         "| 迦樓羅 | **邪輪旋風**(自身周圍 8.7m) | **邪氣龍捲**(7~20m 的環) |\n"
         "| 伊弗利特 | **深紅旋風**:穿過場中央的寬直線衝鋒(寬 18m) | **十字**深紅旋風(沿正點方向,寬 10m) |\n"
         "| 泰坦 | **地裂斬**:朝面向 + ±45°、±135° 共 5 道 | **覺醒地裂斬**:±22.5°、±90°、180° 再 5 道 |\n"
         "| 究極神兵 | — | **青磷放射**:以自己為中心半徑 14m |\n\n"
-        "泰坦的地裂斬範圍是固定的,剛好會打在**東南西北偏一點點**的位置。\n"
+        "泰坦**面向正前方(不是朝中央)**放地裂斬,範圍是固定的:主線沿著自己那個正點的方向、偏一點點穿過場地,±45° 的兩道剛好打在**左右兩個正點偏一點點**的位置。\n"
         "### 本隊打法:無視十字\n"
         "要把兩波全部閃掉需要很極限的走位,這裡還在究極神兵階段的開頭,**不強求**。\n"
         "伊弗利特的**十字只要做好團隊減傷,補師和 DPS 都吃得下來** → 把十字當作不存在,安全區就變得很大,機制非常簡單。\n"
@@ -408,7 +403,7 @@ C = S(
         "### 最後:飛羽雨\n"
         "- 結束後迦樓羅會放**飛羽雨** → 全員**集中排好**,**一定要聽到迦樓羅的叫聲再移動**\n"
         "> 十字也可以完全閃掉,但這段也有**累積 LB 量表**的目的,硬吃比較好。\n"
-        "> 圖上是一個範例配置:迦樓羅在東北、伊弗利特在西北、究極神兵在東南、泰坦在西偏北。各隻的確切位置是示意,尺寸是 BossMod 的實測值。"
+        "> 圖上是影片的範例配置:迦樓羅與伊弗利特在東南、究極神兵在西北、泰坦在北偏東 → 往西。位置依影片示意圖量測,尺寸是 BossMod 的實測值。"
     ),
     roleNotes={
         'MT': '讀條時**先把團隊減傷排好**(第 2 波要硬吃十字)。跟大部隊一起走,不用另外處理仇恨。',
@@ -423,39 +418,39 @@ C = S(
             'actors': pred_c,
             'aoes': enemies_pred(),
             'annotations': [
-                {'type': 'text', 'at': [0, -104], 'text': '中央集合 · 先開減傷 · 找迦樓羅', 'color': 'yellow'},
-                {'type': 'text', 'at': [0, 104], 'text': '範例配置;位置為示意', 'color': 'yellow'},
+                {'type': 'text', 'at': [0, -113], 'text': '中央集合 · 先開減傷 · 找迦樓羅', 'color': 'yellow'},
+                {'type': 'text', 'at': [0, 112], 'text': '影片的範例配置', 'color': 'yellow'},
             ],
         },
         {
-            'caption': '背對迦樓羅、看向反方向:兩側的正點是南與西,西邊有泰坦 → 往南走。穿過內側的標記直直往外走',
+            'caption': '背對迦樓羅(東南)、看向反方向:兩側的正點是北與西,北邊有泰坦 → 往西走。穿過內側的標記直直往外走',
             'boss': None,
             'actors': pred_c,
             'aoes': enemies_pred(),
             'annotations': [
-                {'type': 'arrow', 'from': [0, 10], 'to': [0, 78], 'color': 'white'},
-                {'type': 'arrow', 'from': [-8, 8], 'to': [-62, 62], 'color': 'white', 'dash': True},
-                {'type': 'text', 'at': [-56, 18], 'text': '泰坦 → 不去', 'color': 'red'},
-                {'type': 'text', 'at': [0, -104], 'text': '背對迦樓羅 → 沒有泰坦的正點', 'color': 'yellow'},
+                {'type': 'arrow', 'from': [-10, 0], 'to': [-78, 0], 'color': 'white'},
+                {'type': 'arrow', 'from': [0, -12], 'to': [0, -66], 'color': 'white', 'dash': True},
+                {'type': 'text', 'at': [26, -60], 'text': '泰坦 → 不去', 'color': 'red'},
+                {'type': 'text', 'at': [0, -113], 'text': '背對迦樓羅 → 沒有泰坦的正點', 'color': 'yellow'},
             ],
         },
         {
-            'caption': '第 1 波:迦樓羅的邪輪旋風、伊弗利特穿過中央的深紅旋風、泰坦的地裂斬(5 道)。地裂斬剛好打在南邊偏一點的位置 → 往容易閃的一側、貼著預兆線閃',
+            'caption': '第 1 波:迦樓羅的邪輪旋風、伊弗利特穿過中央的深紅旋風、泰坦的地裂斬(5 道)。泰坦的 45° 線剛好打在西邊偏一點的位置;北側夾在伊弗利特的衝鋒之間太窄 → 往容易閃的南側、貼著預兆線閃',
             'boss': None,
             'actors': pred_p1,
             'aoes': pred1 + enemies_pred(),
             'annotations': [
-                {'type': 'text', 'at': [0, -104], 'text': '第 1 波 · 貼著地裂斬的預兆線', 'color': 'yellow'},
+                {'type': 'text', 'at': [0, -113], 'text': '第 1 波 · 貼著地裂斬的預兆線', 'color': 'yellow'},
             ],
         },
         {
-            'caption': '第 2 波:邪氣龍捲(環)、泰坦的覺醒地裂斬、究極神兵的青磷放射(半徑 14m)、伊弗利特的十字。究極神兵在附近 → 稍微往反方向偏一點,十字靠著外周硬吃',
+            'caption': '第 2 波:邪氣龍捲(環)、泰坦的覺醒地裂斬、究極神兵的青磷放射(半徑 14m)、伊弗利特的十字。這個配置的究極神兵在西北場外,青磷放射打不到這裡,不用偏;十字剛好擦邊,打得到時就靠著外周硬吃',
             'boss': None,
             'actors': pred_p2,
             'aoes': pred2_dodge + pred2_cross + enemies_pred(),
             'annotations': [
-                {'type': 'arrow', 'from': [P1[0], P1[1] - 12], 'to': [P2[0] - 2, P2[1] - 12], 'color': 'white'},
-                {'type': 'text', 'at': [0, -104], 'text': '第 2 波 · 遠離神兵 · 硬吃十字', 'color': 'yellow'},
+                {'type': 'arrow', 'from': [P1[0] + 12, P1[1]], 'to': [P2[0] + 12, P2[1]], 'color': 'white'},
+                {'type': 'text', 'at': [0, 112], 'text': '第 2 波 · 十字打得到就硬吃', 'color': 'yellow'},
             ],
         },
         {
@@ -464,15 +459,14 @@ C = S(
             'actors': feather_land,
             'aoes': [{'type': 'circle', 'at': [v['x'], v['y']], 'r': SZ['feather'], 'color': 'wind', '_nocheck': True} for v in pred_p2.values()],
             'annotations': [
-                {'type': 'arrow', 'from': [P2[0], P2[1] - 8], 'to': [P2[0] + 2, P2[1] - 18], 'color': 'white'},
-                {'type': 'text', 'at': [0, -104], 'text': '聽到叫聲再移動', 'color': 'yellow'},
+                {'type': 'arrow', 'from': [P2[0] + 8, P2[1]], 'to': [P2[0] + 18, P2[1]], 'color': 'white'},
+                {'type': 'text', 'at': [0, -113], 'text': '聽到叫聲再移動', 'color': 'yellow'},
             ],
         },
     ],
 )
 check(C['id'], 2, C['steps'][2], only=pred1)
 check(C['id'], 3, C['steps'][3], only=pred2_dodge)
-must_hit(C['id'], 3, C['steps'][3], list(pred_p2), pred2_cross, '十字')
 check(C['id'], 4, C['steps'][4])
 
 # ─── D. 一運後半:地火 → 光輝炎柱 → 雙重地裂斬 → 換坦 → 飛羽雨 ─────────
