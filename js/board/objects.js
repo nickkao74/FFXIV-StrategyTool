@@ -33,6 +33,7 @@ const OBJECT_DEFAULTS = {
   'xmark': { size: 7 },
   // 絕神兵
   'rock': { size: 7 },
+  'enemy': { label: '風', tone: 'wind', facing: -1 },
   'poem-strip': { text: '十之水向十之水向', side: 'east' },
 };
 
@@ -205,6 +206,21 @@ function renderBoardObject(obj, state) {
         d: `M${p.x - s * 0.55},${p.y - s * 0.7} L${p.x + s * 0.55},${p.y - s * 0.7} ` +
            `L${p.x + s},${p.y + s * 0.7} L${p.x - s},${p.y + s * 0.7} Z`,
       }, g);
+      return g;
+    }
+    // UWU P4 的其他敵人(蠻神 / 究極神兵分身)。facing < 0 表示不畫面向
+    case 'enemy': {
+      const r = 9;
+      const g = bo('g', { class: `bobj enemy enemy-${obj.tone || 'neutral'}` });
+      if (+obj.facing >= 0) {
+        bo('path', {
+          class: 'enemy-facing',
+          d: `M0,${-r - 9} L${r * 0.6},${-r + 1} L${-r * 0.6},${-r + 1} Z`,
+          transform: `translate(${p.x} ${p.y}) rotate(${+obj.facing})`,
+        }, g);
+      }
+      bo('circle', { cx: p.x, cy: p.y, r, class: 'enemy-body' }, g);
+      bo('text', { x: p.x, y: p.y + 0.5, class: 'enemy-label' }, g).textContent = obj.label != null ? obj.label : '';
       return g;
     }
     case 'xmark': {

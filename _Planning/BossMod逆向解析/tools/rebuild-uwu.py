@@ -8,7 +8,7 @@
   4. BossMod Reborn          _OriginalReferences/BossmodReborn/.../Ultimate/UWU/
 
 BossMod 只用來「調整」既有圖解的尺寸,不用來推翻前三者的機制描述。
-逐項比對與判斷理由見 ../07-UWU-P1對照.md、../08-UWU-P2對照.md 與 ../09-UWU-P3對照.md。
+逐項比對與判斷理由見 ../07-UWU-P1對照.md、../08-UWU-P2對照.md、../09-UWU-P3對照.md 與 ../10-UWU-P4對照.md。
 
 用法:py "_Planning/BossMod逆向解析/tools/rebuild-uwu.py"
 ⚠ 要改文字請改 data/uwu.js;要改幾何請改這支腳本。
@@ -389,6 +389,7 @@ note('收尾死刑同步改為 120°/15m;分攤圈 4m;⚠ 討伐後距離衰減�
 #   Titan 本體半徑 R = 4.55
 EXPECT_P3 = {
     ('circle', y(18)), ('circle', y(24)), ('circle', y(6)), ('circle', y(6.3)),
+    ('circle', y(15)),   # 收尾:LB 階段開頭的追蹤爆炸 P4Freefire(15) ⚠ TODO: verify falloff
     ('donut', y(16)), ('donut', y(12)),
     ('cone', (y(10.55), 120)), ('cone', (y(15.55), 90)),
     ('rect', (y(44.55), y(4.55), y(3))), ('rect', (y(40.5), y(0.5), y(3))),
@@ -410,6 +411,43 @@ note(f'P3 泰坦 {len(p3)} 個章節沿用 data/uwu.js(已是 BossMod 實測值,
 
 
 # ═══════════════════════════════════════════════════════════
+# P4 究極神兵(LB 階段 → 一運)
+# ═══════════════════════════════════════════════════════════
+# 與 P3 相同:layout-uwu-p4.py 直接用 BossMod 實測值產生,這裡只做檢查。
+#   P4Freefire           AOEShapeCircle(15)        追蹤爆炸      ⚠ TODO: verify falloff
+#   ViscousAetheroplasm  Circle(2) 附加 / 4 引爆   吸附式炸彈
+#   HomingLasers         Spread(4)                 追蹤射線
+#   WickedWheel          Circle(8.7) / Donut(7, 20) / 姊妹 Circle(8.36)
+#   CrimsonCyclone       Rect(49, 9, 5) / 十字 Rect(44.5, 5, 0.5)
+#   Landslide            Rect(44.55, 3, 4.55) / Rect(40.5, 3, 0.5) / 究極神兵 Rect(46, 3)
+#   CeruleumVent         Circle(14)                青磷放射
+#   Eruption / RadiantPlume  Circle(8)             地火 / 光輝炎柱
+#   Burst                Circle(6.3)               落石
+#   FeatherRain          Circle(3)                 飛羽雨
+EXPECT_P4 = {
+    ('circle', y(15)), ('circle', y(2)), ('circle', y(4)), ('circle', y(8.7)), ('circle', y(8.36)),
+    ('circle', y(14)), ('circle', y(8)), ('circle', y(6.3)), ('circle', y(3)),
+    ('donut', y(7)),
+    ('rect', (y(49), y(5), y(9))), ('rect', (y(44.5), y(0.5), y(5))),
+    ('rect', (y(44.55), y(4.55), y(3))), ('rect', (y(40.5), y(0.5), y(3))), ('rect', (y(46), 0, y(3))),
+}
+p4 = [x for x in d['sections'] if x.get('phase') == 'P4 究極神兵']
+for x in p4:
+    for stp in x['steps']:
+        for a in stp.get('aoes', []):
+            t = a['type']
+            key = {'circle': lambda: a['r'], 'donut': lambda: a['rInner'],
+                   'cone': lambda: (a['r'], a['spread']),
+                   'rect': lambda: (a['lengthFront'], a['lengthBack'], a['halfWidth'])}.get(t)
+            if key is None:
+                continue
+            v = key()
+            if (t, v) not in EXPECT_P4:
+                sys.exit(f'P4 {x["id"]} 出現非 BossMod 尺寸:{t} {v}')
+note(f'P4 究極神兵 {len(p4)} 個章節沿用 data/uwu.js(已是 BossMod 實測值,逐項見 10-UWU-P4對照.md)')
+
+
+# ═══════════════════════════════════════════════════════════
 header = '''/* 絕神兵零式(UWU) —— 校對版
  *
  * ⚠ 自動產生,請勿手改 —— 下次重跑會被覆蓋。
@@ -419,7 +457,7 @@ header = '''/* 絕神兵零式(UWU) —— 校對版
  *
  * 文字沿用 data/uwu.js(來源:攻略逐字稿 + 影片截圖 + 灰機 wiki + 繁中隊伍簡報),
  * 沙盤圖尺寸改採 BossMod Reborn 的實測數值。換算 1m = 5 單位。
- * 逐項比對見 _Planning/BossMod逆向解析/07-UWU-P1對照.md、08-UWU-P2對照.md 與 09-UWU-P3對照.md。
+ * 逐項比對見 _Planning/BossMod逆向解析/07-UWU-P1對照.md、08-UWU-P2對照.md、09-UWU-P3對照.md 與 10-UWU-P4對照.md。
  */
 window.RAID_DATA = window.RAID_DATA || {};
 window.RAID_DATA['uwu-lab'] = '''

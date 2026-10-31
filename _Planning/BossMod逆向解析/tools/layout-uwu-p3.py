@@ -46,6 +46,7 @@ SZ = {
     'knock': m(24),
     'titanHit': m(TITAN_R),        # 22.75
     'gaol': m(1.8),                # 9
+    'freefireLB': m(15),           # 75  P4Freefire AOEShapeCircle(15)  ⚠ TODO: verify falloff(LB 階段開頭)
 }
 TITAN_JUMP = m(16)                 # 80  依影片示意圖量測:落在縮場後的場邊(BossMod 被註解掉的預測碼寫 14,不採用)
 SZ['sludge'] = m(6)               # 30  依影片示意圖量測(BossMod 未建模)
@@ -867,13 +868,13 @@ F = S(
             'annotations': [{'type': 'text', 'at': [0, -104], 'text': 'D1 撿泰坦的突破極限 · 縮場解除', 'color': 'yellow'}],
         },
         {
-            'caption': '場地邊緣的 4 個斜角(45° / 135° / 225° / 315°)各落下一發距離衰減 → 全員到正中央集合、把 HP 補滿,然後進入 LB 階段',
+            'caption': '場地邊緣的 4 個斜角(45° / 135° / 225° / 315°)各落下一發距離衰減(BossMod 半徑 15m,衰減方式待驗證)→ 全員到正中央集合、把 HP 補滿,然後進入 LB 階段',
             'boss': None,
             'actors': cluster([0, 2], [-6, -6], spread=3),
-            'aoes': [{'type': 'circle', 'at': at(CENTER, a, 92), 'r': 60, 'color': 'generic'} for a in (45, 135, 225, 315)],
+            'aoes': [{'type': 'circle', 'at': at(CENTER, a, 92), 'r': SZ['freefireLB'], 'color': 'ice'} for a in (45, 135, 225, 315)],
             'annotations': [
                 {'type': 'text', 'at': [0, -104], 'text': '四角距離衰減 → 正中央集合', 'color': 'yellow'},
-                {'type': 'text', 'at': [0, 104], 'text': '衰減範圍為示意', 'color': 'yellow'},
+                {'type': 'text', 'at': [0, 104], 'text': '⚠ 半徑 15m 的衰減方式 BossMod 標待驗證', 'color': 'yellow'},
             ],
         },
     ],
@@ -1014,9 +1015,12 @@ out = {
 import io, os
 path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'data', 'uwu.js')
 src = io.open(path, encoding='utf-8').read()
-c0 = src.index('    {\n      "id": "p3-geocrush"'); c1 = src.index('\n  ],\n  "sections"')
+# P4(layout-uwu-p4.py)接在 P3 後面:有 P4 區塊時只替換到 P4 之前
+c0 = src.index('    {\n      "id": "p3-geocrush"')
+c1 = src.index(',\n    {\n      "id": "p4-lb"') if '"id": "p4-lb"' in src else src.index('\n  ],\n  "sections"')
 src = src[:c0] + out['cards'] + src[c1:]
-s0 = src.index('    {\n      "id": "uwu-p3-open"'); s1 = src.rstrip().rfind('\n  ]\n};')
+s0 = src.index('    {\n      "id": "uwu-p3-open"')
+s1 = src.index(',\n    {\n      "id": "uwu-p4-lb"') if '"id": "uwu-p4-lb"' in src else src.rstrip().rfind('\n  ]\n};')
 src = src[:s0] + out['sections'] + src[s1:]
 io.open(path, 'w', encoding='utf-8', newline='\n').write(src)
 print('written data/uwu.js · P3 sections', len(SECTIONS), 'steps', sum(len(s['steps']) for s in SECTIONS), 'cards', len(CARDS))
