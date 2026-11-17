@@ -2,4 +2,5 @@
 window.ARENA_INDEX = [
   { id: 'o4s', name: '次元的夾縫 歐米加零式:DELTA篇4層' },
   { id: 'hells-kier', name: '極朱雀徵魂戰' },
+  { id: 'seiryu', name: '極青龍徵魂戰' },
 ];
