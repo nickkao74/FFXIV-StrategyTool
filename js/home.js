@@ -157,7 +157,8 @@
       img.alt = '';
       img.decoding = 'async';
       img.onload = () => { el.replaceChildren(img); };
-      img.src = url;
+      // Discord Activity 內要改走 proxy(見 js/discord/activity.js 的 mapUrl)
+      img.src = window.DISCORD_ACTIVITY ? window.DISCORD_ACTIVITY.mapUrl(url) : url;
     };
     if (b.url) { show(b.url); return; }
     if (!b.xivapi) return;

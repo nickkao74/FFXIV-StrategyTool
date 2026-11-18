@@ -10,7 +10,10 @@
 (() => {
   const params = new URLSearchParams(location.search);
   const inDiscord = params.has('frame_id') && params.has('instance_id');
-  window.DISCORD_ACTIVITY = { inDiscord, sdk: null, ready: Promise.resolve(null) };
+  window.DISCORD_ACTIVITY = {
+    inDiscord, sdk: null, ready: Promise.resolve(null),
+    mapUrl: (u) => u,   // 一般瀏覽器:原樣返回
+  };
   if (!inDiscord) return;
 
   document.documentElement.classList.add('in-discord');
@@ -19,6 +22,17 @@
   const URL_MAPPINGS = [
     { prefix: '/xivapi', target: 'v2.xivapi.com' },
   ];
+  /* 手動改寫外部網址。patchUrlMappings 只攔得到 fetch/XHR 與「已掛在 DOM 上」元素的
+   * src 變動;用 new Image() 建立、尚未插入 DOM 就設定 src 的圖片會直接連外部網域,
+   * 被 CSP 擋下而永遠不會 onload。這類情況請先經過 mapUrl。 */
+  window.DISCORD_ACTIVITY.mapUrl = (u) => {
+    try {
+      const url = new URL(u, location.href);
+      const m = URL_MAPPINGS.find((x) => url.host === x.target);
+      return m ? `${location.origin}${m.prefix}${url.pathname}${url.search}${url.hash}` : u;
+    } catch (e) { return u; }
+  };
+
   if (window.discordPatchUrlMappings) {
     window.discordPatchUrlMappings(URL_MAPPINGS, { patchSrcAttributes: true });
   }
