@@ -62,19 +62,33 @@
     return null;
   });
 
-  /* 取得 Discord 身分(M2 主持人模式用)。
-   * authorize(prompt:none,使用者第一次會看到授權視窗)→ /api/token 換 access_token
-   * → authenticate。token 存在 sessionStorage,同一次 Activity 內換頁不必重新授權。 */
-  const TOKEN_KEY = `discord-token:${params.get('instance_id')}`;
+  /* 取得 Discord 身分(主持人模式用)。
+   * 1. 先用上次存下的 access_token 直接 authenticate —— 成功就完全不會跳授權視窗。
+   *    token 存在 localStorage(有效期約 7 天),跨 Activity、跨換頁都能沿用。
+   * 2. 沒有或失效才 authorize(prompt:none)→ /api/token 換 token → authenticate。
+   *    使用者同意過一次後,之後的 authorize 也不會再跳視窗。 */
+  const TOKEN_KEY = 'discord-activity-token';
+  const loadToken = () => {
+    try {
+      const t = JSON.parse(localStorage.getItem(TOKEN_KEY) || 'null');
+      return t && t.token && t.exp > Date.now() + 60_000 ? t.token : null;
+    } catch (e) { return null; }
+  };
+  const saveToken = (token, expiresIn) => {
+    try {
+      localStorage.setItem(TOKEN_KEY, JSON.stringify({ token, exp: Date.now() + (expiresIn || 3600) * 1000 }));
+    } catch (e) { /* 無法保存就下次再授權 */ }
+  };
+  const clearToken = () => { try { localStorage.removeItem(TOKEN_KEY); } catch (e) { /* ignore */ } };
+
   let authPromise = null;
   window.DISCORD_ACTIVITY.auth = () => authPromise || (authPromise = (async () => {
     const s = await window.DISCORD_ACTIVITY.ready;
     if (!s) throw new Error('Discord SDK 未就緒');
-    let accessToken = null;
-    try { accessToken = sessionStorage.getItem(TOKEN_KEY); } catch (e) { /* ignore */ }
+    let accessToken = loadToken();
     let auth = null;
     if (accessToken) {
-      try { auth = await s.commands.authenticate({ access_token: accessToken }); } catch (e) { auth = null; }
+      try { auth = await s.commands.authenticate({ access_token: accessToken }); } catch (e) { auth = null; clearToken(); }
     }
     if (!auth) {
       const { code } = await s.commands.authorize({
@@ -84,9 +98,10 @@
         method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }),
       });
       if (!res.ok) throw new Error(`token 交換失敗 (${res.status})`);
-      ({ access_token: accessToken } = await res.json());
+      const data = await res.json();
+      accessToken = data.access_token;
       auth = await s.commands.authenticate({ access_token: accessToken });
-      try { sessionStorage.setItem(TOKEN_KEY, accessToken); } catch (e) { /* ignore */ }
+      saveToken(accessToken, data.expires_in);
     }
     const u = auth.user;
     return { user: { id: u.id, name: u.global_name || u.username }, accessToken, instanceId: s.instanceId };
