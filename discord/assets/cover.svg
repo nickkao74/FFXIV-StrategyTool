@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1920" height="1080" viewBox="0 0 1920 1080">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0b0f13"/><stop offset="1" stop-color="#16202b"/>
+    </linearGradient>
+    <radialGradient id="floor" cx="50%" cy="45%" r="60%">
+      <stop offset="0" stop-color="#3a3226"/><stop offset="1" stop-color="#221d17"/>
+    </radialGradient>
+    <pattern id="grid" width="48" height="48" patternUnits="userSpaceOnUse">
+      <path d="M48 0H0V48" fill="none" stroke="#4fc3f7" stroke-opacity=".06" stroke-width="2"/>
+    </pattern>
+    <marker id="ah" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="5" markerHeight="5" orient="auto">
+      <path d="M0 0L10 5L0 10z" fill="#4fc3f7"/>
+    </marker>
+  </defs>
+  <rect width="1920" height="1080" fill="url(#bg)"/>
+  <rect width="1920" height="1080" fill="url(#grid)"/>
+
+  <!-- 場地 -->
+  <g transform="translate(1370 540)">
+    <circle r="420" fill="url(#floor)" stroke="#4fc3f7" stroke-opacity=".5" stroke-width="8"/>
+    <circle r="230" fill="none" stroke="#dbe4ee" stroke-opacity=".15" stroke-width="4" stroke-dasharray="14 12"/>
+    <!-- AoE -->
+    <circle cx="-150" cy="-140" r="120" fill="#ff7a3c" fill-opacity=".28" stroke="#ff7a3c" stroke-width="4"/>
+    <path d="M0 0L330 -190A380 380 0 0 1 330 190Z" fill="#9b6bff" fill-opacity=".22" stroke="#9b6bff" stroke-width="4"/>
+    <!-- 走位箭頭 -->
+    <g fill="none" stroke="#4fc3f7" stroke-width="10" stroke-linecap="round" marker-end="url(#ah)">
+      <path d="M-60 170Q-200 120 -250 20"/>
+      <path d="M150 230Q60 300 -40 290"/>
+    </g>
+    <!-- 場地標記 -->
+    <g font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="56" text-anchor="middle" dominant-baseline="central">
+      <circle cy="-380" r="46" fill="#111" stroke="#ff5a5a" stroke-width="8"/><text y="-378" fill="#fff">A</text>
+      <circle cx="380" r="46" fill="#111" stroke="#ffd54a" stroke-width="8"/><text x="380" y="2" fill="#fff">B</text>
+      <circle cy="380" r="46" fill="#111" stroke="#5aa9ff" stroke-width="8"/><text y="382" fill="#fff">C</text>
+      <circle cx="-380" r="46" fill="#111" stroke="#c38bff" stroke-width="8"/><text x="-380" y="2" fill="#fff">D</text>
+    </g>
+    <!-- BOSS -->
+    <circle r="62" fill="#5b4a7a" stroke="#dbe4ee" stroke-width="8"/>
+    <path d="M0 -84l20 26h-40z" fill="#dbe4ee"/>
+    <!-- 兵棋 -->
+    <g font-family="Arial, Helvetica, sans-serif" font-weight="700" font-size="26" text-anchor="middle" dominant-baseline="central" stroke="#111" stroke-width="5">
+      <g fill="#4a90d9"><circle cx="-20" cy="-120" r="34"/><circle cx="110" cy="-60" r="34"/></g>
+      <g fill="#4caf7d"><circle cx="-60" cy="170" r="34"/><circle cx="150" cy="230" r="34"/></g>
+      <g fill="#e05d5d"><circle cx="-170" cy="-20" r="34"/><circle cx="-110" cy="80" r="34"/><circle cx="60" cy="110" r="34"/><circle cx="190" cy="40" r="34"/></g>
+      <g fill="#fff" stroke="none">
+        <text x="-20" y="-118">MT</text><text x="110" y="-58">ST</text>
+        <text x="-60" y="172">H1</text><text x="150" y="232">H2</text>
+        <text x="-170" y="-18">D1</text><text x="-110" y="82">D2</text><text x="60" y="112">D3</text><text x="190" y="42">D4</text>
+      </g>
+    </g>
+  </g>
+
+  <!-- 標題 -->
+  <g font-family="'Noto Sans TC','Noto Sans CJK TC','Microsoft JhengHei',sans-serif">
+    <rect x="120" y="360" width="10" height="250" rx="5" fill="#4fc3f7"/>
+    <text x="170" y="430" font-size="96" font-weight="900" fill="#dbe4ee">高難度攻略</text>
+    <text x="170" y="550" font-size="96" font-weight="900" fill="#4fc3f7">戰術白板</text>
+    <text x="172" y="640" font-size="38" fill="#8b99a8">在語音頻道一起看攻略、排站位</text>
+    <text x="172" y="700" font-size="30" fill="#8b99a8" opacity=".8">主持人帶隊 · 走位動畫 · 即時同步</text>
+  </g>
+</svg>
