@@ -10,5 +10,5 @@ directory = "../dist"          # 由 discord/build.sh 產生,只含公開網站�
 not_found_handling = "404-page"
 
 [vars]
-DISCORD_CLIENT_ID = ""         # 與 js/discord/config.js 相同
+DISCORD_CLIENT_ID = "1572546190518648883"         # 與 js/discord/config.js 相同
 # DISCORD_CLIENT_SECRET 屬機密,請用:npx wrangler secret put DISCORD_CLIENT_SECRET
