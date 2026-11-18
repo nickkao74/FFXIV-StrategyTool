@@ -1,0 +1,88 @@
+# 部署 Discord Activity(Cloudflare Worker + 靜態網站)
+# main 有影響網站或 Worker 的變更時自動部署;也可在 Actions 頁手動執行。
+# 需要的 Repository secrets(Settings → Secrets and variables → Actions):
+#   CLOUDFLARE_API_TOKEN   — Cloudflare API Token(範本「Edit Cloudflare Workers」)
+#   CLOUDFLARE_ACCOUNT_ID  — Cloudflare 帳號 ID
+#   DISCORD_CLIENT_SECRET  — (選填)有設定時會一併更新 Worker secret
+name: Deploy Discord Activity
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'index.html'
+      - 'guide.html'
+      - 'board.html'
+      - 'css/**'
+      - 'js/**'
+      - 'data/**'
+      - 'discord/**'
+      - '.github/workflows/deploy-discord-activity.yml'
+  pull_request:
+    paths:
+      - 'index.html'
+      - 'guide.html'
+      - 'board.html'
+      - 'css/**'
+      - 'js/**'
+      - 'data/**'
+      - 'discord/**'
+      - '.github/workflows/deploy-discord-activity.yml'
+  workflow_dispatch:
+
+concurrency:
+  group: discord-activity-deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: read
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment: ${{ github.event_name != 'pull_request' && 'discord-activity' || '' }}
+    env:
+      DISCORD_CLIENT_SECRET: ${{ secrets.DISCORD_CLIENT_SECRET }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Build static site
+        run: bash discord/build.sh
+
+      - name: Verify bundle
+        run: |
+          test -f discord/dist/index.html
+          test -f discord/dist/board.html
+          test -f discord/dist/js/discord/config.js
+          if [ -e discord/dist/_Planning ] || [ -e discord/dist/.claude ]; then
+            echo "dist 不應包含非公開內容" && exit 1
+          fi
+
+      # PR:只做 dry-run,確認 Worker 能打包,不需要任何 secret
+      - name: Dry-run (PR)
+        if: github.event_name == 'pull_request'
+        working-directory: discord/worker
+        run: npx --yes wrangler@4 deploy --dry-run --outdir ../.wrangler-out
+
+      - name: Deploy Worker
+        if: github.event_name != 'pull_request'
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          workingDirectory: discord/worker
+          wranglerVersion: '4'
+          command: deploy
+
+      # 只在有設定 DISCORD_CLIENT_SECRET 時更新,避免用空值覆蓋既有 secret
+      - name: Update DISCORD_CLIENT_SECRET
+        if: github.event_name != 'pull_request' && env.DISCORD_CLIENT_SECRET != ''
+        working-directory: discord/worker
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+        run: printf '%s' "$DISCORD_CLIENT_SECRET" | npx --yes wrangler@4 secret put DISCORD_CLIENT_SECRET
