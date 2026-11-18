@@ -45,7 +45,7 @@ export default {
       });
       const data = await res.json();
       if (!res.ok) return Response.json({ error: 'token_exchange_failed' }, { status: 502 });
-      return Response.json({ access_token: data.access_token });
+      return Response.json({ access_token: data.access_token, expires_in: data.expires_in });
     }
 
     if (url.pathname === '/api/room') {
