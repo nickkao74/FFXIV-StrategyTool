@@ -163,6 +163,7 @@ P3Tumult(id + 0x1000u, 2.1f, 8)
 ### P3 的產生器 `tools/layout-uwu-p3.py`
 
 P3 的章節、速查卡與所有站位都由這支腳本產生,再寫回 `data/uwu.js` 的 P3 區塊(P1/P2 不動)。
+> 校對版廢除後,寫入對象改為 `data/uwu-legacy.js`,現行版 `data/uwu.js` 由 `rebuild-uwu.py` 產生(見 README)。
 腳本內建三種檢查,任何一項不過就不寫入:
 
 1. **碰撞**:躲避步驟中沒有人站在 AOE 裡(覺醒地裂斬的站位同時對第 1、2 發檢查)。

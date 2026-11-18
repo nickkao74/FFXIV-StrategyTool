@@ -122,6 +122,7 @@ _second.ForbidCircle(ultima.Position, 14f);                             // 青�
 ## E. 產生器
 
 `tools/layout-uwu-p4.py`:P4 的章節、速查卡與站位都由它產生,寫回 `data/uwu.js` 的 P4 區塊。
+> 校對版廢除後,寫入對象改為 `data/uwu-legacy.js`,現行版 `data/uwu.js` 由 `rebuild-uwu.py` 產生(見 README)。
 內建檢查(任一不過就不寫入):
 
 1. **碰撞**:躲避步驟中沒有人站在 AOE 裡(追擊第 2 波排除十字)。

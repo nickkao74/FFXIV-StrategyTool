@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""由 data/uwu.js 產出校對版 data/uwu-lab.js。
+"""由封存版 data/uwu-legacy.js 產出現行版 data/uwu.js。
 
 資料優先序(依使用者指示):
   1. 攻略逐字稿 / 影片截圖  _OriginalReferences/UWU/
@@ -11,7 +11,8 @@ BossMod 只用來「調整」既有圖解的尺寸,不用來推翻前三者的�
 逐項比對與判斷理由見 ../07-UWU-P1對照.md、../08-UWU-P2對照.md、../09-UWU-P3對照.md 與 ../10-UWU-P4對照.md。
 
 用法:py "_Planning/BossMod逆向解析/tools/rebuild-uwu.py"
-⚠ 要改文字請改 data/uwu.js;要改幾何請改這支腳本。
+⚠ 要改文字請改 data/uwu-legacy.js;要改幾何請改這支腳本。
+⚠ data/uwu.js 是自動產生的,直接手改會在下次重跑時被覆蓋。
 
 備註:本機沒有安裝 Node,原本的 rebuild-uwu.js 已移植為這支 Python 版本。
 """
@@ -27,9 +28,9 @@ if hasattr(sys.stdout, 'reconfigure'):
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), '..', '..', '..'))
 
-# ── 讀入 data/uwu.js(內容是一段 JSON 賦值)────────────────
-src = io.open(os.path.join(ROOT, 'data', 'uwu.js'), encoding='utf-8').read()
-start = src.index('{', src.index("window.RAID_DATA['uwu']"))
+# ── 讀入 data/uwu-legacy.js(內容是一段 JSON 賦值)────────────────
+src = io.open(os.path.join(ROOT, 'data', 'uwu-legacy.js'), encoding='utf-8').read()
+start = src.index('{', src.index("window.RAID_DATA['uwu-legacy']"))
 d = json.loads(src[start:src.rstrip().rfind('}') + 1])
 
 # UWU 場地:ArenaCenter (100,100)、Polygon(center, 20, 64) → 半徑 20m
@@ -42,8 +43,8 @@ def y(v):
     return int(r) if r == int(r) else r
 
 
-d['id'] = 'uwu-lab'
-d['name'] = '絕神兵零式(UWU) 究極神兵破壞作戰(校對版)'
+d['id'] = 'uwu'
+d['name'] = '絕神兵零式(UWU) 究極神兵破壞作戰'
 
 log = []
 
@@ -375,7 +376,7 @@ note('收尾死刑同步改為 120°/15m;分攤圈 4m;⚠ 討伐後距離衰減�
 # ═══════════════════════════════════════════════════════════
 # P3 泰坦
 # ═══════════════════════════════════════════════════════════
-# P3 是先有 BossMod 才畫圖的:data/uwu.js 的 P3 章節本來就用下列實測值,
+# P3 是先有 BossMod 才畫圖的:data/uwu-legacy.js 的 P3 章節本來就用下列實測值,
 # 這裡不需要再修正,只做檢查(值不對就中止,避免兩邊悄悄分岔)。
 #   Geocrush1        SimpleAOEs(18)              大地粉碎(落地)  距離衰減
 #   Geocrush2        AOEShapeCircle(24)          大地粉碎(跳躍)  距離衰減;場地 20 → 16 → 12m
@@ -407,7 +408,7 @@ for x in p3:
             v = key()
             if (t, v) not in EXPECT_P3 and not (t == 'circle' and a.get('color') in ('generic', 'void')):
                 sys.exit(f'P3 {x["id"]} 出現非 BossMod 尺寸:{t} {v}')
-note(f'P3 泰坦 {len(p3)} 個章節沿用 data/uwu.js(已是 BossMod 實測值,逐項見 09-UWU-P3對照.md)')
+note(f'P3 泰坦 {len(p3)} 個章節沿用 data/uwu-legacy.js(已是 BossMod 實測值,逐項見 09-UWU-P3對照.md)')
 
 
 # ═══════════════════════════════════════════════════════════
@@ -444,28 +445,28 @@ for x in p4:
             v = key()
             if (t, v) not in EXPECT_P4:
                 sys.exit(f'P4 {x["id"]} 出現非 BossMod 尺寸:{t} {v}')
-note(f'P4 究極神兵 {len(p4)} 個章節沿用 data/uwu.js(已是 BossMod 實測值,逐項見 10-UWU-P4對照.md)')
+note(f'P4 究極神兵 {len(p4)} 個章節沿用 data/uwu-legacy.js(已是 BossMod 實測值,逐項見 10-UWU-P4對照.md)')
 
 
 # ═══════════════════════════════════════════════════════════
-header = '''/* 絕神兵零式(UWU) —— 校對版
+header = '''/* 絕神兵零式(UWU) —— 現行版
  *
  * ⚠ 自動產生,請勿手改 —— 下次重跑會被覆蓋。
- *   文字要改 → data/uwu.js
+ *   文字要改 → data/uwu-legacy.js(封存版,首頁封存區可看)
  *   幾何要改 → _Planning/BossMod逆向解析/tools/rebuild-uwu.py
  *   重新產生 → py "_Planning/BossMod逆向解析/tools/rebuild-uwu.py"
  *
- * 文字沿用 data/uwu.js(來源:攻略逐字稿 + 影片截圖 + 灰機 wiki + 繁中隊伍簡報),
+ * 文字沿用 data/uwu-legacy.js(來源:攻略逐字稿 + 影片截圖 + 灰機 wiki + 繁中隊伍簡報),
  * 沙盤圖尺寸改採 BossMod Reborn 的實測數值。換算 1m = 5 單位。
  * 逐項比對見 _Planning/BossMod逆向解析/07-UWU-P1對照.md、08-UWU-P2對照.md、09-UWU-P3對照.md 與 10-UWU-P4對照.md。
  */
 window.RAID_DATA = window.RAID_DATA || {};
-window.RAID_DATA['uwu-lab'] = '''
+window.RAID_DATA['uwu'] = '''
 
-out = os.path.join(ROOT, 'data', 'uwu-lab.js')
+out = os.path.join(ROOT, 'data', 'uwu.js')
 io.open(out, 'w', encoding='utf-8').write(
     header + json.dumps(d, ensure_ascii=False, indent=2) + ';\n')
 
-print('written data/uwu-lab.js')
+print('written data/uwu.js')
 for line in log:
     print('  . ' + line)
