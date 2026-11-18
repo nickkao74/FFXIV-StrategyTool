@@ -1,0 +1,22 @@
+# Discord Activity 後端(Cloudflare Workers)
+# 第一階段:托管靜態網站 + OAuth token 交換端點(/api/token)。
+# 第二階段:Room Durable Object(房間/主持人同步,/api/room)。
+name = "ffxiv-strategytool-activity"
+main = "src/index.js"
+compatibility_date = "2025-06-01"
+
+[assets]
+directory = "../dist"          # 由 discord/build.sh 產生,只含公開網站檔案
+not_found_handling = "404-page"
+
+[vars]
+DISCORD_CLIENT_ID = "1572546190518648883"         # 與 js/discord/config.js 相同
+# DISCORD_CLIENT_SECRET 屬機密,請用:npx wrangler secret put DISCORD_CLIENT_SECRET
+
+[[durable_objects.bindings]]
+name = "ROOMS"
+class_name = "Room"
+
+[[migrations]]
+tag = "v1"
+new_sqlite_classes = ["Room"]   # SQLite 版 Durable Object,免費方案可用

@@ -51,5 +51,6 @@ class StepPlayer {
     [...this.dotsEl.children].forEach((d, j) => d.classList.toggle('active', j === this.index));
     this.prevBtn.disabled = this.index === 0;
     this.nextBtn.disabled = this.index === this.steps.length - 1;
+    if (this.onChange) this.onChange(this.index);
   }
 }

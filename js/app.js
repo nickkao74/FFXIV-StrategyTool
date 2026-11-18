@@ -288,7 +288,37 @@ async function main() {
   // 首頁的階段膠囊會帶 ?section=<章節 id>,直接跳到該章節;找不到就從第一章開始
   const startAt = data.sections.findIndex((sec) => sec.id === params.get('section'));
   showSection(Math.max(startAt, 0));
+  // Discord 房間「跟隨主持人」可能帶 ?step=<步驟序號>(從 0 起算)
+  const startStep = parseInt(params.get('step'), 10);
+  if (startStep > 0) player.go(startStep);
   syncRole();
+
+  /* 對外介面:給 Discord 房間的「攻略頁跟隨主持人」使用(js/discord/room.js)。
+   * 位置 = { raid, section(章節 id), step(步驟序號), tab('guide'|'cheatsheet') } */
+  const listeners = [];
+  const notify = () => listeners.forEach((fn) => fn(guideApi.getLocation()));
+  const guideApi = {
+    getLocation: () => ({
+      raid: raidId,
+      section: currentSection != null ? data.sections[currentSection].id : null,
+      step: player.index,
+      tab: currentPage,
+    }),
+    goTo({ section, step, tab }) {
+      if (tab && tab !== currentPage) setPage(tab);
+      const i = data.sections.findIndex((sec) => sec.id === section);
+      if (i >= 0 && i !== currentSection) showSection(i);
+      if (typeof step === 'number') player.go(step);
+    },
+    onChange(fn) { listeners.push(fn); },
+  };
+  const _showSection = showSection;
+  showSection = (i) => { _showSection(i); notify(); };
+  const _setPage = setPage;
+  setPage = (id) => { _setPage(id); notify(); };
+  player.onChange = notify;
+  window.GUIDE_API = guideApi;
+  document.dispatchEvent(new Event('guide-ready'));
 }
 
 main().catch((e) => {
