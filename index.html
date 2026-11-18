@@ -3,58 +3,51 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<!-- 不讓搜尋引擎收錄:本工具僅供個人使用,不公開發布 -->
+<meta name="robots" content="noindex, nofollow">
 <title>FFXIV 高難度副本攻略工具</title>
-<link rel="stylesheet" href="css/style.css?v=5">
+<link rel="stylesheet" href="css/style.css?v=11">
 </head>
 <body>
-<header><h1>FFXIV 高難度副本攻略工具</h1></header>
+<header class="home-header">
+  <h1>FFXIV 高難度副本攻略工具</h1>
+  <span class="home-tagline">零式 · 極 · 絕境戰 — 沙盤圖攻略與戰術白板</span>
+</header>
 
 <main id="home">
-  <h2 class="home-section-title">攻略庫</h2>
-  <div id="raid-list" class="card-grid">載入中…</div>
+  <a class="tool-banner" href="board.html">
+    <svg class="tool-banner-icon" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="var(--accent)" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 6l6-3 6 3 6-3v15l-6 3-6-3-6 3z"/><path d="M9 3v15M15 6v15"/></svg>
+    <span class="tool-banner-text">
+      <strong>戰術白板</strong>
+      <span>拖曳兵棋、畫地毯與箭頭，串成走位動畫，供團練即時討論解法；可直接導入攻略庫的內容當起點。</span>
+    </span>
+    <span class="pill-note">需要存取密碼</span>
+    <span class="tool-banner-go">開啟白板 →</span>
+  </a>
 
-  <h2 class="home-section-title">工具</h2>
-  <div class="card-grid">
-    <a class="raid-card tool-card" href="board.html">
-      <h2>🗺 戰術白板</h2>
-      <p>在俯瞰場地圖上拖曳兵棋、畫地毯與箭頭,串成走位動畫,供團練即時討論解法。可直接導入攻略庫的內容當起點。<span class="tool-card-note">需要存取密碼</span></p>
-    </a>
+  <div class="home-filter">
+    <div class="filter-levels">
+      <div class="filter-tabs" id="filter-tabs" role="group" aria-label="依難度篩選"></div>
+      <div class="filter-tabs series-tabs" id="series-tabs" role="group" aria-label="依系列篩選" hidden></div>
+    </div>
+    <label class="home-search">搜尋
+      <input type="search" id="raid-search" placeholder="副本或 Boss 名稱">
+    </label>
   </div>
+
+  <div id="raid-list" class="card-grid">載入中…</div>
+  <p id="raid-empty" class="home-empty" hidden>沒有符合條件的攻略。</p>
 
   <details class="archive" id="archive">
     <summary>封存</summary>
     <p class="archive-note">被新版取代、但保留下來供對照的舊攻略。平常不需要打開。</p>
-    <div id="archive-list" class="card-grid"></div>
+    <div id="archive-list" class="archive-list"></div>
   </details>
 </main>
 
-<script src="data/raids.js"></script>
-<script>
-(() => {
-  const card = (raid, extra = '') => {
-    const a = document.createElement('a');
-    a.className = 'raid-card';
-    a.href = `guide.html?raid=${raid.id}`;
-    a.innerHTML = `<h2>${raid.name}${extra}</h2><p>${raid.description || ''}</p>`;
-    return a;
-  };
+<footer class="home-footer">本工具僅為個人使用，所有攻略之著作皆屬原作者所有。</footer>
 
-  const list = document.getElementById('raid-list');
-  if (!window.RAID_LIST) { list.textContent = '載入失敗:找不到 data/raids.js'; return; }
-  list.innerHTML = '';
-  for (const raid of window.RAID_LIST) list.appendChild(card(raid));
-
-  // 封存區沒有內容就整塊不顯示,免得留一個永遠空的折疊區
-  const archive = window.RAID_ARCHIVE || [];
-  const box = document.getElementById('archive');
-  if (!archive.length) { box.remove(); return; }
-  const byId = new Map(window.RAID_LIST.map((r) => [r.id, r.name]));
-  const archiveList = document.getElementById('archive-list');
-  for (const raid of archive) {
-    const now = byId.get(raid.replacedBy);
-    archiveList.appendChild(card(raid, now ? `<span class="archive-replaced">已由「${now}」取代</span>` : ''));
-  }
-})();
-</script>
+<script src="data/raids.js?v=3"></script>
+<script src="js/home.js?v=2"></script>
 </body>
 </html>

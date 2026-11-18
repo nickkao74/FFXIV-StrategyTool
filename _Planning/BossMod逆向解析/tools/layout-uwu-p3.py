@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """UWU P3 泰坦:章節 / 速查卡的產生器,附站位碰撞檢查與岩牢連鎖距離檢查。
 
-P3 的文字與站位都由這支產生,寫回 data/uwu.js 的 P3 區塊(P1/P2 不受影響)。
-⚠ 要改 P3 的內容請改這支再重跑,直接手改 data/uwu.js 的 P3 會在下次重跑時被覆蓋。
+P3 的文字與站位都由這支產生,寫回 data/uwu-legacy.js 的 P3 區塊(P1/P2 不受影響)。
+⚠ 要改 P3 的內容請改這支再重跑,直接手改 data/uwu-legacy.js 的 P3 會在下次重跑時被覆蓋。
 
 用法:
   py "_Planning/BossMod逆向解析/tools/layout-uwu-p3.py" --check   只做檢查
-  py "_Planning/BossMod逆向解析/tools/layout-uwu-p3.py"           檢查通過後寫回 data/uwu.js
-之後再跑 rebuild-uwu.py 產生 uwu-lab.js。
+  py "_Planning/BossMod逆向解析/tools/layout-uwu-p3.py"           檢查通過後寫回 data/uwu-legacy.js
+之後再跑 rebuild-uwu.py 產生現行版 data/uwu.js。
 
 尺寸來源見 ../09-UWU-P3對照.md;截圖量測見 ../../UWU-P3-整理.md §4-0。
 """
@@ -938,7 +938,7 @@ if '--check' in sys.argv:
 if problems:
     sys.exit('檢查未通過,不寫入')
 
-# ═══════════════ 輸出成 uwu.js 的格式 ═══════════════
+# ═══════════════ 輸出成 uwu-legacy.js 的格式 ═══════════════
 def clean(o):
     if isinstance(o, dict):
         return {k: clean(v) for k, v in o.items() if not k.startswith('_')}
@@ -1013,7 +1013,7 @@ out = {
     'cards': ',\n'.join(card_text(c) for c in CARDS),
 }
 import io, os
-path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'data', 'uwu.js')
+path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'data', 'uwu-legacy.js')
 src = io.open(path, encoding='utf-8').read()
 # P4(layout-uwu-p4.py)接在 P3 後面:有 P4 區塊時只替換到 P4 之前
 c0 = src.index('    {\n      "id": "p3-geocrush"')
@@ -1023,5 +1023,5 @@ s0 = src.index('    {\n      "id": "uwu-p3-open"')
 s1 = src.index(',\n    {\n      "id": "uwu-p4-lb"') if '"id": "uwu-p4-lb"' in src else src.rstrip().rfind('\n  ]\n};')
 src = src[:s0] + out['sections'] + src[s1:]
 io.open(path, 'w', encoding='utf-8', newline='\n').write(src)
-print('written data/uwu.js · P3 sections', len(SECTIONS), 'steps', sum(len(s['steps']) for s in SECTIONS), 'cards', len(CARDS))
+print('written data/uwu-legacy.js · P3 sections', len(SECTIONS), 'steps', sum(len(s['steps']) for s in SECTIONS), 'cards', len(CARDS))
 print('phi1', phi1, 'phi2', phi2, 'phiD', phiD, 'phiE', phiE, 'phiF', phiF, 'phiG', phiG, 'STAND', STAND, 'stand_d', round(stand_d, 2))

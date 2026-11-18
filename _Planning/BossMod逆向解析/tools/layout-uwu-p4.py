@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 """UWU P4 究極神兵(LB 階段 → 一運):章節 / 速查卡的產生器,附站位碰撞檢查。
 
-P4 的文字與站位都由這支產生,寫回 data/uwu.js 的 P4 區塊(P1~P3 不受影響)。
-⚠ 要改 P4 的內容請改這支再重跑,直接手改 data/uwu.js 的 P4 會在下次重跑時被覆蓋。
+P4 的文字與站位都由這支產生,寫回 data/uwu-legacy.js 的 P4 區塊(P1~P3 不受影響)。
+⚠ 要改 P4 的內容請改這支再重跑,直接手改 data/uwu-legacy.js 的 P4 會在下次重跑時被覆蓋。
 
 用法:
   py "_Planning/BossMod逆向解析/tools/layout-uwu-p4.py" --check   只做檢查
-  py "_Planning/BossMod逆向解析/tools/layout-uwu-p4.py"           檢查通過後寫回 data/uwu.js
-之後再跑 rebuild-uwu.py 產生 uwu-lab.js。
+  py "_Planning/BossMod逆向解析/tools/layout-uwu-p4.py"           檢查通過後寫回 data/uwu-legacy.js
+之後再跑 rebuild-uwu.py 產生現行版 data/uwu.js。
 
 尺寸來源見 ../10-UWU-P4對照.md;打法整理見 ../../UWU-P4-一運-整理.md。
 """
@@ -683,7 +683,7 @@ if '--check' in sys.argv:
 if problems:
     sys.exit('檢查未通過,不寫入')
 
-# ═══════════════ 輸出成 uwu.js 的格式(與 layout-uwu-p3.py 相同的排版)═══════════════
+# ═══════════════ 輸出成 uwu-legacy.js 的格式(與 layout-uwu-p3.py 相同的排版)═══════════════
 def clean(o):
     if isinstance(o, dict):
         return {k: clean(v) for k, v in o.items() if not k.startswith('_')}
@@ -756,7 +756,7 @@ def card_text(c):
 cards_txt = ',\n'.join(card_text(c) for c in CARDS)
 sections_txt = ',\n'.join(section_text(s) for s in SECTIONS)
 import io, os
-path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'data', 'uwu.js')
+path = os.path.join(os.path.dirname(os.path.abspath(__file__)), '..', '..', '..', 'data', 'uwu-legacy.js')
 src = io.open(path, encoding='utf-8').read()
 
 # 速查卡:P4 區塊在 cheatsheet 的最後(P3 之後)
@@ -776,4 +776,4 @@ if SEC_MARK in src:
 else:
     src = src[:s1] + ',\n' + sections_txt + src[s1:]
 io.open(path, 'w', encoding='utf-8', newline='\n').write(src)
-print('written data/uwu.js · P4 sections', len(SECTIONS), 'steps', sum(len(s['steps']) for s in SECTIONS), 'cards', len(CARDS))
+print('written data/uwu-legacy.js · P4 sections', len(SECTIONS), 'steps', sum(len(s['steps']) for s in SECTIONS), 'cards', len(CARDS))

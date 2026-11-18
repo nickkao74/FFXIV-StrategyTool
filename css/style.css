@@ -426,51 +426,151 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
 .marker-target .target-corner { fill: none; stroke: #ff8080; stroke-width: 1.6; }
 
 /* ── 首頁 ─────────────────────────── */
-/* ── 首頁:攻略庫 / 工具 ───────────────── */
-#home { max-width: 760px; margin: 36px auto 56px; padding: 0 20px; }
-.home-section-title {
-  font-size: 12px; font-weight: 700; color: var(--text-dim);
-  text-transform: uppercase; letter-spacing: 0.06em;
-  margin: 0 0 12px; padding-bottom: 8px; border-bottom: 1px solid var(--border);
+:root {
+  /* 難度色:只用在標籤、橫幅底線與篩選 */
+  --cat-ultimate: #c99bff; --cat-ultimate-bg: #251d33;
+  --cat-savage:   #ffa95e; --cat-savage-bg:   #2d2219;
+  --cat-extreme:  #6fb5ff; --cat-extreme-bg:  #18253a;
 }
-.home-section-title + .card-grid { margin-bottom: 34px; }
-.card-grid { display: grid; gap: 14px; }
+.home-header { padding: 14px 24px; gap: 6px 16px; align-items: baseline; }
+.home-header h1 { font-size: 19px; font-weight: 700; }
+.home-tagline { font-size: 13px; color: var(--text-dim); }
+
+#home {
+  max-width: 1200px; margin: 0 auto; padding: 28px 24px 0;
+  display: flex; flex-direction: column; gap: 28px;
+}
+
+/* 戰術白板:放在最上面的橫向入口 */
+.tool-banner {
+  display: flex; flex-wrap: wrap; align-items: center; gap: 12px 20px;
+  padding: 18px 22px; border-radius: 12px;
+  background: var(--bg-panel); border: 1px solid var(--border);
+  color: var(--text); transition: border-color .15s;
+}
+.tool-banner:hover { border-color: var(--accent); }
+.tool-banner-icon { flex: none; }
+.tool-banner-text { display: flex; flex-direction: column; gap: 2px; flex: 1 1 320px; }
+.tool-banner-text strong { font-size: 16px; }
+.tool-banner-text span { font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.tool-banner-go { font-size: 14px; font-weight: 700; color: var(--accent); white-space: nowrap; }
+.pill-note {
+  display: inline-block; padding: 2px 10px; border-radius: 20px;
+  background: var(--bg-panel2); border: 1px solid var(--border);
+  font-size: 12px; color: var(--text-dim); white-space: nowrap;
+}
+
+/* 篩選列 */
+.home-filter {
+  display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px;
+  padding-bottom: 12px; border-bottom: 1px solid var(--border);
+}
+.filter-tabs { display: flex; flex-wrap: wrap; gap: 8px; }
+.filter-tab {
+  min-height: 36px; padding: 0 16px; border-radius: 18px;
+  border: 1px solid var(--border); background: var(--bg-panel2);
+  color: var(--text); font: inherit; font-size: 13px; cursor: pointer;
+}
+.filter-tab:hover { border-color: var(--accent); }
+.filter-tab.active { background: var(--accent); border-color: var(--accent); color: #08202c; font-weight: 700; }
+.filter-count { margin-left: 4px; opacity: .75; }
+.filter-levels { display: flex; flex-direction: column; gap: 10px; }
+/* 第二層(系列):比難度頁籤小一號,只用中性色 */
+.series-tabs[hidden] { display: none; }
+.series-tab {
+  min-height: 32px; padding: 0 12px; border-radius: 6px;
+  border: 1px solid var(--border); background: transparent;
+  color: var(--text-dim); font: inherit; font-size: 12.5px; cursor: pointer;
+}
+.series-tab:hover { border-color: var(--accent); color: var(--text); }
+.series-tab.active { border-color: var(--text-dim); background: var(--bg-panel2); color: var(--text); font-weight: 700; }
+.home-search { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text-dim); }
+.home-search input {
+  min-height: 36px; width: 220px; max-width: 60vw; padding: 0 12px; border-radius: 8px;
+  border: 1px solid var(--border); background: var(--bg-panel); color: var(--text);
+  font: inherit; font-size: 13px;
+}
+.home-search input:focus { outline: none; border-color: var(--accent); }
+.home-empty { margin: 0; color: var(--text-dim); font-size: 14px; }
+
+/* 攻略卡 */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(340px, 1fr)); gap: 18px; }
+@media (max-width: 420px) { .card-grid { grid-template-columns: 1fr; } }
 .raid-card {
-  display: block; padding: 18px 20px; border-radius: 12px;
+  position: relative; display: flex; flex-direction: column;
+  border-radius: 12px; overflow: hidden;
   background: var(--bg-panel); border: 1px solid var(--border);
   color: var(--text); transition: border-color .15s;
 }
 .raid-card:hover { border-color: var(--accent); }
-.raid-card h2 { margin: 0 0 6px; font-size: 17px; }
-.raid-card p { margin: 0; color: var(--text-dim); font-size: 13.5px; line-height: 1.6; }
-/* 工具卡與攻略卡是不同性質的東西,用左側色條區隔 */
-.tool-card { border-left: 3px solid var(--accent); }
-.tool-card-note {
-  display: inline-block; margin-left: 8px; padding: 1px 7px; border-radius: 20px;
-  background: var(--bg-panel2); border: 1px solid var(--border);
-  font-size: 11.5px; color: var(--text-dim); white-space: nowrap;
+.raid-card[hidden] { display: none; }
+/* 整張卡可點:主連結的 ::after 蓋滿卡片,階段膠囊浮在上層各自連結 */
+.raid-card-link { color: inherit; }
+.raid-card-link::after { content: ''; position: absolute; inset: 0; }
+.raid-card-link:focus-visible { outline: none; }
+.raid-card:has(.raid-card-link:focus-visible) { border-color: var(--accent); box-shadow: 0 0 0 2px var(--accent); }
+
+.raid-banner {
+  height: 112px; display: flex; align-items: center; justify-content: center;
+  background: var(--cat-bg); border-bottom: 3px solid var(--cat);
+  color: var(--text-dim); font-size: 13px; overflow: hidden;
 }
+.raid-banner img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.raid-body { padding: 16px 18px 18px; display: flex; flex-direction: column; gap: 10px; flex-grow: 1; }
+.raid-meta { display: flex; align-items: center; gap: 8px; font-size: 12px; color: var(--text-dim); }
+.cat-tag { font-weight: 700; padding: 2px 8px; border-radius: 4px; color: #101418; background: var(--cat); }
+.series-tag { padding: 1px 7px; border-radius: 4px; border: 1px solid var(--border); color: var(--text); }
+/* 玩家俗稱的代號(UWU、O4S):接在主標後面 */
+.raid-alias {
+  display: inline-block; margin-left: 6px; padding: 1px 7px; border-radius: 4px; vertical-align: 2px;
+  font-size: 12px; font-weight: 700; letter-spacing: 0.04em;
+  color: var(--cat); border: 1px solid var(--cat);
+}
+.raid-titles { display: flex; flex-direction: column; gap: 2px; }
+.raid-titles strong { font-size: 17px; line-height: 1.35; }
+.raid-titles span { font-size: 13px; color: var(--text-dim); }
+.phase-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+.phase-chip {
+  position: relative; z-index: 1;
+  font-size: 12px; padding: 3px 9px; border-radius: 6px;
+  background: var(--bg-panel2); border: 1px solid var(--border); color: var(--text);
+}
+.phase-chip:hover { border-color: var(--cat); color: var(--cat); }
+.raid-foot {
+  margin-top: auto; padding-top: 10px; border-top: 1px solid var(--border);
+  display: flex; justify-content: space-between; gap: 8px; flex-wrap: wrap;
+  font-size: 12px; color: var(--text-dim);
+}
+.raid-author { color: var(--text); }
+
+.cat-ultimate { --cat: var(--cat-ultimate); --cat-bg: var(--cat-ultimate-bg); }
+.cat-savage   { --cat: var(--cat-savage);   --cat-bg: var(--cat-savage-bg); }
+.cat-extreme  { --cat: var(--cat-extreme);  --cat-bg: var(--cat-extreme-bg); }
 
 /* 封存區:被新版取代的舊攻略。預設收合,視覺上明顯比現行攻略退後一階 */
-.archive { margin-top: 34px; }
+.archive { border-top: 1px solid var(--border); padding-top: 12px; }
 .archive > summary {
-  cursor: pointer; list-style: none;
-  font-size: 12px; font-weight: 700; color: var(--text-dim);
-  text-transform: uppercase; letter-spacing: 0.06em;
-  padding-bottom: 8px; border-bottom: 1px solid var(--border);
+  cursor: pointer; list-style: none; min-height: 32px;
+  font-size: 13px; color: var(--text-dim);
 }
 .archive > summary::-webkit-details-marker { display: none; }
-.archive > summary::before { content: '▸ '; display: inline-block; transition: transform .15s; }
+.archive > summary::before { content: '▸ '; }
 .archive[open] > summary::before { content: '▾ '; }
 .archive > summary:hover { color: var(--text); }
-.archive-note { margin: 12px 0; font-size: 13px; color: var(--text-dim); line-height: 1.6; }
-.archive .card-grid { margin-bottom: 8px; }
-.archive .raid-card { opacity: .72; border-style: dashed; }
-.archive .raid-card:hover { opacity: 1; }
-.archive-replaced {
-  display: inline-block; margin-left: 8px; padding: 1px 7px; border-radius: 20px;
-  background: var(--bg-panel2); border: 1px solid var(--border);
-  font-size: 11.5px; color: var(--text-dim); white-space: nowrap;
+.archive-note { margin: 4px 0 12px; font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.archive-list { display: grid; gap: 10px; }
+.archive-card {
+  display: block; padding: 14px 18px; border-radius: 10px;
+  border: 1px dashed var(--border); color: var(--text); opacity: .75;
+}
+.archive-card:hover { opacity: 1; border-color: var(--accent); }
+.archive-card strong { font-size: 15px; }
+.archive-card p { margin: 6px 0 0; font-size: 13px; color: var(--text-dim); line-height: 1.6; }
+.archive-replaced { margin-left: 8px; }
+
+.home-footer {
+  width: calc(100% - 48px); max-width: 1152px; margin: 40px auto 0; padding: 20px 0 32px;
+  border-top: 1px solid var(--border); font-size: 13px; color: var(--text-dim);
 }
 
 /* ── 響應式 ────────────────────────── */

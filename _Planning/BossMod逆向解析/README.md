@@ -102,6 +102,28 @@ node "_Planning/BossMod逆向解析/tools/rebuild-hells-kier.js"
 白板場地 `data/arenas/hells-kier.js` 也一併校正:天坑 26 → **17.5**,
 P3 預設站位改用「塔的位置 − 擊退 11m」反推出來的 29。
 
+## 已套用到 UWU
+
+UWU 採用與極朱雀相同的檔案關係(原本的「校對版 `uwu-lab`」已轉為正式版,校對版的規則廢除):
+
+```
+data/uwu-legacy.js     ← 文字的來源(目測版沙盤圖,首頁封存區可看)
+        ▲  P3 / P4 由 tools/layout-uwu-p3.py、layout-uwu-p4.py 寫入
+        │
+        │  py "_Planning/BossMod逆向解析/tools/rebuild-uwu.py"
+        ▼
+data/uwu.js            ← 現行版(自動產生,勿手改)
+```
+
+| 要改什麼 | 改哪裡 |
+|---|---|
+| P1 / P2 攻略**文字** | `data/uwu-legacy.js` |
+| P1 / P2 沙盤圖**幾何** | `tools/rebuild-uwu.py` |
+| P3 / P4 的文字與站位 | `tools/layout-uwu-p3.py`、`layout-uwu-p4.py`(寫入 `data/uwu-legacy.js`) |
+| 任何一項改完 | 重跑 `rebuild-uwu.py` |
+
+> ⚠️ **直接手改 `data/uwu.js` 會在下次重跑時被覆蓋。**
+
 ## 目前狀態
 
 - [x] 座標系與角度慣例已解出並用朱雀四色地板交叉驗證通過(4/4 象限吻合)
@@ -111,7 +133,7 @@ P3 預設站位改用「塔的位置 − 擊退 11m」反推出來的 29。
 - [x] 極朱雀攻略已改用實測幾何,舊版封存在首頁
 - [x] 流程套用到 UWU P1(產出校對版 `uwu-lab`,見 `07`)
 - [x] 流程套用到 UWU P2(見 `08`;產生器同時移植為 Python)
-- [ ] 檢視 `uwu-lab`,決定是否取代正式版的 `uwu`
+- [x] `uwu-lab` 取代正式版 `uwu`,舊版封存為 `uwu-legacy`(見上方「已套用到 UWU」)
 - [x] 流程套用到 UWU P3(見 `09`;P3 直接以實測尺寸撰寫,產生器只做檢查)
 - [ ] UWU P3 待影片截圖校正的示意項目(見 `09` E 段)
 - [x] UWU LB 階段 + 一運(見 `10`;新增 `enemy` 圖元)

@@ -285,7 +285,9 @@ async function main() {
   }
 
   setPage('guide');
-  showSection(0);
+  // 首頁的階段膠囊會帶 ?section=<章節 id>,直接跳到該章節;找不到就從第一章開始
+  const startAt = data.sections.findIndex((sec) => sec.id === params.get('section'));
+  showSection(Math.max(startAt, 0));
   syncRole();
 }
 
