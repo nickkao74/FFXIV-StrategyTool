@@ -8,7 +8,7 @@
 
 ## 里程碑
 
-### M1 私人上架：靜態檢視攻略 ← 目前
+### M1 私人上架：靜態檢視攻略 ✅
 在 Discord 裡開啟 Activity，可以瀏覽首頁、開啟攻略頁、播放步驟。每個人各看各的，不同步。
 
 - [x] Discord Embedded App SDK 打包成單檔（`js/discord/sdk.min.js`，無建置工具）
@@ -16,10 +16,21 @@
 - [x] Discord 內先隱藏戰術白板入口（白板留到 M2 以後）
 - [x] Worker：托管靜態檔、`/api/token`（OAuth 交換，M2 起才會用到）
 - [x] `discord/build.sh`：只打包公開檔案到 `discord/dist`
-- [ ] **（需要你操作）** 建立 Discord Application、部署 Worker、設定 URL Mappings（見下方「上架步驟」）
-- [ ] 在桌面版與手機版 Discord 實測：首頁、攻略頁、橫幅圖、換頁
+- [x] 建立 Discord Application、部署 Worker、設定 URL Mappings
+- [x] 桌面版 Discord 實測：首頁、攻略頁、橫幅圖、換頁
 
-### M2 主持人模式（隊長主控）
+### M2 主持人模式（隊長主控）← 目前（分支 `discord/m2-host`）
+
+實作狀態：
+- [x] Room Durable Object（`discord/worker/src/room.js`）：主持人規則、盤面保存與轉發、30 秒寬限期（alarm）
+- [x] `/api/room`：以 Discord access token 驗證身分後連線；本機開發可用 `DEV_MODE=1` + `?devuser=`
+- [x] 前端 `js/discord/room.js`：房間面板（在線名單、申請／同意／拒絕、指派）、觀看者唯讀
+- [x] Discord 內白板免密碼（`gate.js`），首頁重新顯示白板入口
+- [x] 本機三人模擬測試：同步、非主持人變更不外流、申請→同意、指派、斷線 30 秒轉交、晚加入者取得目前盤面
+- [ ] 設定 `DISCORD_CLIENT_SECRET` 後部署，在 Discord 內實測（授權視窗、多人）
+- [ ] 已知限制：觀看者目前無法自行縮放／平移白板；攻略頁跟隨尚未實作
+
+設計：
 一位主持人操作白板／攻略播放，其他參與者即時跟著看。
 
 - **身分**：Activity 內走 OAuth（`identify` scope），用 Discord 使用者 ID 區分參與者；取代 `gate.js` 的寫死密碼。
@@ -66,3 +77,10 @@
 - Discord 的 CSP 只允許連 `<app_id>.discordsays.com`；所有外部網域都要在 URL Mappings 登記，並同步加進 `activity.js` 的 `URL_MAPPINGS`。
 - Activity 內的換頁不會保留 Discord 帶來的 `frame_id` 等參數，`activity.js` 會在點擊站內連結時自動補上。
 - 沒有填 Client ID 時，`activity.js` 會略過 SDK 握手，網站照常以一般網頁運作；一般瀏覽器開啟時完全不受影響。
+
+## 本機測試 M2（不需 Discord）
+```bash
+./discord/build.sh
+cd discord/worker && printf 'DEV_MODE=1\n' > .dev.vars && npx wrangler dev
+```
+用不同瀏覽器（或無痕視窗）開 `http://localhost:8787/board?room=test&devuser=alice`、`...&devuser=bob`。`.dev.vars` 只在本機使用，不會部署，也已列入 `.gitignore`。

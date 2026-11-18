@@ -61,4 +61,34 @@
     console.error('[activity] Discord SDK ready 失敗', err);
     return null;
   });
+
+  /* 取得 Discord 身分(M2 主持人模式用)。
+   * authorize(prompt:none,使用者第一次會看到授權視窗)→ /api/token 換 access_token
+   * → authenticate。token 存在 sessionStorage,同一次 Activity 內換頁不必重新授權。 */
+  const TOKEN_KEY = `discord-token:${params.get('instance_id')}`;
+  let authPromise = null;
+  window.DISCORD_ACTIVITY.auth = () => authPromise || (authPromise = (async () => {
+    const s = await window.DISCORD_ACTIVITY.ready;
+    if (!s) throw new Error('Discord SDK 未就緒');
+    let accessToken = null;
+    try { accessToken = sessionStorage.getItem(TOKEN_KEY); } catch (e) { /* ignore */ }
+    let auth = null;
+    if (accessToken) {
+      try { auth = await s.commands.authenticate({ access_token: accessToken }); } catch (e) { auth = null; }
+    }
+    if (!auth) {
+      const { code } = await s.commands.authorize({
+        client_id: cfg.clientId, response_type: 'code', state: '', prompt: 'none', scope: ['identify'],
+      });
+      const res = await fetch('/api/token', {
+        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }),
+      });
+      if (!res.ok) throw new Error(`token 交換失敗 (${res.status})`);
+      ({ access_token: accessToken } = await res.json());
+      auth = await s.commands.authenticate({ access_token: accessToken });
+      try { sessionStorage.setItem(TOKEN_KEY, accessToken); } catch (e) { /* ignore */ }
+    }
+    const u = auth.user;
+    return { user: { id: u.id, name: u.global_name || u.username }, accessToken, instanceId: s.instanceId };
+  })());
 })();

@@ -6,7 +6,7 @@
 <!-- 不讓搜尋引擎收錄:本工具僅供個人使用,不公開發布 -->
 <meta name="robots" content="noindex, nofollow">
 <title>FFXIV 戰術白板</title>
-<link rel="stylesheet" href="css/board.css?v=5">
+<link rel="stylesheet" href="css/board.css?v=6">
 </head>
 <body>
 
@@ -136,7 +136,10 @@
   </div>
 </div>
 
-<script src="js/board/gate.js?v=1"></script>
+<script src="js/discord/sdk.min.js?v=1"></script>
+<script src="js/discord/config.js?v=2"></script>
+<script src="js/discord/activity.js?v=3"></script>
+<script src="js/board/gate.js?v=2"></script>
 <script src="js/board/state.js?v=1"></script>
 <script src="js/board/objects.js?v=4"></script>
 <script src="js/board/canvas.js?v=1"></script>
@@ -146,7 +149,8 @@
 <script src="data/board-special-objects.js?v=3"></script>
 <script src="js/board/import.js?v=4"></script>
 <script src="js/board/storage.js?v=1"></script>
-<script src="js/board/app.js?v=3"></script>
+<script src="js/board/app.js?v=4"></script>
+<script src="js/discord/room.js?v=1"></script>
 <script>
   boardGateInit(() => { boardMain().catch(e => { console.error(e); alert('載入失敗:' + e.message); }); });
 </script>

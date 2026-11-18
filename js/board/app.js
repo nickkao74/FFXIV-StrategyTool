@@ -127,6 +127,21 @@ async function boardMain() {
   const history = new BoardHistory(state);
   canvas.onToolComplete = () => syncToolButtons();
 
+  /* 對外介面:給 Discord 房間同步(js/discord/room.js)使用。
+   * applyRemote:套用遠端盤面;同場地同階段時只換資料,不重設畫布縮放。 */
+  window.BOARD_API = {
+    state,
+    history,
+    async applyRemote(data) {
+      if (data.arenaId === state.arenaId && data.phaseId === state.phaseId && state.arenaDef) {
+        state.loadFromJSON(data, state.arenaDef, state.phaseDef);
+        history.reset();
+      } else {
+        await applyBoardData(validateBoardData(data));
+      }
+    },
+  };
+
   const arenaSelect = document.getElementById('arena-select');
   const phaseTabs = document.getElementById('phase-tabs');
   const resetBtn = document.getElementById('reset-tokens-btn');
@@ -801,4 +816,5 @@ async function boardMain() {
 
   // 自動保存放在最後才掛上,避免上面的初始化過程反覆寫入
   state.onChange(makeAutosaver());
+  document.dispatchEvent(new Event('board-ready'));
 }

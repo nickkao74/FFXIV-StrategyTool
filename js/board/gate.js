@@ -15,6 +15,12 @@ function boardGateInit(onPass) {
     onPass();
   }
 
+  // Discord Activity 內:能啟動 Activity 的人就是伺服器成員,身分由 Discord 驗證,不再要密碼
+  if (window.DISCORD_ACTIVITY && window.DISCORD_ACTIVITY.inDiscord) {
+    reveal();
+    return;
+  }
+
   if (sessionStorage.getItem(BOARD_AUTH_KEY) === '1') {
     reveal();
     return;

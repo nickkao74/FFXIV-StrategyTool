@@ -634,5 +634,5 @@ header .home-link { font-size: 13px; color: var(--text-dim); }
   }
 }
 
-/* ── Discord Activity(第一階段只開放靜態檢視,白板入口先隱藏) ── */
-.in-discord .tool-banner { display: none; }
+/* ── Discord Activity:白板改用 Discord 身分,不需密碼 ── */
+.in-discord .tool-banner .pill-note { display: none; }
