@@ -80,7 +80,8 @@
   function render() {
     document.body.classList.toggle('room-viewer', !!me && !isHost());
     document.body.classList.toggle('room-following', !!me && !isHost() && follow);
-    $('room-status').textContent = ws && ws.readyState === 1 ? `${participants.length} 人在線` : '重新連線中…';
+    $('room-status').textContent = ws && ws.readyState === 1 ? `${participants.length} 人在線`
+      : me ? '重新連線中…' : '連線中…';
 
     let role;
     if (!me) role = '';
@@ -247,7 +248,8 @@
     const proto = location.protocol === 'https:' ? 'wss' : 'ws';
     ws = new WebSocket(`${proto}://${location.host}/api/room?${query}`);
 
-    ws.addEventListener('open', () => { reconnectTry = 0; render(); });
+    let opened = false;
+    ws.addEventListener('open', () => { opened = true; reconnectTry = 0; render(); });
     ws.addEventListener('message', async (ev) => {
       let msg;
       try { msg = JSON.parse(ev.data); } catch { return; }
@@ -292,6 +294,8 @@
       render();
     });
     ws.addEventListener('close', () => {
+      // 一次都沒連上:多半是存下的 token 失效(伺服器 401),下次改走完整授權
+      if (!opened && act.inDiscord && act.invalidateToken) act.invalidateToken();
       render();
       const wait = RECONNECT_MS[Math.min(reconnectTry++, RECONNECT_MS.length - 1)];
       setTimeout(() => connect().catch(onConnectError), wait);

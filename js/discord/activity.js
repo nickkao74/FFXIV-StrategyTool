@@ -57,7 +57,12 @@
   }
   const sdk = new window.DiscordSDK(cfg.clientId);
   window.DISCORD_ACTIVITY.sdk = sdk;
-  window.DISCORD_ACTIVITY.ready = sdk.ready().then(() => sdk).catch((err) => {
+  // Activity 內換頁後,新頁面的 SDK 握手有可能一直不回應;設上限,避免卡在「連線中」
+  const READY_TIMEOUT_MS = 10_000;
+  window.DISCORD_ACTIVITY.ready = Promise.race([
+    sdk.ready(),
+    new Promise((_, reject) => setTimeout(() => reject(new Error('Discord SDK 握手逾時')), READY_TIMEOUT_MS)),
+  ]).then(() => sdk).catch((err) => {
     console.error('[activity] Discord SDK ready 失敗', err);
     return null;
   });
@@ -82,27 +87,29 @@
   const clearToken = () => { try { localStorage.removeItem(TOKEN_KEY); } catch (e) { /* ignore */ } };
 
   let authPromise = null;
+  /** 伺服器拒絕(401)時呼叫:丟掉存下的 token,下次 auth() 改走完整授權流程 */
+  window.DISCORD_ACTIVITY.invalidateToken = () => { clearToken(); authPromise = null; };
   window.DISCORD_ACTIVITY.auth = () => authPromise || (authPromise = (async () => {
+    /* 房間連線只需要 access token 與 instance id(網址上的 instance_id,與 sdk.instanceId 相同),
+     * 身分由伺服器用 token 向 Discord 查證。已有 token 時就不經過 SDK,
+     * 換頁後不必等新頁面的 SDK 握手。 */
+    const cached = loadToken();
+    if (cached && params.get('instance_id')) {
+      return { user: null, accessToken: cached, instanceId: params.get('instance_id') };
+    }
     const s = await window.DISCORD_ACTIVITY.ready;
     if (!s) throw new Error('Discord SDK 未就緒');
-    let accessToken = loadToken();
-    let auth = null;
-    if (accessToken) {
-      try { auth = await s.commands.authenticate({ access_token: accessToken }); } catch (e) { auth = null; clearToken(); }
-    }
-    if (!auth) {
-      const { code } = await s.commands.authorize({
-        client_id: cfg.clientId, response_type: 'code', state: '', prompt: 'none', scope: ['identify'],
-      });
-      const res = await fetch('/api/token', {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }),
-      });
-      if (!res.ok) throw new Error(`token 交換失敗 (${res.status})`);
-      const data = await res.json();
-      accessToken = data.access_token;
-      auth = await s.commands.authenticate({ access_token: accessToken });
-      saveToken(accessToken, data.expires_in);
-    }
+    const { code } = await s.commands.authorize({
+      client_id: cfg.clientId, response_type: 'code', state: '', prompt: 'none', scope: ['identify'],
+    });
+    const res = await fetch('/api/token', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ code }),
+    });
+    if (!res.ok) throw new Error(`token 交換失敗 (${res.status})`);
+    const data = await res.json();
+    const accessToken = data.access_token;
+    const auth = await s.commands.authenticate({ access_token: accessToken });
+    saveToken(accessToken, data.expires_in);
     const u = auth.user;
     return { user: { id: u.id, name: u.global_name || u.username }, accessToken, instanceId: s.instanceId };
   })());
