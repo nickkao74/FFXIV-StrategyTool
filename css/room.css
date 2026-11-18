@@ -1,0 +1,30 @@
+/* room.css — Discord 房間面板(js/discord/room.js),首頁/攻略/白板共用。
+ * 只在 Discord 內(或本機開發 ?room=&devuser=)才會出現。 */
+#room-panel {
+  position: fixed; right: 12px; bottom: 12px; z-index: 1000;
+  width: 240px; max-height: 60vh; overflow: auto;
+  background: var(--bg-panel); color: var(--text);
+  border: 1px solid var(--border); border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, .35); font-size: 13px;
+}
+#room-panel .room-head { display: flex; align-items: center; gap: 8px; padding: 8px 10px; border-bottom: 1px solid var(--border); }
+#room-panel .room-status { flex: 1; opacity: .7; font-size: 12px; }
+#room-panel .room-toggle { background: none; border: none; color: inherit; font-size: 16px; cursor: pointer; padding: 0 4px; }
+#room-panel.collapsed .room-body { display: none; }
+#room-panel .room-body { padding: 8px 10px; display: grid; gap: 8px; }
+#room-panel .room-role { margin: 0; line-height: 1.5; }
+#room-panel .room-people { list-style: none; margin: 0; padding: 0; display: grid; gap: 4px; }
+#room-panel .room-people li { display: flex; align-items: center; gap: 6px; }
+#room-panel .room-people li.is-host .room-name { font-weight: 600; }
+#room-panel .room-name { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+#room-panel .room-request { display: flex; align-items: center; gap: 6px; padding: 6px; border-radius: 6px; background: rgba(255, 200, 80, .12); }
+#room-panel .room-request span { flex: 1; }
+#room-panel button { font: inherit; font-size: 12px; padding: 3px 8px; border-radius: 6px; cursor: pointer;
+  border: 1px solid var(--border); background: var(--bg-panel2); color: inherit; }
+#room-panel .room-actions button { width: 100%; padding: 6px; }
+
+#room-panel .room-follow { display: grid; gap: 2px; padding: 6px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+#room-panel .room-follow:empty { display: none; }
+#room-panel .room-switch { display: flex; align-items: center; gap: 6px; cursor: pointer; font-weight: 600; }
+#room-panel .room-switch input { accent-color: var(--accent); width: 15px; height: 15px; margin: 0; }
+#room-panel .room-hint { opacity: .75; font-size: 12px; }

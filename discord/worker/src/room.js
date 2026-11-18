@@ -11,8 +11,11 @@
  *                    { type:'request_host' }             申請主持
  *                    { type:'respond_request', userId, accept }   主持人回覆申請
  *                    { type:'assign_host', userId }      主持人指派
- *   server → client  { type:'welcome', you, hostId, participants, board }
- *                    { type:'participants', hostId, participants, graceUntil }
+ *                    { type:'location', loc }            主持人目前所在頁面(攻略跟隨用)
+ *                    { type:'set_follow', on }           主持人開關「攻略頁跟隨主持人」(預設關)
+ *   server → client  { type:'welcome', you, hostId, participants, board, location, follow }
+ *                    { type:'participants', hostId, participants, graceUntil, follow }
+ *                    { type:'location', loc }
  *                    { type:'state', board }
  *                    { type:'host_request', from:{id,name} } (只送主持人)
  *                    { type:'request_result', accept }   (只送申請者)
@@ -62,6 +65,8 @@ export class Room {
       hostId,
       participants: this._participants(joinOrder),
       board: board || null,
+      location: (await this.ctx.storage.get('location')) || null,
+      follow: !!(await this.ctx.storage.get('follow')),
     });
     await this._broadcastParticipants();
     return new Response(null, { status: 101, webSocket: client });
@@ -81,6 +86,24 @@ export class Room {
         if (text.length > MAX_BOARD_BYTES) return this._send(ws, { type: 'error', message: 'board_too_large' });
         await this.ctx.storage.put('board', msg.board);
         this._broadcast({ type: 'state', board: msg.board }, me.id);
+        break;
+      }
+      case 'location': {
+        if (!isHost || !msg.loc || typeof msg.loc !== 'object') return;
+        const loc = {
+          page: String(msg.loc.page || ''), raid: msg.loc.raid ? String(msg.loc.raid) : null,
+          section: msg.loc.section ? String(msg.loc.section) : null,
+          step: Number.isInteger(msg.loc.step) ? msg.loc.step : 0,
+          tab: msg.loc.tab ? String(msg.loc.tab) : null,
+        };
+        await this.ctx.storage.put('location', loc);
+        this._broadcast({ type: 'location', loc }, me.id);
+        break;
+      }
+      case 'set_follow': {
+        if (!isHost) return;
+        await this.ctx.storage.put('follow', !!msg.on);
+        await this._broadcastParticipants();
         break;
       }
       case 'request_host': {
@@ -163,9 +186,10 @@ export class Room {
     const joinOrder = (await this.ctx.storage.get('joinOrder')) || {};
     const hostId = (await this.ctx.storage.get('hostId')) || null;
     const graceUntil = (await this.ctx.storage.get('graceUntil')) || null;
+    const follow = !!(await this.ctx.storage.get('follow'));
     const participants = this._participants(joinOrder, exclude);
     for (const s of this.ctx.getWebSockets()) {
-      if (s !== exclude) this._send(s, { type: 'participants', hostId, participants, graceUntil });
+      if (s !== exclude) this._send(s, { type: 'participants', hostId, participants, graceUntil, follow });
     }
   }
 

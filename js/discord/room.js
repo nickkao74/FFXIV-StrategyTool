@@ -1,11 +1,12 @@
-/* room.js — 白板房間同步與主持人模式(M2)
+/* room.js — Discord 房間:主持人模式、白板同步、攻略頁跟隨主持人
  *
  * 啟用條件:在 Discord Activity 內,或本機開發用 ?room=<名稱>&devuser=<名字>。
- * 一般瀏覽器開啟 board.html 時完全不動作。
+ * 一般瀏覽器開啟時完全不動作。首頁、攻略頁、白板都會載入本檔並顯示房間面板。
  *
- * 主持人:編輯白板,變更在 250ms 無新操作後整份廣播(與復原歷史同一個節奏)。
- * 觀看者:白板唯讀,收到盤面就套用;可申請主持。
- * 規則本身由伺服器(discord/worker/src/room.js)裁決,這裡只負責呈現與送出請求。
+ * 白板(board.html):主持人的變更在 250ms 無新操作後整份廣播;觀看者唯讀。
+ * 攻略跟隨(預設關,只有主持人能切換):開啟後觀看者會跟著主持人換頁、換章節、換步驟。
+ *   關閉時大家各看各的;觀看者仍可自由瀏覽,下一次主持人移動時才會被帶過去。
+ * 規則由伺服器(discord/worker/src/room.js)裁決,這裡只負責呈現與送出請求。
  */
 (() => {
   const params = new URLSearchParams(location.search);
@@ -14,18 +15,28 @@
   const devUser = params.get('devuser');
   if (!act.inDiscord && !(devRoom && devUser)) return;
 
+  const PAGE = /\/board(\.html)?$/.test(location.pathname) ? 'board'
+    : /\/guide(\.html)?$/.test(location.pathname) ? 'guide' : 'home';
   const SEND_IDLE_MS = 250;
+  const LOC_IDLE_MS = 150;
   const RECONNECT_MS = [1000, 2000, 5000, 10000];
+  // 換頁時要帶著走的網址參數(Discord 的連線參數,或本機開發的房間參數)
+  const CARRY = ['frame_id', 'instance_id', 'platform', 'guild_id', 'channel_id', 'location_id', 'room', 'devuser'];
 
-  let api = null;          // window.BOARD_API
+  let boardApi = null;     // window.BOARD_API(白板頁)
+  let guideApi = null;     // window.GUIDE_API(攻略頁)
   let ws = null;
   let me = null;
   let hostId = null;
   let participants = [];
   let graceUntil = null;
+  let follow = false;
+  let hostLoc = null;      // 主持人最後回報的位置
   let applyingRemote = false;
   let sendTimer = null;
+  let locTimer = null;
   let lastSent = null;
+  let lastLocSent = null;
   let reconnectTry = 0;
   let pendingRequests = [];   // 主持人待處理的申請 [{id,name}]
   let requestSent = false;
@@ -43,6 +54,7 @@
     </div>
     <div class="room-body" id="room-body">
       <p class="room-role" id="room-role"></p>
+      <div class="room-follow" id="room-follow"></div>
       <ul class="room-people" id="room-people"></ul>
       <div class="room-requests" id="room-requests"></div>
       <div class="room-actions" id="room-actions"></div>
@@ -67,15 +79,22 @@
 
   function render() {
     document.body.classList.toggle('room-viewer', !!me && !isHost());
+    document.body.classList.toggle('room-following', !!me && !isHost() && follow);
     $('room-status').textContent = ws && ws.readyState === 1 ? `${participants.length} 人在線` : '重新連線中…';
 
     let role;
     if (!me) role = '';
-    else if (isHost()) role = '你是<b>主持人</b>,你的操作會同步給所有人。';
+    else if (isHost()) role = '你是<b>主持人</b>' + (PAGE === 'board' ? ',白板操作會同步給所有人。' : '。');
     else if (graceUntil && hostId && !participants.some((p) => p.id === hostId)) {
       role = `主持人 ${esc(nameOf(hostId))} 暫時離線,30 秒內未回來將自動轉交。`;
     } else role = `觀看中 · 主持人:<b>${esc(nameOf(hostId))}</b>`;
     $('room-role').innerHTML = role;
+
+    $('room-follow').innerHTML = !me ? '' : isHost()
+      ? `<label class="room-switch"><input type="checkbox" id="room-follow-cb" ${follow ? 'checked' : ''}>
+           <span>攻略頁跟隨主持人</span></label>
+         <span class="room-hint">${follow ? '其他人會跟著你換頁、換步驟' : '關閉中:大家各看各的'}</span>`
+      : `<span class="room-hint">攻略頁跟隨:<b>${follow ? '開啟 · 正跟著主持人' : '關閉'}</b></span>`;
 
     $('room-people').innerHTML = participants.map((p) => `
       <li class="${p.id === hostId ? 'is-host' : ''}">
@@ -110,39 +129,95 @@
       render();
     }
   });
+  panel.addEventListener('change', (e) => {
+    if (e.target.id !== 'room-follow-cb') return;
+    send({ type: 'set_follow', on: e.target.checked });
+    if (e.target.checked) sendLocationNow(true);   // 開啟時立刻把大家帶到主持人這裡
+  });
 
-  // 觀看者不能用鍵盤操作白板(Ctrl+Z、Delete 等)
-  document.addEventListener('keydown', (e) => {
-    if (document.body.classList.contains('room-viewer') && !panel.contains(e.target)) {
-      e.stopImmediatePropagation();
-      e.preventDefault();
+  // 白板觀看者不能用鍵盤操作(Ctrl+Z、Delete 等)
+  if (PAGE === 'board') {
+    document.addEventListener('keydown', (e) => {
+      if (document.body.classList.contains('room-viewer') && !panel.contains(e.target)) {
+        e.stopImmediatePropagation();
+        e.preventDefault();
+      }
+    }, true);
+  }
+
+  // ── 位置(攻略跟隨)──────────────────
+  function myLocation() {
+    if (PAGE === 'guide' && guideApi) return { page: 'guide', ...guideApi.getLocation() };
+    return { page: PAGE };
+  }
+
+  function sendLocationNow(force = false) {
+    clearTimeout(locTimer);
+    locTimer = null;
+    if (!isHost()) return;
+    if (PAGE === 'guide' && !guideApi) return;   // 攻略還沒載入完,等 guide-ready
+    const loc = myLocation();
+    const text = JSON.stringify(loc);
+    if (text === lastLocSent && !force) return;
+    lastLocSent = text;
+    send({ type: 'location', loc });
+  }
+
+  function onLocalLocation() {
+    if (!isHost()) return;
+    clearTimeout(locTimer);
+    locTimer = setTimeout(sendLocationNow, LOC_IDLE_MS);
+  }
+
+  function pageUrl(loc) {
+    const file = loc.page === 'guide' ? 'guide.html' : loc.page === 'board' ? 'board.html' : 'index.html';
+    const q = new URLSearchParams();
+    if (loc.page === 'guide') {
+      if (loc.raid) q.set('raid', loc.raid);
+      if (loc.section) q.set('section', loc.section);
+      if (loc.step) q.set('step', String(loc.step));
     }
-  }, true);
+    for (const k of CARRY) if (params.has(k)) q.set(k, params.get(k));
+    return `${file}?${q}`;
+  }
 
-  // ── 同步 ─────────────────────────────
+  /** 觀看者且跟隨開啟時,移到主持人所在位置 */
+  function followHost() {
+    if (!follow || isHost() || !hostLoc) return;
+    const loc = hostLoc;
+    if (loc.page === 'guide' && PAGE === 'guide') {
+      if (!guideApi) return;   // guide-ready 後會再呼叫
+      if (loc.raid === guideApi.getLocation().raid) { guideApi.goTo(loc); return; }
+    } else if (loc.page === PAGE) {
+      return;
+    }
+    location.href = pageUrl(loc);
+  }
+
+  // ── 白板同步 ─────────────────────────
   function send(msg) { if (ws && ws.readyState === 1) ws.send(JSON.stringify(msg)); }
 
   function sendBoardNow() {
     clearTimeout(sendTimer);
     sendTimer = null;
-    if (!isHost()) return;
-    const board = api.state.toJSON();
+    if (!isHost() || !boardApi) return;
+    const board = boardApi.state.toJSON();
     const text = JSON.stringify(board);
     if (text === lastSent) return;
     lastSent = text;
     send({ type: 'state', board });
   }
 
-  function onLocalChange() {
+  function onLocalBoardChange() {
     if (applyingRemote || !isHost()) return;
     clearTimeout(sendTimer);
     sendTimer = setTimeout(sendBoardNow, SEND_IDLE_MS);
   }
 
-  async function applyRemote(board) {
-    if (!board) return;
+  async function applyRemoteBoard(board) {
+    if (!board || !boardApi) return;
     applyingRemote = true;
-    try { await api.applyRemote(board); lastSent = JSON.stringify(api.state.toJSON()); }
+    try { await boardApi.applyRemote(board); lastSent = JSON.stringify(boardApi.state.toJSON()); }
     catch (e) { console.error('[room] 套用遠端盤面失敗', e); }
     finally { applyingRemote = false; }
   }
@@ -152,13 +227,15 @@
     hostId = newHostId;
     if (!wasHost && isHost()) {
       requestSent = false;
-      api.history.reset();     // 不讓新主持人 Ctrl+Z 退回別人的操作
+      if (boardApi) boardApi.history.reset();   // 不讓新主持人 Ctrl+Z 退回別人的操作
       lastSent = null;
       sendBoardNow();          // 立刻把目前盤面交給伺服器
+      sendLocationNow(true);   // 跟隨開啟時,大家改跟新主持人
     }
     if (wasHost && !isHost()) pendingRequests = [];
   }
 
+  // ── 連線 ─────────────────────────────
   async function connect() {
     let query;
     if (act.inDiscord) {
@@ -178,17 +255,28 @@
         case 'welcome':
           me = msg.you;
           setParticipants(msg.participants);
-          if (msg.hostId !== me.id && msg.board) await applyRemote(msg.board);
+          follow = !!msg.follow;
+          hostLoc = msg.location;
+          if (msg.hostId !== me.id && msg.board) await applyRemoteBoard(msg.board);
           setHost(msg.hostId);
+          followHost();
           break;
-        case 'participants':
+        case 'participants': {
+          const wasFollow = follow;
           setParticipants(msg.participants);
           graceUntil = msg.graceUntil;
+          follow = !!msg.follow;
           setHost(msg.hostId);
           pendingRequests = pendingRequests.filter((r) => participants.some((p) => p.id === r.id));
+          if (follow && !wasFollow) followHost();
           break;
+        }
         case 'state':
-          if (!isHost()) await applyRemote(msg.board);
+          if (!isHost()) await applyRemoteBoard(msg.board);
+          break;
+        case 'location':
+          hostLoc = msg.loc;
+          followHost();
           break;
         case 'host_request':
           if (!pendingRequests.some((r) => r.id === msg.from.id)) pendingRequests.push(msg.from);
@@ -216,11 +304,40 @@
     $('room-role').textContent = `房間連線失敗:${e.message || e}`;
   }
 
-  document.addEventListener('board-ready', () => {
-    api = window.BOARD_API;
+  // 本機開發:站內連結也要帶著 room/devuser(Discord 參數由 activity.js 處理)
+  if (!act.inDiscord) {
+    document.addEventListener('click', (e) => {
+      const a = e.target.closest && e.target.closest('a[href]');
+      if (!a) return;
+      const url = new URL(a.getAttribute('href'), location.href);
+      if (url.origin !== location.origin) return;
+      for (const k of ['room', 'devuser']) if (!url.searchParams.has(k)) url.searchParams.set(k, params.get(k));
+      a.setAttribute('href', url.pathname + url.search + url.hash);
+    }, true);
+  }
+
+  function start() {
     document.body.appendChild(panel);
     render();
-    api.state.onChange(onLocalChange);
     connect().catch(onConnectError);
-  });
+  }
+
+  if (PAGE === 'board') {
+    // 白板要等 boardMain 初始化完(含密碼門檻與自動保存還原)
+    document.addEventListener('board-ready', () => {
+      boardApi = window.BOARD_API;
+      boardApi.state.onChange(onLocalBoardChange);
+      start();
+    });
+  } else {
+    if (PAGE === 'guide') {
+      document.addEventListener('guide-ready', () => {
+        guideApi = window.GUIDE_API;
+        guideApi.onChange(onLocalLocation);
+        sendLocationNow();
+        followHost();
+      });
+    }
+    start();
+  }
 })();
