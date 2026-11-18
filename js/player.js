@@ -7,12 +7,12 @@ class StepPlayer {
     this.index = 0;
 
     root.innerHTML = `
-      <div class="player-caption"></div>
       <div class="player-controls">
         <button class="btn-prev" title="上一步">◀</button>
         <div class="player-dots"></div>
         <button class="btn-next" title="下一步">▶</button>
-      </div>`;
+      </div>
+      <div class="player-caption"></div>`;
     this.captionEl = root.querySelector('.player-caption');
     this.dotsEl = root.querySelector('.player-dots');
     this.prevBtn = root.querySelector('.btn-prev');
