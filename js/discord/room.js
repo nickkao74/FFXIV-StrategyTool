@@ -323,7 +323,7 @@
   }
 
   if (PAGE === 'board') {
-    // 白板要等 boardMain 初始化完(含密碼門檻與自動保存還原)
+    // 白板要等 boardMain 初始化完(含自動保存還原)
     document.addEventListener('board-ready', () => {
       boardApi = window.BOARD_API;
       boardApi.state.onChange(onLocalBoardChange);
