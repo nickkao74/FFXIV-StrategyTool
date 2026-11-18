@@ -35,6 +35,37 @@ const TOOL_GROUPS = [
   },
 ];
 
+/* 工具方塊檢視的圖形預覽(viewBox 0 0 40 40;顏色取 board.css 的調色盤變數) */
+const TOOL_PREVIEWS = {
+  'select': '<path d="M13 8 L13 31 L19 25 L23 33 L27 31 L23 23 L31 23 Z" fill="var(--text)" stroke="var(--bg)" stroke-width="1.2" stroke-linejoin="round"/>',
+  'aoe-circle': '<circle cx="20" cy="20" r="14" fill="var(--yellow)" fill-opacity=".35" stroke="var(--yellow)" stroke-width="1.6"/>',
+  'aoe-donut': '<path d="M20 4a16 16 0 1 0 .01 0zM20 13a7 7 0 1 1-.01 0z" fill="var(--purple)" fill-opacity=".4" fill-rule="evenodd" stroke="var(--purple)" stroke-width="1.4"/>',
+  'aoe-rect': '<rect x="4" y="13" width="32" height="14" fill="var(--orange)" fill-opacity=".35" stroke="var(--orange)" stroke-width="1.6"/>',
+  'aoe-cone': '<path d="M20 34 L6.5 10.5 A16 16 0 0 1 33.5 10.5 Z" fill="var(--blue)" fill-opacity=".35" stroke="var(--blue)" stroke-width="1.6" stroke-linejoin="round"/>',
+  'preset-spread': ['10,10', '30,10', '10,30', '30,30', '20,20'].map((c) => { const [x, y] = c.split(','); return `<circle cx="${x}" cy="${y}" r="6" fill="var(--cyan)" fill-opacity=".3" stroke="var(--cyan)" stroke-width="1.2"/>`; }).join(''),
+  'knockback': '<circle cx="20" cy="20" r="4" fill="var(--text)"/>' + [0, 45, 90, 135, 180, 225, 270, 315].map((a) => `<g transform="rotate(${a} 20 20)"><path d="M20 12 V5 M17 8 L20 4 L23 8" stroke="var(--text)" stroke-width="1.6" fill="none" stroke-linecap="round" stroke-linejoin="round"/></g>`).join(''),
+  'arrow-line': '<path d="M7 33 L31 9 M21 9 H31 V19" stroke="var(--text)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  'arrow-arc-cw': '<path d="M8 22 A12 12 0 1 1 26 31" stroke="var(--text)" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M19 32 L27 31 L24 24" stroke="var(--text)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  'arrow-arc-ccw': '<path d="M32 22 A12 12 0 1 0 14 31" stroke="var(--text)" stroke-width="2.4" fill="none" stroke-linecap="round"/><path d="M21 32 L13 31 L16 24" stroke="var(--text)" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>',
+  'tether': '<circle cx="9" cy="31" r="4.5" fill="var(--magenta)"/><circle cx="31" cy="9" r="4.5" fill="var(--magenta)"/><path d="M9 31 L31 9" stroke="var(--magenta)" stroke-width="2.2" stroke-dasharray="3 2.5"/>',
+  'marker-share': '<circle cx="20" cy="20" r="13" fill="none" stroke="var(--cyan)" stroke-width="2"/><path d="M20 5 v8 M20 27 v8 M5 20 h8 M27 20 h8" stroke="var(--cyan)" stroke-width="2.2" stroke-linecap="round"/><circle cx="20" cy="20" r="3" fill="var(--cyan)"/>',
+  'marker-triangle': '<path d="M20 7 L33 31 H7 Z" fill="var(--cyan)" fill-opacity=".35" stroke="var(--cyan)" stroke-width="2" stroke-linejoin="round"/>',
+  'marker-death': '<circle cx="20" cy="17" r="10" fill="var(--red)"/><rect x="14" y="24" width="12" height="8" rx="2" fill="var(--red)"/><circle cx="16" cy="17" r="2.6" fill="var(--bg)"/><circle cx="24" cy="17" r="2.6" fill="var(--bg)"/>',
+  'marker-forbid': '<circle cx="20" cy="20" r="13" fill="none" stroke="var(--red)" stroke-width="3"/><path d="M11 11 L29 29" stroke="var(--red)" stroke-width="3"/>',
+  'marker-text': '<text x="20" y="28" text-anchor="middle" font-size="22" font-weight="700" fill="var(--text)">Aa</text>',
+  'blackhole': '<circle cx="20" cy="20" r="13" fill="#000" stroke="var(--purple)" stroke-width="2"/><circle cx="20" cy="20" r="6" fill="var(--purple)" fill-opacity=".5"/>',
+  'tower': '<circle cx="20" cy="20" r="13" fill="var(--orange)" fill-opacity=".25" stroke="var(--orange)" stroke-width="2" stroke-dasharray="4 2"/>',
+  'xmark': '<path d="M10 10 L30 30 M30 10 L10 30" stroke="var(--red)" stroke-width="4" stroke-linecap="round"/>',
+  'quadrant': '<path d="M20 20 L20 5 A15 15 0 0 1 35 20 Z" fill="#8a5a3a" stroke="var(--text-dim)" stroke-width="1"/><circle cx="20" cy="20" r="15" fill="none" stroke="var(--text-dim)" stroke-width="1"/><text x="26" y="17" text-anchor="middle" font-size="8" fill="var(--text)">水</text>',
+};
+
+/** 取得工具的預覽 SVG;沒有專屬預覽就把 icon 字元放大當預覽 */
+function toolPreviewSvg(t) {
+  const inner = TOOL_PREVIEWS[t.id]
+    || `<text x="20" y="27" text-anchor="middle" font-size="20" fill="var(--text)">${t.icon}</text>`;
+  return `<svg class="tool-preview" viewBox="0 0 40 40" aria-hidden="true">${inner}</svg>`;
+}
+
 const COLOR_OPTIONS = [
   ['red', '紅'], ['orange', '橘'], ['yellow', '黃'], ['green', '綠'], ['cyan', '青'],
   ['blue', '藍'], ['purple', '紫'], ['magenta', '桃'], ['white', '白'],
@@ -238,7 +269,7 @@ async function boardMain() {
     btn.className = 'tool-btn';
     btn.dataset.tool = t.id;
     btn.title = t.label;
-    btn.innerHTML = `<span class="tool-icon">${t.icon}</span><span class="tool-label">${t.label}</span>`;
+    btn.innerHTML = `${toolPreviewSvg(t)}<span class="tool-icon">${t.icon}</span><span class="tool-label">${t.label}</span>`;
     btn.addEventListener('click', () => {
       if (t.action) { runPresetAction(t.id); return; }
       canvas.setTool(t.id === canvas.tool ? 'select' : t.id);
@@ -265,7 +296,22 @@ async function boardMain() {
   resetViewBtn.innerHTML = '⤢';
   resetViewBtn.title = '重置檢視(滾輪縮放、中鍵或右鍵拖曳平移)';
   resetViewBtn.addEventListener('click', () => { canvas.resetView(); syncViewButton(); });
-  historyRow.append(undoBtn, redoBtn, resetViewBtn);
+  // 工具列顯示方式:方塊(預設,2 欄圖形預覽)/ 清單
+  const TOOL_VIEW_KEY = 'ffxiv-board-tool-view';
+  const viewToggleBtn = document.createElement('button');
+  viewToggleBtn.className = 'tool-icon-btn';
+  function applyToolView(mode) {
+    toolBar.classList.toggle('tool-bar--grid', mode === 'grid');
+    viewToggleBtn.innerHTML = mode === 'grid' ? '☰' : '▦';
+    viewToggleBtn.title = mode === 'grid' ? '切換為清單顯示' : '切換為方塊顯示';
+    try { localStorage.setItem(TOOL_VIEW_KEY, mode); } catch (e) { /* 無法儲存就算了 */ }
+  }
+  viewToggleBtn.addEventListener('click', () =>
+    applyToolView(toolBar.classList.contains('tool-bar--grid') ? 'list' : 'grid'));
+  let savedToolView = 'grid';
+  try { savedToolView = localStorage.getItem(TOOL_VIEW_KEY) || 'grid'; } catch (e) { /* 預設方塊 */ }
+  applyToolView(savedToolView);
+  historyRow.append(undoBtn, redoBtn, resetViewBtn, viewToggleBtn);
   toolBar.appendChild(historyRow);
 
   history.onUpdate = () => {
@@ -343,6 +389,49 @@ async function boardMain() {
   }
 
   // ── 屬性面板 ──────────────────────────
+  /** 數值欄位:上排標籤 + 數字框,下排可拖移的滑桿;兩者互相同步。
+   * allowEmpty:數字框可留空(代表「不設定」),此時滑桿停在最小值。 */
+  function makeNumberRow(label, { min, max, step = 1, value, allowEmpty = false, placeholder = '' }, onValue) {
+    const row = document.createElement('div');
+    row.className = 'prop-row prop-number';
+    const cap = document.createElement('span');
+    cap.textContent = label;
+    const num = document.createElement('input');
+    num.type = 'number';
+    if (min != null) num.min = min;
+    if (max != null) num.max = max;
+    num.step = step;
+    num.placeholder = placeholder;
+    const has = typeof value === 'number' && !Number.isNaN(value);
+    num.value = has ? value : '';
+    const range = document.createElement('input');
+    range.type = 'range';
+    range.min = min != null ? min : 0;
+    range.max = max != null ? max : 100;
+    range.step = step;
+    range.value = has ? value : range.min;
+    const paint = () => {
+      const pct = ((Number(range.value) - Number(range.min)) / (Number(range.max) - Number(range.min) || 1)) * 100;
+      range.style.setProperty('--fill', `${pct}%`);
+    };
+    paint();
+    range.addEventListener('input', () => {
+      num.value = range.value;
+      paint();
+      onValue(Number(range.value));
+    });
+    num.addEventListener('input', () => {
+      if (num.value === '') { if (allowEmpty) onValue(null); return; }
+      const v = Number(num.value);
+      if (Number.isNaN(v)) return;
+      range.value = v;
+      paint();
+      onValue(v);
+    });
+    row.append(cap, num, range);
+    return row;
+  }
+
   // 輸入框自身觸發的變更不重建面板(避免每打一個字就整個 DOM 重建、輸入框失焦)
   let suppressPropertyRerender = false;
 
@@ -356,21 +445,13 @@ async function boardMain() {
     title.textContent = 'BOSS';
     propertyPanel.appendChild(title);
 
-    const row = document.createElement('label');
-    row.className = 'prop-row';
-    const cap = document.createElement('span');
-    cap.textContent = '面向角';
-    const input = document.createElement('input');
-    input.type = 'number';
-    input.min = 0; input.max = 359;
-    input.placeholder = '不顯示';
-    input.value = typeof t.facing === 'number' ? t.facing : '';
-    input.addEventListener('input', () => {
-      suppressPropertyRerender = true;
-      state.updateToken(t.id, { facing: input.value === '' ? null : Number(input.value) });
-      suppressPropertyRerender = false;
-    });
-    row.append(cap, input);
+    const row = makeNumberRow('面向角',
+      { min: 0, max: 359, value: t.facing, allowEmpty: true, placeholder: '不顯示' },
+      (v) => {
+        suppressPropertyRerender = true;
+        state.updateToken(t.id, { facing: v });
+        suppressPropertyRerender = false;
+      });
     propertyPanel.appendChild(row);
 
     const hint = document.createElement('p');
@@ -396,6 +477,16 @@ async function boardMain() {
       schema = [{ key: 'text', label: '文字', type: 'text' }];
     }
     for (const field of schema) {
+      if (field.type === 'number') {
+        propertyPanel.appendChild(makeNumberRow(field.label,
+          { min: field.min, max: field.max, value: obj[field.key] },
+          (v) => {
+            suppressPropertyRerender = true;
+            state.updateObject(obj.id, { [field.key]: v });
+            suppressPropertyRerender = false;
+          }));
+        continue;
+      }
       const row = document.createElement('label');
       row.className = 'prop-row';
       const cap = document.createElement('span');
@@ -423,15 +514,9 @@ async function boardMain() {
         input = document.createElement('input');
         input.type = 'text';
         input.value = obj[field.key] || '';
-      } else {
-        input = document.createElement('input');
-        input.type = 'number';
-        if (field.min != null) input.min = field.min;
-        if (field.max != null) input.max = field.max;
-        input.value = obj[field.key];
       }
       input.addEventListener('input', () => {
-        const v = field.type === 'number' ? Number(input.value) : input.value;
+        const v = input.value;
         suppressPropertyRerender = true;
         state.updateObject(obj.id, { [field.key]: v });
         suppressPropertyRerender = false;

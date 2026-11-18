@@ -45,27 +45,6 @@ a { color: var(--accent); text-decoration: none; }
 ::-webkit-scrollbar-thumb:active { background: var(--accent); background-clip: padding-box; }
 ::-webkit-scrollbar-corner { background: transparent; }
 
-/* ── 密碼門檻 ─────────────────────── */
-.gate-overlay {
-  position: fixed; inset: 0; display: flex; align-items: center; justify-content: center;
-  background: var(--bg); z-index: 100;
-}
-.gate-box {
-  text-align: center; background: var(--bg-panel); border: 1px solid var(--border);
-  border-radius: 14px; padding: 36px 44px; min-width: 280px;
-}
-.gate-box h1 { font-size: 19px; margin: 0 0 6px; }
-.gate-box p { margin: 4px 0 16px; color: var(--text-dim); font-size: 13.5px; }
-.gate-box input {
-  width: 100%; padding: 10px 12px; border-radius: 8px; margin-bottom: 12px;
-  background: var(--bg-panel2); border: 1px solid var(--border); color: var(--text);
-  font-size: 15px; text-align: center; letter-spacing: 2px;
-}
-.gate-box button {
-  width: 100%; padding: 10px 12px; border-radius: 8px; cursor: pointer;
-  background: var(--accent); border: none; color: #08202c; font-weight: 700; font-size: 14px;
-}
-.gate-error { color: #ff6b6b; min-height: 1.2em; }
 
 /* ── 頂欄 ─────────────────────────── */
 .board-header {
@@ -476,4 +455,49 @@ body.room-viewer #board-app { pointer-events: none; }
 body.room-viewer #board-app::after {
   content: '觀看模式 · 由主持人操作'; position: fixed; left: 50%; top: 60px; transform: translateX(-50%);
   padding: 4px 12px; border-radius: 999px; background: rgba(0, 0, 0, .6); color: #fff; font-size: 12px; z-index: 999;
+}
+
+/* ── 工具列:預覽圖(清單模式隱藏)─────────── */
+.tool-preview { display: none; }
+
+/* ── 工具列:方塊模式(2 欄,上預覽、下標題)── */
+.board-body:has(.tool-bar--grid) { grid-template-columns: 196px 1fr 260px; }
+.tool-bar--grid .tool-group-row { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.tool-bar--grid .tool-btn {
+  flex-direction: column; justify-content: flex-start; gap: 4px;
+  padding: 8px 4px 6px; text-align: center; min-width: 0;
+}
+.tool-bar--grid .tool-icon { display: none; }
+.tool-bar--grid .tool-preview {
+  display: block; width: 100%; height: 44px;
+  background: var(--bg); border-radius: 6px; padding: 4px; box-sizing: border-box;
+}
+.tool-bar--grid .tool-label {
+  font-size: 11.5px; line-height: 1.25; width: 100%;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+}
+.tool-bar--grid .tool-btn.active .tool-preview { background: #0b2a38; }
+.tool-bar--grid .tool-special-empty { grid-column: 1 / -1; }
+
+/* ── 屬性面板:數值欄位 + 拖移滑桿 ──────── */
+.prop-row.prop-number {
+  display: grid; grid-template-columns: 1fr 72px; row-gap: 4px; align-items: center;
+}
+.prop-row.prop-number input[type="number"] { width: 72px; box-sizing: border-box; }
+.prop-row.prop-number input[type="range"] {
+  grid-column: 1 / -1; width: 100%; margin: 0; padding: 0; height: 18px;
+  -webkit-appearance: none; appearance: none; background: transparent; border: none; cursor: pointer;
+}
+.prop-number input[type="range"]::-webkit-slider-runnable-track {
+  height: 4px; border-radius: 2px;
+  background: linear-gradient(to right, var(--accent) var(--fill, 0%), var(--border) var(--fill, 0%));
+}
+.prop-number input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none; width: 14px; height: 14px; margin-top: -5px; border-radius: 50%;
+  background: var(--text); border: 2px solid var(--accent);
+}
+.prop-number input[type="range"]::-moz-range-track { height: 4px; border-radius: 2px; background: var(--border); }
+.prop-number input[type="range"]::-moz-range-progress { height: 4px; border-radius: 2px; background: var(--accent); }
+.prop-number input[type="range"]::-moz-range-thumb {
+  width: 12px; height: 12px; border-radius: 50%; background: var(--text); border: 2px solid var(--accent);
 }
